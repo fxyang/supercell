@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B98527E14CDED5B00C2DC5D /* SceneManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B98527D14CDED5B00C2DC5D /* SceneManager.m */; };
+		5B98528114CDEDDC00C2DC5D /* MenuLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B98528014CDEDDB00C2DC5D /* MenuLayer.m */; };
 		5B992BAB14C9E99D00961C5A /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 5B992B6A14C9E99D00961C5A /* .gitignore */; };
 		5B992BAC14C9E99D00961C5A /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5B992B8714C9E99D00961C5A /* LICENSE.txt */; };
 		5B992BAD14C9E99D00961C5A /* README.textile in Resources */ = {isa = PBXBuildFile; fileRef = 5B992B8814C9E99D00961C5A /* README.textile */; };
@@ -159,6 +161,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5B98527C14CDED5B00C2DC5D /* SceneManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneManager.h; sourceTree = "<group>"; };
+		5B98527D14CDED5B00C2DC5D /* SceneManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneManager.m; sourceTree = "<group>"; };
+		5B98527F14CDEDDB00C2DC5D /* MenuLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuLayer.h; sourceTree = "<group>"; };
+		5B98528014CDEDDB00C2DC5D /* MenuLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuLayer.m; sourceTree = "<group>"; };
 		5B992B6A14C9E99D00961C5A /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		5B992B6D14C9E99D00961C5A /* chipmunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chipmunk.h; sourceTree = "<group>"; };
 		5B992B6E14C9E99D00961C5A /* chipmunk_ffi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chipmunk_ffi.h; sourceTree = "<group>"; };
@@ -625,6 +631,10 @@
 				5BF282A214C77DFD007C1169 /* HelloWorldLayer.h */,
 				5BF282A314C77DFD007C1169 /* HelloWorldLayer.m */,
 				5BF282A514C77DFD007C1169 /* GameConfig.h */,
+				5B98527C14CDED5B00C2DC5D /* SceneManager.h */,
+				5B98527D14CDED5B00C2DC5D /* SceneManager.m */,
+				5B98527F14CDEDDB00C2DC5D /* MenuLayer.h */,
+				5B98528014CDEDDB00C2DC5D /* MenuLayer.m */,
 				5BF2814B14C77DFB007C1169 /* Resources */,
 				5BF2815F14C77DFB007C1169 /* libs */,
 				5BF2829814C77DFD007C1169 /* Supporting Files */,
@@ -1162,6 +1172,8 @@
 				5B992BC914C9E99D00961C5A /* cpSpatialIndex.c in Sources */,
 				5B992BCA14C9E99D00961C5A /* cpSweep1D.c in Sources */,
 				5B992BCB14C9E99D00961C5A /* cpVect.c in Sources */,
+				5B98527E14CDED5B00C2DC5D /* SceneManager.m in Sources */,
+				5B98528114CDEDDC00C2DC5D /* MenuLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
