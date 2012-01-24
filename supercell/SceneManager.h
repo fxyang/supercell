@@ -7,11 +7,17 @@
 //
 
 #import "cocos2d.h"
+
 #import "MenuLayer.h"
+#import "PlayLayer.h"
+#import "CreditsLayer.h"
+
 
 @interface SceneManager : NSObject {
 }
 
 +(void) goMenu;
++(void) goPlay;
++(void) goCredits;
 
 @end

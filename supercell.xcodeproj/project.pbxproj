@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B76DD4614CE7DDA00322378 /* CreditsLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B76DD4514CE7DDA00322378 /* CreditsLayer.m */; };
+		5B76DD4914CE8BDC00322378 /* BaseLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B76DD4814CE8BDC00322378 /* BaseLayer.m */; };
 		5B98527E14CDED5B00C2DC5D /* SceneManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B98527D14CDED5B00C2DC5D /* SceneManager.m */; };
 		5B98528114CDEDDC00C2DC5D /* MenuLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B98528014CDEDDB00C2DC5D /* MenuLayer.m */; };
 		5B992BAB14C9E99D00961C5A /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 5B992B6A14C9E99D00961C5A /* .gitignore */; };
@@ -43,6 +45,7 @@
 		5B992BCA14C9E99D00961C5A /* cpSweep1D.c in Sources */ = {isa = PBXBuildFile; fileRef = 5B992BA714C9E99D00961C5A /* cpSweep1D.c */; };
 		5B992BCB14C9E99D00961C5A /* cpVect.c in Sources */ = {isa = PBXBuildFile; fileRef = 5B992BA814C9E99D00961C5A /* cpVect.c */; };
 		5B992BCC14C9E99D00961C5A /* VERSION.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5B992BAA14C9E99D00961C5A /* VERSION.txt */; };
+		5BE569AC14CE7BB0000321CC /* PlayLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BE569AB14CE7BB0000321CC /* PlayLayer.m */; };
 		5BF2813B14C77DFB007C1169 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF2813A14C77DFB007C1169 /* QuartzCore.framework */; };
 		5BF2813D14C77DFB007C1169 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF2813C14C77DFB007C1169 /* OpenGLES.framework */; };
 		5BF2813F14C77DFB007C1169 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF2813E14C77DFB007C1169 /* OpenAL.framework */; };
@@ -160,6 +163,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5B76DD4414CE7DDA00322378 /* CreditsLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditsLayer.h; sourceTree = "<group>"; };
+		5B76DD4514CE7DDA00322378 /* CreditsLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditsLayer.m; sourceTree = "<group>"; };
+		5B76DD4714CE8BDC00322378 /* BaseLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseLayer.h; sourceTree = "<group>"; };
+		5B76DD4814CE8BDC00322378 /* BaseLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseLayer.m; sourceTree = "<group>"; };
 		5B98527C14CDED5B00C2DC5D /* SceneManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneManager.h; sourceTree = "<group>"; };
 		5B98527D14CDED5B00C2DC5D /* SceneManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneManager.m; sourceTree = "<group>"; };
 		5B98527F14CDEDDB00C2DC5D /* MenuLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuLayer.h; sourceTree = "<group>"; };
@@ -224,6 +231,8 @@
 		5B992BA814C9E99D00961C5A /* cpVect.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cpVect.c; sourceTree = "<group>"; };
 		5B992BA914C9E99D00961C5A /* prime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prime.h; sourceTree = "<group>"; };
 		5B992BAA14C9E99D00961C5A /* VERSION.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VERSION.txt; sourceTree = "<group>"; };
+		5BE569AA14CE7BB0000321CC /* PlayLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayLayer.h; sourceTree = "<group>"; };
+		5BE569AB14CE7BB0000321CC /* PlayLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayLayer.m; sourceTree = "<group>"; };
 		5BF2813614C77DFB007C1169 /* supercell.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = supercell.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BF2813A14C77DFB007C1169 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		5BF2813C14C77DFB007C1169 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -633,6 +642,12 @@
 				5BF2814B14C77DFB007C1169 /* Resources */,
 				5BF2815F14C77DFB007C1169 /* libs */,
 				5BF2829814C77DFD007C1169 /* Supporting Files */,
+				5BE569AA14CE7BB0000321CC /* PlayLayer.h */,
+				5BE569AB14CE7BB0000321CC /* PlayLayer.m */,
+				5B76DD4414CE7DDA00322378 /* CreditsLayer.h */,
+				5B76DD4514CE7DDA00322378 /* CreditsLayer.m */,
+				5B76DD4714CE8BDC00322378 /* BaseLayer.h */,
+				5B76DD4814CE8BDC00322378 /* BaseLayer.m */,
 			);
 			path = supercell;
 			sourceTree = "<group>";
@@ -1168,6 +1183,9 @@
 				5B992BCB14C9E99D00961C5A /* cpVect.c in Sources */,
 				5B98527E14CDED5B00C2DC5D /* SceneManager.m in Sources */,
 				5B98528114CDEDDC00C2DC5D /* MenuLayer.m in Sources */,
+				5BE569AC14CE7BB0000321CC /* PlayLayer.m in Sources */,
+				5B76DD4614CE7DDA00322378 /* CreditsLayer.m in Sources */,
+				5B76DD4914CE8BDC00322378 /* BaseLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

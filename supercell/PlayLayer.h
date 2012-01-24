@@ -1,5 +1,5 @@
 //
-//  MenuLayer.h
+//  PlayLayer.h
 //  supercell
 //
 //  Created by Feixue Yang on 12-01-23.
@@ -9,12 +9,9 @@
 #import "BaseLayer.h"
 
 #import "SceneManager.h"
-#import "PlayLayer.h"
-#import "CreditsLayer.h"
 
-@interface MenuLayer : BaseLayer {
+@interface PlayLayer : BaseLayer {
+    
 }
-
-- (void)onNewGame:(id)sender;
-- (void)onCredits:(id)sender;
+-(void) back: (id) sender;
 @end
