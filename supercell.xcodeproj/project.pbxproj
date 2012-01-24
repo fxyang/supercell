@@ -157,7 +157,6 @@
 		5BF2829B14C77DFD007C1169 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BF2829A14C77DFD007C1169 /* main.m */; };
 		5BF2829E14C77DFD007C1169 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BF2829D14C77DFD007C1169 /* AppDelegate.m */; };
 		5BF282A114C77DFD007C1169 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BF282A014C77DFD007C1169 /* RootViewController.m */; };
-		5BF282A414C77DFD007C1169 /* HelloWorldLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BF282A314C77DFD007C1169 /* HelloWorldLayer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -457,8 +456,6 @@
 		5BF2829D14C77DFD007C1169 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		5BF2829F14C77DFD007C1169 /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		5BF282A014C77DFD007C1169 /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
-		5BF282A214C77DFD007C1169 /* HelloWorldLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HelloWorldLayer.h; sourceTree = "<group>"; };
-		5BF282A314C77DFD007C1169 /* HelloWorldLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HelloWorldLayer.m; sourceTree = "<group>"; };
 		5BF282A514C77DFD007C1169 /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -628,8 +625,6 @@
 				5BF2829D14C77DFD007C1169 /* AppDelegate.m */,
 				5BF2829F14C77DFD007C1169 /* RootViewController.h */,
 				5BF282A014C77DFD007C1169 /* RootViewController.m */,
-				5BF282A214C77DFD007C1169 /* HelloWorldLayer.h */,
-				5BF282A314C77DFD007C1169 /* HelloWorldLayer.m */,
 				5BF282A514C77DFD007C1169 /* GameConfig.h */,
 				5B98527C14CDED5B00C2DC5D /* SceneManager.h */,
 				5B98527D14CDED5B00C2DC5D /* SceneManager.m */,
@@ -1142,7 +1137,6 @@
 				5BF2829B14C77DFD007C1169 /* main.m in Sources */,
 				5BF2829E14C77DFD007C1169 /* AppDelegate.m in Sources */,
 				5BF282A114C77DFD007C1169 /* RootViewController.m in Sources */,
-				5BF282A414C77DFD007C1169 /* HelloWorldLayer.m in Sources */,
 				5B992BAE14C9E99D00961C5A /* chipmunk.c in Sources */,
 				5B992BB014C9E99D00961C5A /* cpConstraint.c in Sources */,
 				5B992BB114C9E99D00961C5A /* cpDampedRotarySpring.c in Sources */,
