@@ -9,9 +9,10 @@
 #import "cocos2d.h"
 
 #import "MenuLayer.h"
-#import "PlayLayer.h"
+#import "GameLayer.h"
 #import "CreditsLayer.h"
 
+#import "GameHUD.h"
 
 @interface SceneManager : NSObject {
 }

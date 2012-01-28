@@ -9,7 +9,7 @@
 #import "BaseLayer.h"
 
 #import "SceneManager.h"
-#import "PlayLayer.h"
+#import "GameLayer.h"
 #import "CreditsLayer.h"
 
 @interface MenuLayer : BaseLayer {

@@ -8,6 +8,8 @@
 
 #import "SceneManager.h"
 
+#import "DataModel.h"
+
 
 #define TRANSITION_DURATION (1.2f)
 
@@ -74,8 +76,17 @@ Class nextTransition()
 }
 
 +(void) goPlay{
-	CCLayer *layer = [PlayLayer node];
+	CCLayer *layer = [GameLayer node];
 	[SceneManager go: layer];
+    
+    CCScene * scene = (CCScene *)[layer parent];
+    
+    GameHUD * myGameHUD = [GameHUD sharedHUD];
+	[scene addChild:myGameHUD z:2];
+	
+	DataModel *m = [DataModel getModel];
+	m._gameLayer = layer;
+	m._gameHUDLayer = myGameHUD;
 }
 
 +(void) goCredits{
@@ -98,7 +109,7 @@ Class nextTransition()
 
 +(CCScene *) wrap: (CCLayer *) layer{
 	CCScene *newScene = [CCScene node];
-	[newScene addChild: layer];
+	[newScene addChild: layer z:1];
 	return newScene;
 }
 
