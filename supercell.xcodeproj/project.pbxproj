@@ -27,8 +27,6 @@
 		5B76DD9314D4A6F900322378 /* Creep.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B76DD9214D4A6F800322378 /* Creep.m */; };
 		5B76DD9614D4A84300322378 /* WayPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B76DD9514D4A84200322378 /* WayPoint.m */; };
 		5B76DD9914D4A87400322378 /* Projectile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B76DD9814D4A87300322378 /* Projectile.m */; };
-		5B76DD9C14D4A8AE00322378 /* Tower.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B76DD9B14D4A8AD00322378 /* Tower.m */; };
-		5B76DD9F14D4A97200322378 /* Wave.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B76DD9E14D4A97100322378 /* Wave.m */; };
 		5B98527E14CDED5B00C2DC5D /* SceneManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B98527D14CDED5B00C2DC5D /* SceneManager.m */; };
 		5B98528114CDEDDC00C2DC5D /* MenuLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B98528014CDEDDB00C2DC5D /* MenuLayer.m */; };
 		5B992BAB14C9E99D00961C5A /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 5B992B6A14C9E99D00961C5A /* .gitignore */; };
@@ -65,6 +63,8 @@
 		5B992BCA14C9E99D00961C5A /* cpSweep1D.c in Sources */ = {isa = PBXBuildFile; fileRef = 5B992BA714C9E99D00961C5A /* cpSweep1D.c */; };
 		5B992BCB14C9E99D00961C5A /* cpVect.c in Sources */ = {isa = PBXBuildFile; fileRef = 5B992BA814C9E99D00961C5A /* cpVect.c */; };
 		5B992BCC14C9E99D00961C5A /* VERSION.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5B992BAA14C9E99D00961C5A /* VERSION.txt */; };
+		5BE5379C14D4CCED002408C3 /* Tower.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BE5379914D4CCED002408C3 /* Tower.m */; };
+		5BE5379D14D4CCED002408C3 /* Wave.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BE5379B14D4CCED002408C3 /* Wave.m */; };
 		5BE569AC14CE7BB0000321CC /* GameLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BE569AB14CE7BB0000321CC /* GameLayer.m */; };
 		5BF2813B14C77DFB007C1169 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF2813A14C77DFB007C1169 /* QuartzCore.framework */; };
 		5BF2813D14C77DFB007C1169 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF2813C14C77DFB007C1169 /* OpenGLES.framework */; };
@@ -210,10 +210,6 @@
 		5B76DD9514D4A84200322378 /* WayPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WayPoint.m; sourceTree = "<group>"; };
 		5B76DD9714D4A87200322378 /* Projectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Projectile.h; sourceTree = "<group>"; };
 		5B76DD9814D4A87300322378 /* Projectile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Projectile.m; sourceTree = "<group>"; };
-		5B76DD9A14D4A8AD00322378 /* Tower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tower.h; sourceTree = "<group>"; };
-		5B76DD9B14D4A8AD00322378 /* Tower.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tower.m; sourceTree = "<group>"; };
-		5B76DD9D14D4A97100322378 /* Wave.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wave.h; sourceTree = "<group>"; };
-		5B76DD9E14D4A97100322378 /* Wave.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Wave.m; sourceTree = "<group>"; };
 		5B98527C14CDED5B00C2DC5D /* SceneManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneManager.h; sourceTree = "<group>"; };
 		5B98527D14CDED5B00C2DC5D /* SceneManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneManager.m; sourceTree = "<group>"; };
 		5B98527F14CDEDDB00C2DC5D /* MenuLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuLayer.h; sourceTree = "<group>"; };
@@ -278,6 +274,10 @@
 		5B992BA814C9E99D00961C5A /* cpVect.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cpVect.c; sourceTree = "<group>"; };
 		5B992BA914C9E99D00961C5A /* prime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prime.h; sourceTree = "<group>"; };
 		5B992BAA14C9E99D00961C5A /* VERSION.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VERSION.txt; sourceTree = "<group>"; };
+		5BE5379814D4CCED002408C3 /* Tower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tower.h; sourceTree = "<group>"; };
+		5BE5379914D4CCED002408C3 /* Tower.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tower.m; sourceTree = "<group>"; };
+		5BE5379A14D4CCED002408C3 /* Wave.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wave.h; sourceTree = "<group>"; };
+		5BE5379B14D4CCED002408C3 /* Wave.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Wave.m; sourceTree = "<group>"; };
 		5BE569AA14CE7BB0000321CC /* GameLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameLayer.h; sourceTree = "<group>"; };
 		5BE569AB14CE7BB0000321CC /* GameLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameLayer.m; sourceTree = "<group>"; };
 		5BF2813614C77DFB007C1169 /* supercell.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = supercell.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -645,10 +645,6 @@
 		5BF2812B14C77DFB007C1169 = {
 			isa = PBXGroup;
 			children = (
-				5B76DD9D14D4A97100322378 /* Wave.h */,
-				5B76DD9E14D4A97100322378 /* Wave.m */,
-				5B76DD9A14D4A8AD00322378 /* Tower.h */,
-				5B76DD9B14D4A8AD00322378 /* Tower.m */,
 				5BF2814A14C77DFB007C1169 /* supercell */,
 				5BF2813914C77DFB007C1169 /* Frameworks */,
 				5BF2813714C77DFB007C1169 /* Products */,
@@ -681,6 +677,10 @@
 		5BF2814A14C77DFB007C1169 /* supercell */ = {
 			isa = PBXGroup;
 			children = (
+				5BE5379814D4CCED002408C3 /* Tower.h */,
+				5BE5379914D4CCED002408C3 /* Tower.m */,
+				5BE5379A14D4CCED002408C3 /* Wave.h */,
+				5BE5379B14D4CCED002408C3 /* Wave.m */,
 				5BF2829C14C77DFD007C1169 /* AppDelegate.h */,
 				5BF2829D14C77DFD007C1169 /* AppDelegate.m */,
 				5BF2829F14C77DFD007C1169 /* RootViewController.h */,
@@ -1278,8 +1278,8 @@
 				5B76DD9314D4A6F900322378 /* Creep.m in Sources */,
 				5B76DD9614D4A84300322378 /* WayPoint.m in Sources */,
 				5B76DD9914D4A87400322378 /* Projectile.m in Sources */,
-				5B76DD9C14D4A8AE00322378 /* Tower.m in Sources */,
-				5B76DD9F14D4A97200322378 /* Wave.m in Sources */,
+				5BE5379C14D4CCED002408C3 /* Tower.m in Sources */,
+				5BE5379D14D4CCED002408C3 /* Wave.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
