@@ -30,6 +30,8 @@
 
 @property (nonatomic, assign) int currentLevel;
 
+
+- (void)addWaves;
 - (void)addWaypoint;
 - (void)addTower: (CGPoint)pos: (int)towerTag;
 - (BOOL) canBuildOnTilePosition:(CGPoint) pos;

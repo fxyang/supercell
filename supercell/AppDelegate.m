@@ -107,7 +107,7 @@
 	// You can change anytime.
 	[CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
 
-    DataModel *m = [DataModel getModel];
+    //DataModel *m = [DataModel getModel];
 	
 	// Removes the startup flicker
 	[self removeStartupFlicker];

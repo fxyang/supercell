@@ -45,7 +45,7 @@
 	CCMenu *menu = [CCMenu menuWithItems: back, nil];
     
 	menu.position = ccp(160, 150);
-	[self addChild: menu];
+	[gameHUD addChild: menu];
     
 	return self;
 }

@@ -27,7 +27,7 @@ float setGreenSpeed = 12;
 }
 
 - (Creep *) initWithCreep:(Creep *) copyFrom {
-    if ((self = [[[super alloc] initWithFile:@"Enemy1.png"] autorelease])) {
+    if ((self = [[[super init] initWithFile:@"Enemy1.png"] autorelease])) {
         self.hp = copyFrom.hp;
         self.moveDuration = copyFrom.moveDuration;
         self.curWaypoint = copyFrom.curWaypoint;

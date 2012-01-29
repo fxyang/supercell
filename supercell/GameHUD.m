@@ -208,7 +208,7 @@ static GameHUD *_sharedHUD = nil;
 		DataModel *m = [DataModel getModel];
 		CGPoint touchLocationInGameLayer = [m._gameLayer convertTouchToNodeSpace:touch];
 		
-		BOOL isBuildable = [m._gameLayer canBuildOnTilePosition: touchLocationInGameLayer];
+		BOOL isBuildable = [(GameLayer *)m._gameLayer canBuildOnTilePosition: touchLocationInGameLayer];
 		if (isBuildable) {
 			selSprite.opacity = 200;
 		} else {
@@ -229,7 +229,7 @@ static GameHUD *_sharedHUD = nil;
 		
 		if (!CGRectContainsPoint(backgroundRect, touchLocation)) {
 			CGPoint touchLocationInGameLayer = [m._gameLayer convertTouchToNodeSpace:touch];
-			[m._gameLayer addTower: touchLocationInGameLayer: selSprite.tag];
+			[(GameLayer *)m._gameLayer addTower: touchLocationInGameLayer: selSprite.tag];
 		}
 		
 		[self removeChild:selSprite cleanup:YES];
