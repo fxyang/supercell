@@ -7,6 +7,13 @@
 //
 
 #import "GameLayer.h"
+#import "cpConstraintNode.h"
+
+#define kBallCollisionType		1
+#define kCircleCollisionType	2
+#define kRectCollisionType		3
+#define kFragShapeCollisionType	4
+
 
 @implementation GameLayer
 
@@ -36,7 +43,9 @@
     
     self.currentLevel = 0;
     
-    self.position = ccp(-228, -122);
+    //self.position = ccp(-228, -122);
+    self.position = ccp(0, 0);
+
     
     gameHUD = [GameHUD sharedHUD];
     [gameHUD schedule:@selector(updateResourcesNom) interval: 2.0];
@@ -47,6 +56,75 @@
 	menu.position = ccp(160, 150);
 	[gameHUD addChild: menu];
     
+    
+    //allocate our space manager
+    self.isTouchEnabled = YES;
+	smgr = [[SpaceManagerCocos2d alloc] init];
+    
+    //add four walls to our screen
+	[smgr addWindowContainmentWithFriction:1.0 elasticity:1.0 inset:cpvzero];
+	
+	//Constant dt is recommended for chipmunk
+	smgr.constantDt = 1.0/55.0;
+    
+    smgr.damping = 0.8;
+    
+    
+    //start the manager!
+	[smgr start]; 	
+    
+    
+    
+    //active shape, ball shape
+    cpShape *pigShape = [smgr addCircleAt:cpv(384,650) mass:10 radius:32];
+    NSLog(@"shape m = %f",pigShape->body->m);
+    
+    pigShape->collision_type = kBallCollisionType;
+    pigSprite = [cpCCSprite spriteWithFile:@"pig_head_64_96.png"];
+    pigSprite.shape = pigShape;
+    pigSprite.autoFreeShapeAndBody = YES;
+    pigSprite.ignoreRotation = YES;
+    pigSprite.spaceManager = smgr;
+    [self addChild:pigSprite z:11];
+    
+    cpShape *pivotShape = [smgr addCircleAt:cpv(400,800) mass:STATIC_MASS radius:3];
+    pivotShape->e = 0.1f;
+    pivotShape->u = 1.0f;
+    pivotShape->collision_type = kBallCollisionType;
+    
+    cpCCSprite * pivotSprite = [cpCCSprite spriteWithFile:@"ball_rope_10_10.png"];
+    pivotSprite.shape = pivotShape;
+    pivotSprite.autoFreeShapeAndBody = YES;
+    pivotSprite.spaceManager = smgr;
+    [self addChild:pivotSprite z:10];
+    
+   // cpSpaceAddStaticShape(smgr.space, shape);
+
+    cpBody * ropeNodeA = pivotShape->body;
+    float spaceBetweenEachNode = 7.0;
+    for (int i = 0; i < 30; i++) {
+        
+        cpShape *ropeNodeBShape = [smgr addCircleAt:cpv(ropeNodeA->p.x-spaceBetweenEachNode,ropeNodeA->p.y-spaceBetweenEachNode) mass:5 radius:3];
+        ropeNodeBShape->e = 0.1f;
+        ropeNodeBShape->u = 1.0f;
+        ropeNodeBShape->collision_type = kBallCollisionType;
+        
+
+        [smgr addSlideToBody:ropeNodeA fromBody:ropeNodeBShape->body toBodyAnchor:cpv(0.0,0.0) fromBodyAnchor:cpv(0.0,0.0) minLength:0.0 maxLength:spaceBetweenEachNode];
+
+        
+        cpCCSprite * sp = [cpCCSprite spriteWithFile:@"ball_rope_10_10.png"];
+        sp.shape = ropeNodeBShape;
+        sp.autoFreeShapeAndBody = YES;
+        //sp.ignoreRotation = YES;
+        sp.spaceManager = smgr;
+        [self addChild:sp z:10];
+        
+        ropeNodeA = ropeNodeBShape->body;
+    }
+    
+    [smgr addSlideToBody:ropeNodeA fromBody:pigShape->body toBodyAnchor:cpv(0.0,0.0) fromBodyAnchor:cpv(0.0,0.0) minLength:0.0 maxLength:20];
+    
 	return self;
 }
 
@@ -54,19 +132,19 @@
 	DataModel *m = [DataModel getModel];
 	
 	Wave *wave = nil;
-	wave = [[Wave alloc] initWithCreep:[FastRedCreep creep] SpawnRate:1.0 RedCreeps:10 GreenCreeps:0];
+	wave = [[Wave alloc] initWithCreep:[FastRedCreep creep] SpawnRate:3.0 RedCreeps:10 GreenCreeps:0];
 	[m._waves addObject:wave];
 	wave = nil;
-	wave = [[Wave alloc] initWithCreep:[FastRedCreep creep] SpawnRate:0.8 RedCreeps:5 GreenCreeps:15];
+	wave = [[Wave alloc] initWithCreep:[FastRedCreep creep] SpawnRate:2.0 RedCreeps:5 GreenCreeps:15];
 	[m._waves addObject:wave];
 	wave = nil;	
-    wave = [[Wave alloc] initWithCreep:[FastRedCreep creep] SpawnRate:0.6 RedCreeps:15 GreenCreeps:15];
+    wave = [[Wave alloc] initWithCreep:[FastRedCreep creep] SpawnRate:3.0 RedCreeps:15 GreenCreeps:15];
 	[m._waves addObject:wave];
 	wave = nil;
-	wave = [[Wave alloc] initWithCreep:[FastRedCreep creep] SpawnRate:0.4 RedCreeps:0 GreenCreeps:25];
+	wave = [[Wave alloc] initWithCreep:[FastRedCreep creep] SpawnRate:4.0 RedCreeps:0 GreenCreeps:25];
 	[m._waves addObject:wave];
     wave = nil;
-    wave = [[Wave alloc] initWithCreep:[FastRedCreep creep] SpawnRate:0.2 RedCreeps:25 GreenCreeps:25];
+    wave = [[Wave alloc] initWithCreep:[FastRedCreep creep] SpawnRate:3.0 RedCreeps:25 GreenCreeps:25];
 	[m._waves addObject:wave];
 	wave = nil;
 }
@@ -200,6 +278,7 @@
 		
 		target.tag = 1;
 		[m._towers addObject:target];
+        
 		
 	} else {
 		NSLog(@"Tile Not Buildable");
@@ -417,11 +496,65 @@
 // on "dealloc" you need to release all your retained objects
 - (void) dealloc
 {
+    [self removeAllChildrenWithCleanup:YES];
+	
+    [smgr stop];
+	[smgr release];
+    
+    
 	[super dealloc];
 }
 
 -(void) back: (id) sender{
 	[SceneManager goMenu];
 }
+
+#pragma mark Touch Functions
+- (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{	
+	//Calculate a vector based on where we touched and where the ball is
+	CGPoint pt = [self convertTouchToNodeSpace:[touches anyObject]];
+	//CGPoint forceVect = ccpSub(pt, ballSprite.position);
+	
+	//cpFloat len = cpvlength(forceVect);
+	//cpVect normalized = cpvnormalize(forceVect);
+	
+	//This applys a one-time force, pretty much like firing a bullet
+	//[ballSprite applyImpulse:ccpMult(forceVect, 1)];
+	
+
+    //Lets apply an explosion instead    
+	//[smgr applyLinearExplosionAt:pt radius:240 maxForce:200];
+	    
+    
+    
+    
+    
+    cpShape * pin = [smgr addRectAt:pt mass:STATIC_MASS width:2 height:2 rotation:0];
+    cpCCSprite * handle = [cpCCSprite spriteWithFile:@"Projectile.png"];
+    handle.shape = pin;
+
+    cpConstraint * joint = [smgr addSpringToBody:pigSprite.shape->body fromBody:handle.shape->body restLength:5.0f stiffness:100.0f damping:10.0f];
+
+    
+    cpConstraintNode * jointNode = [cpConstraintNode nodeWithConstraint:joint];
+    jointNode.color = ccWHITE;
+    jointNode.lineWidth = 2.0f;
+
+    [self addChild:handle];
+    [self addChild:jointNode];
+
+    
+    
+    
+	//Reset Scene
+    if ([touches count] > 1)
+    {
+        CCScene *scene = [CCScene node];
+        [scene addChild:[GameLayer node]];
+        [[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:.4 scene:scene  withColor:ccBLUE]];
+    }
+}
+
 
 @end

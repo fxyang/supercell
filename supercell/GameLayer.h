@@ -18,11 +18,18 @@
 #import "WayPoint.h"
 #import "Wave.h"
 
+#import "SpaceManagerCocos2d.h"
+
 @interface GameLayer : BaseLayer {
     CCTMXTiledMap *_tileMap;
     CCTMXLayer *_background;	
 
 	GameHUD * gameHUD;
+    
+    SpaceManagerCocos2d *smgr;
+    cpCCSprite *pigSprite;
+
+
 }
 
 @property (nonatomic, retain) CCTMXTiledMap *tileMap;

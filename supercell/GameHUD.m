@@ -53,7 +53,8 @@ static GameHUD *_sharedHUD = nil;
         [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGB565];
         background = [CCSprite spriteWithFile:@"hud.png"];
         background.anchorPoint = ccp(0,0);
-        [self addChild:background];
+        //[self addChild:background];
+        
         [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_Default];
 		
         movableSprites = [[NSMutableArray alloc] init];
@@ -65,14 +66,14 @@ static GameHUD *_sharedHUD = nil;
             sprite.position = ccp(winSize.width*offsetFraction, 35);
             sprite.tag = i+1;
             printf("tag %i", sprite.tag);
-            [self addChild:sprite];
+            //[self addChild:sprite];
             [movableSprites addObject:sprite];
             
             //Set up and place towerCost labels
             CCLabelTTF *towerCost = [CCLabelTTF labelWithString:@"$" fontName:@"Marker Felt" fontSize:10];
             towerCost.position = ccp(winSize.width*offsetFraction, 15);
             towerCost.color = ccc3(0, 0, 0);
-            [self addChild:towerCost z:1];
+            //[self addChild:towerCost z:1];
             
             //Set cost values
             switch (i) {
@@ -167,6 +168,7 @@ static GameHUD *_sharedHUD = nil;
 
 
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event {  
+    BOOL selecedSprite = NO;
     CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
     CCSprite * newSprite = nil;
     for (CCSprite *sprite in movableSprites) {
@@ -184,11 +186,14 @@ static GameHUD *_sharedHUD = nil;
 			selSprite = newSprite;
             selSprite.tag = sprite.tag;
 			[self addChild:newSprite];
-			
+			selecedSprite = YES;
             break;
         }
-    }     
-	return YES;
+    }   
+    if (selecedSprite)
+        return YES;
+    else
+        return NO;
 }
 
 - (void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event {  

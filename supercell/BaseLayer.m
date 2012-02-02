@@ -17,8 +17,8 @@
     
 	self.isTouchEnabled = YES;
     
-	CCSprite *bg = [CCSprite spriteWithFile: @"Default.png"];
-	bg.position = ccp(160,240);
+	CCSprite *bg = [CCSprite spriteWithFile: @"underwater_768_1024.png"];
+	bg.position = ccp(384,512);
 	[self addChild: bg z:0];
     
 	return self;
