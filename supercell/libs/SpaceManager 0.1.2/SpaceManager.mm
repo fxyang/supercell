@@ -442,7 +442,7 @@ static void removeCollision(cpSpace *space, void *collision, void *inv_list)
 	_space = space;
 	
 	//hmmm this gravity is silly.... sorry -rkb
-	_space->gravity = cpv(0, -9.8*10);
+	_space->gravity = cpv(0, -9.8*30);
 	_space->sleepTimeThreshold = .4;	//this is actually a "large" value
 	//_space->idleSpeedThreshold = 0;	//default is zero, chipmunk decides best speed
 	

@@ -6,7 +6,9 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "cocos2d.h"
+#import <Foundation/Foundation.h>
+#import "SpaceManagerCocos2d.h"
+#import "riActor.h"
 
 @interface DataModel : NSObject <NSCoding> {
 	CCLayer *_gameLayer;
@@ -18,7 +20,9 @@
 	NSMutableArray *_waypoints;	
 	
 	NSMutableArray *_waves;	
-	
+    NSMutableArray * _equipments;
+	riActor *  _actor;
+    
 	UIPanGestureRecognizer *_gestureRecognizer;
 }
 
@@ -32,7 +36,12 @@
 
 @property (nonatomic, retain) NSMutableArray * _waves;
 
-@property (nonatomic, retain) UIPanGestureRecognizer *_gestureRecognizer;;
+@property (nonatomic, retain) NSMutableArray * _equipments;
+@property (nonatomic, retain) riActor * _actor;
+
+
+@property (nonatomic, retain) UIPanGestureRecognizer *_gestureRecognizer;
+
 + (DataModel*)getModel;
 
 @end

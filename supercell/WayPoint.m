@@ -11,12 +11,21 @@
 
 @implementation WayPoint
 
+@synthesize wayPointName = _wayPointName;
+
 - (id) init
 {
 	if ((self = [super init])) {
 		
 	}
+    _wayPointName = nil;
 	return self;
+}
+
+- (void) dealloc{
+    [_wayPointName release];
+    _wayPointName = nil;
+    [super dealloc];
 }
 
 @end

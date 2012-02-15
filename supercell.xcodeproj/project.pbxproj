@@ -25,6 +25,10 @@
 		5B76DD9314D4A6F900322378 /* Creep.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B76DD9214D4A6F800322378 /* Creep.m */; };
 		5B76DD9614D4A84300322378 /* WayPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B76DD9514D4A84200322378 /* WayPoint.m */; };
 		5B76DD9914D4A87400322378 /* Projectile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B76DD9814D4A87300322378 /* Projectile.m */; };
+		5B97306714E835FA00F5CDB2 /* Level0.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B97306614E835FA00F5CDB2 /* Level0.plist */; };
+		5B97306A14E8366700F5CDB2 /* riLevelLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B97306914E8366600F5CDB2 /* riLevelLoader.m */; };
+		5B97306C14E8682700F5CDB2 /* TutorialTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B97306B14E8682700F5CDB2 /* TutorialTexture.png */; };
+		5B97307514E88AB000F5CDB2 /* riActor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B97307314E88AAF00F5CDB2 /* riActor.m */; };
 		5B98527E14CDED5B00C2DC5D /* SceneManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B98527D14CDED5B00C2DC5D /* SceneManager.m */; };
 		5B98528114CDEDDC00C2DC5D /* MenuLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B98528014CDEDDB00C2DC5D /* MenuLayer.m */; };
 		5B992BAB14C9E99D00961C5A /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 5B992B6A14C9E99D00961C5A /* .gitignore */; };
@@ -64,6 +68,9 @@
 		5B99C4AC14D9C67C000C9D52 /* pig_head_64_96.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B99C4AB14D9C67C000C9D52 /* pig_head_64_96.png */; };
 		5B99C4AF14DA09B4000C9D52 /* ball_grey_10_10.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B99C4AE14DA09B4000C9D52 /* ball_grey_10_10.png */; };
 		5B99C4B114DA1A51000C9D52 /* ball_rope_10_10.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B99C4B014DA1A51000C9D52 /* ball_rope_10_10.png */; };
+		5B99C4B614DC6D19000C9D52 /* riVerletRope.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B99C4B514DC6D19000C9D52 /* riVerletRope.m */; };
+		5B99C4C114DC8D92000C9D52 /* rope.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B99C4C014DC8D91000C9D52 /* rope.png */; };
+		5B99C4C614DD1747000C9D52 /* dragon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B99C4C514DD1747000C9D52 /* dragon.png */; };
 		5BE5379C14D4CCED002408C3 /* Tower.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BE5379914D4CCED002408C3 /* Tower.m */; };
 		5BE5379D14D4CCED002408C3 /* Wave.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BE5379B14D4CCED002408C3 /* Wave.m */; };
 		5BE537E614D605E5002408C3 /* cpCCNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BE537A814D605E5002408C3 /* cpCCNode.m */; };
@@ -226,6 +233,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5B2BA9E714DD2A4B00417A18 /* CommonHead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonHead.h; sourceTree = "<group>"; };
 		5B76DD4414CE7DDA00322378 /* CreditsLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditsLayer.h; sourceTree = "<group>"; };
 		5B76DD4514CE7DDA00322378 /* CreditsLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditsLayer.m; sourceTree = "<group>"; };
 		5B76DD4714CE8BDC00322378 /* BaseLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseLayer.h; sourceTree = "<group>"; };
@@ -251,6 +259,12 @@
 		5B76DD9514D4A84200322378 /* WayPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WayPoint.m; sourceTree = "<group>"; };
 		5B76DD9714D4A87200322378 /* Projectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Projectile.h; sourceTree = "<group>"; };
 		5B76DD9814D4A87300322378 /* Projectile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Projectile.m; sourceTree = "<group>"; };
+		5B97306614E835FA00F5CDB2 /* Level0.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Level0.plist; sourceTree = "<group>"; };
+		5B97306814E8366600F5CDB2 /* riLevelLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = riLevelLoader.h; path = riLib/riLevelLoader.h; sourceTree = "<group>"; };
+		5B97306914E8366600F5CDB2 /* riLevelLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = riLevelLoader.m; path = riLib/riLevelLoader.m; sourceTree = "<group>"; };
+		5B97306B14E8682700F5CDB2 /* TutorialTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TutorialTexture.png; path = Resources/TutorialTexture.png; sourceTree = "<group>"; };
+		5B97307214E88AAE00F5CDB2 /* riActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = riActor.h; path = riLib/riActor.h; sourceTree = "<group>"; };
+		5B97307314E88AAF00F5CDB2 /* riActor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = riActor.m; path = riLib/riActor.m; sourceTree = "<group>"; };
 		5B98527C14CDED5B00C2DC5D /* SceneManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneManager.h; sourceTree = "<group>"; };
 		5B98527D14CDED5B00C2DC5D /* SceneManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneManager.m; sourceTree = "<group>"; };
 		5B98527F14CDEDDB00C2DC5D /* MenuLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuLayer.h; sourceTree = "<group>"; };
@@ -318,6 +332,10 @@
 		5B99C4AB14D9C67C000C9D52 /* pig_head_64_96.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pig_head_64_96.png; path = Resources/pig_head_64_96.png; sourceTree = "<group>"; };
 		5B99C4AE14DA09B4000C9D52 /* ball_grey_10_10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ball_grey_10_10.png; path = Resources/ball_grey_10_10.png; sourceTree = "<group>"; };
 		5B99C4B014DA1A51000C9D52 /* ball_rope_10_10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ball_rope_10_10.png; path = Resources/ball_rope_10_10.png; sourceTree = "<group>"; };
+		5B99C4B414DC6D19000C9D52 /* riVerletRope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = riVerletRope.h; path = riLib/riVerletRope.h; sourceTree = "<group>"; };
+		5B99C4B514DC6D19000C9D52 /* riVerletRope.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = riVerletRope.m; path = riLib/riVerletRope.m; sourceTree = "<group>"; };
+		5B99C4C014DC8D91000C9D52 /* rope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rope.png; path = Resources/rope.png; sourceTree = "<group>"; };
+		5B99C4C514DD1747000C9D52 /* dragon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = dragon.png; path = Resources/dragon.png; sourceTree = "<group>"; };
 		5BE5379814D4CCED002408C3 /* Tower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tower.h; sourceTree = "<group>"; };
 		5BE5379914D4CCED002408C3 /* Tower.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tower.m; sourceTree = "<group>"; };
 		5BE5379A14D4CCED002408C3 /* Wave.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wave.h; sourceTree = "<group>"; };
@@ -739,6 +757,19 @@
 			path = constraints;
 			sourceTree = "<group>";
 		};
+		5B99C4B314DC6B9E000C9D52 /* riLib */ = {
+			isa = PBXGroup;
+			children = (
+				5B97307214E88AAE00F5CDB2 /* riActor.h */,
+				5B97307314E88AAF00F5CDB2 /* riActor.m */,
+				5B99C4B414DC6D19000C9D52 /* riVerletRope.h */,
+				5B99C4B514DC6D19000C9D52 /* riVerletRope.m */,
+				5B97306814E8366600F5CDB2 /* riLevelLoader.h */,
+				5B97306914E8366600F5CDB2 /* riLevelLoader.m */,
+			);
+			name = riLib;
+			sourceTree = "<group>";
+		};
 		5BE537A514D605E5002408C3 /* SpaceManager 0.1.2 */ = {
 			isa = PBXGroup;
 			children = (
@@ -908,10 +939,13 @@
 		5BF2814A14C77DFB007C1169 /* supercell */ = {
 			isa = PBXGroup;
 			children = (
-				5BE5379814D4CCED002408C3 /* Tower.h */,
-				5BE5379914D4CCED002408C3 /* Tower.m */,
-				5BE5379A14D4CCED002408C3 /* Wave.h */,
-				5BE5379B14D4CCED002408C3 /* Wave.m */,
+				5B99C4B314DC6B9E000C9D52 /* riLib */,
+				5BE569AA14CE7BB0000321CC /* GameLayer.h */,
+				5BE569AB14CE7BB0000321CC /* GameLayer.m */,
+				5B76DD5A14D49C9100322378 /* GameHUD.h */,
+				5B76DD5B14D49C9200322378 /* GameHUD.m */,
+				5B76DD5714D47AF500322378 /* DataModel.h */,
+				5B76DD5814D47AF500322378 /* DataModel.m */,
 				5BF2829C14C77DFD007C1169 /* AppDelegate.h */,
 				5BF2829D14C77DFD007C1169 /* AppDelegate.m */,
 				5BF2829F14C77DFD007C1169 /* RootViewController.h */,
@@ -921,25 +955,24 @@
 				5B98527D14CDED5B00C2DC5D /* SceneManager.m */,
 				5B98527F14CDEDDB00C2DC5D /* MenuLayer.h */,
 				5B98528014CDEDDB00C2DC5D /* MenuLayer.m */,
-				5BE569AA14CE7BB0000321CC /* GameLayer.h */,
-				5BE569AB14CE7BB0000321CC /* GameLayer.m */,
 				5B76DD9714D4A87200322378 /* Projectile.h */,
 				5B76DD9814D4A87300322378 /* Projectile.m */,
 				5B76DD9414D4A84100322378 /* WayPoint.h */,
 				5B76DD9514D4A84200322378 /* WayPoint.m */,
-				5B76DD5A14D49C9100322378 /* GameHUD.h */,
-				5B76DD5B14D49C9200322378 /* GameHUD.m */,
 				5B76DD4414CE7DDA00322378 /* CreditsLayer.h */,
 				5B76DD4514CE7DDA00322378 /* CreditsLayer.m */,
 				5B76DD4714CE8BDC00322378 /* BaseLayer.h */,
 				5B76DD4814CE8BDC00322378 /* BaseLayer.m */,
-				5B76DD5714D47AF500322378 /* DataModel.h */,
-				5B76DD5814D47AF500322378 /* DataModel.m */,
+				5BE5379A14D4CCED002408C3 /* Wave.h */,
+				5BE5379B14D4CCED002408C3 /* Wave.m */,
 				5B76DD9114D4A6F700322378 /* Creep.h */,
 				5B76DD9214D4A6F800322378 /* Creep.m */,
+				5BE5379814D4CCED002408C3 /* Tower.h */,
+				5BE5379914D4CCED002408C3 /* Tower.m */,
 				5BF2814B14C77DFB007C1169 /* Resources */,
 				5BF2815F14C77DFB007C1169 /* libs */,
 				5BF2829814C77DFD007C1169 /* Supporting Files */,
+				5B2BA9E714DD2A4B00417A18 /* CommonHead.h */,
 			);
 			path = supercell;
 			sourceTree = "<group>";
@@ -947,6 +980,9 @@
 		5BF2814B14C77DFB007C1169 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				5B97306B14E8682700F5CDB2 /* TutorialTexture.png */,
+				5B99C4C514DD1747000C9D52 /* dragon.png */,
+				5B99C4C014DC8D91000C9D52 /* rope.png */,
 				5B99C4B014DA1A51000C9D52 /* ball_rope_10_10.png */,
 				5B99C4AE14DA09B4000C9D52 /* ball_grey_10_10.png */,
 				5B99C4AB14D9C67C000C9D52 /* pig_head_64_96.png */,
@@ -974,6 +1010,7 @@
 				5BF2815A14C77DFB007C1169 /* Icon@2x.png */,
 				5BF2815C14C77DFB007C1169 /* Info.plist */,
 				5BF2815D14C77DFB007C1169 /* iTunesArtwork */,
+				5B97306614E835FA00F5CDB2 /* Level0.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1374,6 +1411,10 @@
 				5B99C4AC14D9C67C000C9D52 /* pig_head_64_96.png in Resources */,
 				5B99C4AF14DA09B4000C9D52 /* ball_grey_10_10.png in Resources */,
 				5B99C4B114DA1A51000C9D52 /* ball_rope_10_10.png in Resources */,
+				5B99C4C114DC8D92000C9D52 /* rope.png in Resources */,
+				5B99C4C614DD1747000C9D52 /* dragon.png in Resources */,
+				5B97306714E835FA00F5CDB2 /* Level0.plist in Resources */,
+				5B97306C14E8682700F5CDB2 /* TutorialTexture.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1555,6 +1596,9 @@
 				5BE5380B14D605E5002408C3 /* GCpShapeCache.m in Sources */,
 				5BE5380C14D605E5002408C3 /* cpCCSprite+PhysicsEditor.m in Sources */,
 				5BE5380D14D605E5002408C3 /* SpaceManager.mm in Sources */,
+				5B99C4B614DC6D19000C9D52 /* riVerletRope.m in Sources */,
+				5B97306A14E8366700F5CDB2 /* riLevelLoader.m in Sources */,
+				5B97307514E88AB000F5CDB2 /* riActor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

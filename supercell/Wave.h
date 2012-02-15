@@ -7,7 +7,6 @@
 //
 
 #import "cocos2d.h"
-
 #import "Creep.h"
 
 @interface Wave : CCNode {

@@ -13,7 +13,7 @@
    eJyTY2BgkBvFwxZzQTGtzB01f9T8UfNHzR81f9T8UfNHzR81f2iZDwAVTlGR
   </data>
  </layer>
- <objectgroup name="Objects" width="24" height="32">
+ <objectgroup name="Waypoints" width="24" height="32">
   <object name="Waypoint1" x="576" y="288"/>
   <object name="Waypoint2" x="352" y="256"/>
   <object name="Waypoint3" x="192" y="384"/>

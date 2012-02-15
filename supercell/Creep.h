@@ -12,24 +12,22 @@
 #import "WayPoint.h"
 #import "GameHUD.h"
 
-@interface Creep : CCSprite <NSCopying> {
-    int _curHp;
+@interface Creep : riActor {
+
 	int _moveDuration;
 	
 	int _curWaypoint;
     int _lastWaypoint;
     
-    GameHUD * gameHUD;
 }
 
-@property (nonatomic, assign) int hp;
 @property (nonatomic, assign) int moveDuration;
 
 @property (nonatomic, assign) int curWaypoint;
 @property (nonatomic, assign) int lastWaypoint;
 
 
-- (Creep *) initWithCreep:(Creep *) copyFrom; 
+
 - (WayPoint *)getCurrentWaypoint;
 - (WayPoint *)getNextWaypoint;
 - (WayPoint *)getLastWaypoint;

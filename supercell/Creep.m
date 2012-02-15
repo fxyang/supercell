@@ -10,33 +10,16 @@
 
 @implementation Creep
 
-@synthesize hp = _curHp;
 @synthesize moveDuration = _moveDuration;
 
 @synthesize curWaypoint = _curWaypoint;
 @synthesize lastWaypoint = _lastWaypoint;
 
+
 float setRedHp = 9;
 float setRedSpeed = 6;
 float setGreenHp = 18;
 float setGreenSpeed = 12;
-
-- (id) copyWithZone:(NSZone *)zone {
-	Creep *copy = [[[self class] allocWithZone:zone] initWithCreep:self];
-	return copy;
-}
-
-- (Creep *) initWithCreep:(Creep *) copyFrom {
-    if ((self = [[[super init] initWithFile:@"Enemy1.png"] autorelease])) {
-        self.hp = copyFrom.hp;
-        self.moveDuration = copyFrom.moveDuration;
-        self.curWaypoint = copyFrom.curWaypoint;
-        
-        
-	}
-	[self retain];
-	return self;
-}
 
 - (WayPoint *)getCurrentWaypoint{
 	
@@ -55,9 +38,9 @@ float setGreenSpeed = 12;
 	
 	if (self.curWaypoint >= m._waypoints.count){
         self.curWaypoint--;
-        gameHUD = [GameHUD sharedHUD];
-        if (gameHUD.baseHpPercentage > 0) {
-            [gameHUD updateBaseHp:-10];
+        _gameHUD = [GameHUD sharedHUD];
+        if (_gameHUD.baseHpPercentage > 0) {
+            [_gameHUD updateBaseHp:-10];
         }
         
         Creep *target = (Creep *) self;
@@ -87,7 +70,7 @@ float setGreenSpeed = 12;
 	return waypoint;
 }
 
--(void)creepLogic:(ccTime)dt {
+-(void)actorLogic:(ccTime)dt {
 	
 	
 	// Rotate creep to face next waypoint
@@ -113,13 +96,11 @@ float setGreenSpeed = 12;
     
     FastRedCreep *creep = nil;
     if ((creep = [[[super alloc] initWithFile:@"Enemy1.png"] autorelease])) {
-        creep.hp = setRedHp;
+        creep.health = setRedHp;
         creep.moveDuration = setRedSpeed;
 		creep.curWaypoint = 0;
     }
-	
-	[creep schedule:@selector(creepLogic:) interval:0.2];
-	
+		
     return creep;
 }
 
@@ -131,13 +112,11 @@ float setGreenSpeed = 12;
     
     StrongGreenCreep *creep = nil;
     if ((creep = [[[super alloc] initWithFile:@"Enemy2.png"] autorelease])) {
-        creep.hp = setGreenHp;
+        creep.health = setGreenHp;
         creep.moveDuration = setGreenSpeed;
 		creep.curWaypoint = 0;
     }
-	
-	[creep schedule:@selector(creepLogic:) interval:0.2];
-    
+	    
 	return creep;
 }
 

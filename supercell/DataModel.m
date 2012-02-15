@@ -20,6 +20,9 @@
 
 @synthesize _waves;
 
+@synthesize _equipments;
+@synthesize _actor;
+
 @synthesize _gestureRecognizer;
 
 static DataModel *_sharedContext = nil;
@@ -50,7 +53,8 @@ static DataModel *_sharedContext = nil;
 		_targets = [[NSMutableArray alloc] init];
 		
 		_waypoints = [[NSMutableArray alloc] init];
-		
+        _equipments = [[NSMutableArray alloc] init];
+
 		_waves = [[NSMutableArray alloc] init];
 	}
 	return self;
@@ -73,6 +77,12 @@ static DataModel *_sharedContext = nil;
 	[_waypoints release];
 	_waypoints = nil;
 	
+    [_equipments release];
+	_equipments = nil;
+    
+    [_actor release];
+	_actor = nil;
+    
 	[_waves release];
 	_waves = nil;	
 	[super dealloc];

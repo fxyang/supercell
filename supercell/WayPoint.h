@@ -9,7 +9,9 @@
 #import "cocos2d.h"
 
 @interface WayPoint : CCNode {
+    NSString * _wayPointName;
     
 }
+@property (nonatomic, retain) NSString * wayPointName;
 
 @end

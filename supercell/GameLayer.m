@@ -7,26 +7,70 @@
 //
 
 #import "GameLayer.h"
-#import "cpConstraintNode.h"
+
 
 #define kBallCollisionType		1
 #define kCircleCollisionType	2
 #define kRectCollisionType		3
 #define kFragShapeCollisionType	4
 
+static cpFloat
+springForce(cpConstraint *spring, cpFloat dist)
+{
+    return cpfmin(cpDampedSpringGetRestLength(spring) - dist, 0.2f)*cpDampedSpringGetStiffness(spring);
+}
+
 
 @implementation GameLayer
 
+@synthesize gameTime = _gameTime;
+
+@synthesize spaceManager = _spaceManager;
 @synthesize tileMap = _tileMap;
 @synthesize background = _background;
+@synthesize actorSprite = _actorSprite;
+@synthesize actorActionArray = _actorActionArray;
 
 @synthesize currentLevel = _currentLevel;
+
+@synthesize flyActionArray = _flyActionArray;
+
+@synthesize dragon = _dragon;
+@synthesize moveAction = _moveAction;
+@synthesize flyAction = _flyAction;
+
+enum {
+    kTagSpriteSheet = 1,
+};
 
 -(id) init{
 	self = [super init];
 	if (!self) {
 		return nil;
 	}
+    
+    self.isTouchEnabled = YES;
+    
+    _gameTime = 0;
+    
+	_spaceManager = [[SpaceManagerCocos2d alloc] init];
+//	[_spaceManager addWindowContainmentWithFriction:1.0 elasticity:0.5 inset:cpvzero];
+	_spaceManager.constantDt = 1.0/55.0;
+    _spaceManager.damping = 1.0;
+    
+    space = [_spaceManager space];
+    
+    _actorActionArray = [[NSMutableArray alloc] init];
+    
+    ropeSegmentSpriteBatchNode = [CCSpriteBatchNode batchNodeWithFile:@"rope.png" ]; 
+    [ropeSegmentSpriteBatchNode retain];
+    [self addChild:ropeSegmentSpriteBatchNode z:10]; 
+
+    [self addActorAt:ccp(200,800)];
+    [_actorSprite runAction:[_actorSprite.actionArray  objectAtIndex:0]];
+
+    
+    _curSeg = nil;
     
     self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"TileMap.tmx"];
     self.background = [_tileMap layerNamed:@"Background"];
@@ -35,6 +79,7 @@
     
     [self addWaypoint];
     [self addWaves];
+    
     
     // Call game logic about every second
     [self schedule:@selector(update:)];
@@ -57,94 +102,134 @@
 	[gameHUD addChild: menu];
     
     
-    //allocate our space manager
-    self.isTouchEnabled = YES;
-	smgr = [[SpaceManagerCocos2d alloc] init];
-    
-    //add four walls to our screen
-	[smgr addWindowContainmentWithFriction:1.0 elasticity:1.0 inset:cpvzero];
-	
-	//Constant dt is recommended for chipmunk
-	smgr.constantDt = 1.0/55.0;
-    
-    smgr.damping = 0.8;
-    
-    
     //start the manager!
-	[smgr start]; 	
+	[_spaceManager start]; 	
+    
+	return self;
+}
+
+// on "dealloc" you need to release all your retained objects
+- (void) dealloc
+{
+    [_spaceManager stop];
+
+    [self removeAllChildrenWithCleanup:YES];
+
+    [verletRope release];
+    verletRope = nil;
+
+    [ropeSegmentSpriteBatchNode release];
+    ropeSegmentSpriteBatchNode = nil;
+    
+    [_actorSprite release];
+    _actorSprite = nil;
+
+    [_actorActionArray release];
+    _actorActionArray = nil;
+    
+    [actorSpriteBatchNode release];
+    actorSpriteBatchNode = nil;
+    
+    [_spaceManager release];
+    
+	[super dealloc];
+}
+
+-(void)addActorAt:(CGPoint) pt{
+    
+    CCTexture2D *actorTexture = [[CCTextureCache sharedTextureCache] addImage:@"dragon.png"];
+    actorSpriteBatchNode = [CCSpriteBatchNode batchNodeWithTexture:actorTexture capacity:10];
+    [actorSpriteBatchNode retain];
+    [self addChild:actorSpriteBatchNode z:10]; 
+    
+    _actorSprite = [[riActor alloc] initWithTexture:actorTexture width:75 height:70 column:10 row:8];
+    CCSpriteFrame *frameFirst = [CCSpriteFrame frameWithTexture:actorTexture rect:CGRectMake(0, 0, 75, 70)];
+    [_actorSprite setDisplayFrame: frameFirst];
+    _actorSprite.position = pt;
+    _actorSprite.gameLayer = self;
+    _actorSprite.ignoreRotation = YES;
+    _actorSprite.spaceManager = _spaceManager;
+    cpShape *actorShape = [_spaceManager addCircleAt:pt mass:1 radius:20];
+    actorShape->collision_type = kBallCollisionType;
+    actorShape->e = 1.0;
+    _actorSprite.shape = actorShape;
+    
+    _actorSprite.life = 100.0;
+    
+    [actorSpriteBatchNode addChild:_actorSprite];
     
     
-    
-    //active shape, ball shape
-    cpShape *pigShape = [smgr addCircleAt:cpv(384,650) mass:10 radius:32];
-    NSLog(@"shape m = %f",pigShape->body->m);
-    
-    pigShape->collision_type = kBallCollisionType;
-    pigSprite = [cpCCSprite spriteWithFile:@"pig_head_64_96.png"];
-    pigSprite.shape = pigShape;
-    pigSprite.autoFreeShapeAndBody = YES;
-    pigSprite.ignoreRotation = YES;
-    pigSprite.spaceManager = smgr;
-    [self addChild:pigSprite z:11];
-    
-    cpShape *pivotShape = [smgr addCircleAt:cpv(400,800) mass:STATIC_MASS radius:3];
+    cpShape *pivotShape = [_spaceManager addCircleAt:cpv(228,280) mass:STATIC_MASS radius:10];
     pivotShape->e = 0.1f;
     pivotShape->u = 1.0f;
     pivotShape->collision_type = kBallCollisionType;
-    
-    cpCCSprite * pivotSprite = [cpCCSprite spriteWithFile:@"ball_rope_10_10.png"];
+    cpCCSprite * pivotSprite = [cpCCSprite spriteWithFile:@"Enemy1.png"];
     pivotSprite.shape = pivotShape;
     pivotSprite.autoFreeShapeAndBody = YES;
-    pivotSprite.spaceManager = smgr;
+    pivotSprite.spaceManager = _spaceManager;
     [self addChild:pivotSprite z:10];
+    [pivotSprite runAction:[CCRepeatForever actionWithAction:[CCSequence actions:[CCMoveBy actionWithDuration:4.0f position:ccp(300,0)],[CCMoveBy actionWithDuration:4.0f position:ccp(-300,0)],nil]]];
     
-   // cpSpaceAddStaticShape(smgr.space, shape);
+    ropeNodeA = pivotShape->body;
+    
+    
+    
+    levelLoader = [[riLevelLoader alloc] initWithContentOfFile:@"Level0"];
+    levelLoader.spaceManager = _spaceManager;
+    
+    if([levelLoader hasWorldBoundaries])
+        [levelLoader createWorldBoundaries:space];
+    
+    [levelLoader addActorsToWorld:space gameLayer:self];
 
-    cpBody * ropeNodeA = pivotShape->body;
-    float spaceBetweenEachNode = 7.0;
-    for (int i = 0; i < 30; i++) {
-        
-        cpShape *ropeNodeBShape = [smgr addCircleAt:cpv(ropeNodeA->p.x-spaceBetweenEachNode,ropeNodeA->p.y-spaceBetweenEachNode) mass:5 radius:3];
-        ropeNodeBShape->e = 0.1f;
-        ropeNodeBShape->u = 1.0f;
-        ropeNodeBShape->collision_type = kBallCollisionType;
-        
-
-        [smgr addSlideToBody:ropeNodeA fromBody:ropeNodeBShape->body toBodyAnchor:cpv(0.0,0.0) fromBodyAnchor:cpv(0.0,0.0) minLength:0.0 maxLength:spaceBetweenEachNode];
+    CCSprite* spr =  [levelLoader spriteWithUniqueName:@"TutorialTexture_3"];
+    [spr setColor:ccc3(10, 10, 10)];
+    cpBody* ball = [levelLoader bodyWithUniqueName:@"TutorialTexture_3"];
+    ball->p = ccp(500, 200);
 
         
-        cpCCSprite * sp = [cpCCSprite spriteWithFile:@"ball_rope_10_10.png"];
-        sp.shape = ropeNodeBShape;
-        sp.autoFreeShapeAndBody = YES;
-        //sp.ignoreRotation = YES;
-        sp.spaceManager = smgr;
-        [self addChild:sp z:10];
+    //cpConstraint* joint = [lh jointWithUniqueName:@"TutorialTexture_4_18_TutorialTexture_3_1"];
+    
+}
+
+-(void)addRope{
+    //Remove Rope 
+    if(verletRope !=nil && verletRope.status == kRopeStatusActive){       
+        [verletRope removeRopeWithCutAt:CGPointZero duration:0.5f];
+    }else if((verletRope !=nil && verletRope.status == kRopeStatusRemoved) || verletRope == nil){
+        int ropeLength = cpvdist(ropeNodeA->p, [_actorSprite shape]->body->p);
         
-        ropeNodeA = ropeNodeBShape->body;
+        cpConstraint * ropeConstraint = [_spaceManager addSlideToBody:ropeNodeA fromBody:_actorSprite.body toBodyAnchor:cpv(0.0,0.0) fromBodyAnchor:cpv(0.0,0.0) minLength:0 maxLength:ropeLength];
+        
+        //        cpConstraint * ropeConstraint = [_spaceManager addSpringToBody:ropeNodeA fromBody:_actorSprite.body restLength:ropeLength stiffness:10 damping:10];
+        //        cpDampedSpringSetSpringForceFunc(ropeConstraint, springForce);
+        
+        
+        verletRope = [[riVerletRope alloc] initWithConstraint:ropeConstraint spriteSheet:ropeSegmentSpriteBatchNode isSolid:NO spaceManager:_spaceManager];
+        verletRope.gameLayer = self;
     }
     
-    [smgr addSlideToBody:ropeNodeA fromBody:pigShape->body toBodyAnchor:cpv(0.0,0.0) fromBodyAnchor:cpv(0.0,0.0) minLength:0.0 maxLength:20];
     
-	return self;
+    [_actorSprite applyImpulse:ccpMult([_actorSprite body]->v, [_actorSprite body]->m *1.5)];
 }
 
 -(void)addWaves {
 	DataModel *m = [DataModel getModel];
 	
 	Wave *wave = nil;
-	wave = [[Wave alloc] initWithCreep:[FastRedCreep creep] SpawnRate:3.0 RedCreeps:10 GreenCreeps:0];
+	wave = [[Wave alloc] initWithCreep:[FastRedCreep creep] SpawnRate:10 RedCreeps:0 GreenCreeps:5];
 	[m._waves addObject:wave];
 	wave = nil;
-	wave = [[Wave alloc] initWithCreep:[FastRedCreep creep] SpawnRate:2.0 RedCreeps:5 GreenCreeps:15];
+	wave = [[Wave alloc] initWithCreep:[FastRedCreep creep] SpawnRate:10 RedCreeps:5 GreenCreeps:5];
 	[m._waves addObject:wave];
 	wave = nil;	
-    wave = [[Wave alloc] initWithCreep:[FastRedCreep creep] SpawnRate:3.0 RedCreeps:15 GreenCreeps:15];
+    wave = [[Wave alloc] initWithCreep:[FastRedCreep creep] SpawnRate:10 RedCreeps:5 GreenCreeps:5];
 	[m._waves addObject:wave];
 	wave = nil;
-	wave = [[Wave alloc] initWithCreep:[FastRedCreep creep] SpawnRate:4.0 RedCreeps:0 GreenCreeps:25];
+	wave = [[Wave alloc] initWithCreep:[FastRedCreep creep] SpawnRate:10 RedCreeps:5 GreenCreeps:5];
 	[m._waves addObject:wave];
     wave = nil;
-    wave = [[Wave alloc] initWithCreep:[FastRedCreep creep] SpawnRate:3.0 RedCreeps:25 GreenCreeps:25];
+    wave = [[Wave alloc] initWithCreep:[FastRedCreep creep] SpawnRate:10 RedCreeps:5 GreenCreeps:5];
 	[m._waves addObject:wave];
 	wave = nil;
 }
@@ -164,7 +249,7 @@
 	self.currentLevel++;
 	
 	if (self.currentLevel >= 5){
-        //self.currentLevel = 0;
+        self.currentLevel = 0;
         NSLog(@"you have reached the end of the game!");
     }
 	
@@ -178,23 +263,27 @@
 -(void)addWaypoint {
 	DataModel *m = [DataModel getModel];
 	
-	CCTMXObjectGroup *objects = [self.tileMap objectGroupNamed:@"Objects"];
+	CCTMXObjectGroup *objectsGroup = [self.tileMap objectGroupNamed:@"Waypoints"];
 	WayPoint *wp = nil;
-	
-	int wayPointCounter = 0;
 	NSMutableDictionary *wayPoint;
-	while ((wayPoint = [objects objectNamed:[NSString stringWithFormat:@"Waypoint%d", wayPointCounter]])) {
-		int x = [[wayPoint valueForKey:@"x"] intValue];
-		int y = [[wayPoint valueForKey:@"y"] intValue];
-		
-		wp = [WayPoint node];
-		wp.position = ccp(x, y);
-		[m._waypoints addObject:wp];
-		wayPointCounter++;
-	}
-	
-	NSAssert([m._waypoints count] > 0, @"Waypoint objects missing");
-	wp = nil;
+    
+    NSMutableArray * wpArray = objectsGroup.objects;
+    if (wpArray != nil){
+        int n = [wpArray count];
+        for(int i = 0;i < n; i++){
+            wayPoint = [wpArray objectAtIndex:i];
+            int x = [[wayPoint valueForKey:@"x"] intValue];
+            int y = [[wayPoint valueForKey:@"y"] intValue];
+            NSString * wname = [wayPoint valueForKey:@"name"];
+            wp = [WayPoint node];
+            wp.position = ccp(x, y);
+            wp.wayPointName = wname;
+            [m._waypoints addObject:wp];
+        }
+        NSAssert([m._waypoints count] > 0, @"Waypoint objects missing");
+        wp = nil;
+    }
+
 }
 
 - (CGPoint) tileCoordForPosition:(CGPoint) position 
@@ -370,10 +459,9 @@
 }
 
 -(void)gameLogic:(ccTime)dt {
-    
-    
-	
+
     //	DataModel *m = [DataModel getModel];
+    _gameTime = _gameTime + dt;
 	Wave * wave = [self getCurrentWave];
 	static double lastTimeTargetAdded = 0;
     double now = [[NSDate date] timeIntervalSince1970];
@@ -381,7 +469,6 @@
         [self addTarget];
         lastTimeTargetAdded = now;
     }
-	
 }
 
 - (void)update:(ccTime)dt {
@@ -410,9 +497,9 @@
 				[projectilesToDelete addObject:projectile];
                 Creep *creep = (Creep *)target;
                 if (projectile.tag ==1){//MachineGun Projectile
-                    creep.hp--;
+                    creep.health--;
                     
-                    if (creep.hp <= 0) {
+                    if (creep.health <= 0) {
                         [targetsToDelete addObject:target];
                         [gameHUD updateResources:1];
                     }
@@ -450,6 +537,12 @@
         [self getNextWave];
         [gameHUD updateWaveCount];
     }
+    
+
+    if(verletRope != nil)
+        [verletRope update:dt];
+
+    
 }
 
 
@@ -493,20 +586,20 @@
     }        
 }
 
-// on "dealloc" you need to release all your retained objects
-- (void) dealloc
+-(void)draw
 {
-    [self removeAllChildrenWithCleanup:YES];
-	
-    [smgr stop];
-	[smgr release];
+	[super draw];
+    if(verletRope != nil)
+        [verletRope updateSprites];
     
-    
-	[super dealloc];
 }
 
 -(void) back: (id) sender{
 	[SceneManager goMenu];
+}
+
+-(void) addLine{
+    
 }
 
 #pragma mark Touch Functions
@@ -514,6 +607,7 @@
 {	
 	//Calculate a vector based on where we touched and where the ball is
 	CGPoint pt = [self convertTouchToNodeSpace:[touches anyObject]];
+    _touchBeginPos = pt;
 	//CGPoint forceVect = ccpSub(pt, ballSprite.position);
 	
 	//cpFloat len = cpvlength(forceVect);
@@ -524,27 +618,26 @@
 	
 
     //Lets apply an explosion instead    
-	//[smgr applyLinearExplosionAt:pt radius:240 maxForce:200];
-	    
-    
-    
-    
-    
-    cpShape * pin = [smgr addRectAt:pt mass:STATIC_MASS width:2 height:2 rotation:0];
-    cpCCSprite * handle = [cpCCSprite spriteWithFile:@"Projectile.png"];
-    handle.shape = pin;
+	//[_spaceManager applyLinearExplosionAt:pt radius:240 maxForce:200];
 
-    cpConstraint * joint = [smgr addSpringToBody:pigSprite.shape->body fromBody:handle.shape->body restLength:5.0f stiffness:100.0f damping:10.0f];
-
+//    [self addRope];
+    //[self addLine];
     
-    cpConstraintNode * jointNode = [cpConstraintNode nodeWithConstraint:joint];
-    jointNode.color = ccWHITE;
-    jointNode.lineWidth = 2.0f;
+//    cpShape * pin = [_spaceManager addRectAt:pt mass:STATIC_MASS width:2 height:2 rotation:0];
+//    cpCCSprite * handle = [cpCCSprite spriteWithFile:@"Projectile.png"];
+//    handle.shape = pin;
 
-    [self addChild:handle];
-    [self addChild:jointNode];
+//    cpConstraint * joint = [_spaceManager addSpringToBody:_actorSprite.shape->body fromBody:handle.shape->body restLength:5.0f stiffness:5.0f damping:0.5f];
 
     
+//    cpConstraintNode * jointNode = [cpConstraintNode nodeWithConstraint:joint];
+//    jointNode.color = ccWHITE;
+//    jointNode.lineWidth = 2.0f;
+//
+//    [self addChild:handle];
+//    [self addChild:jointNode];
+
+
     
     
 	//Reset Scene
@@ -554,7 +647,44 @@
         [scene addChild:[GameLayer node]];
         [[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:.4 scene:scene  withColor:ccBLUE]];
     }
+    NSLog(@"Touch Start");
+
 }
 
+- (void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{	
+    CGPoint pt = [self convertTouchToNodeSpace:[touches anyObject]];
+    _touchEndPos = pt;
+    
+    int seglen = 20;
+    int segno = 0;
+    segno = cpvdist(_touchEndPos, _touchBeginPos) / seglen;
+    if(segno >0){
+        if(_curSeg != nil){
+            [_spaceManager removeAndFreeShape:[_curSeg shape]];
+            [self removeChild:_curSeg cleanup:YES];
+            _curSeg = nil;
+            NSLog(@"seg removed");
+
+        }
+        cpShape * seg = [_spaceManager addSegmentAtWorldAnchor:_touchBeginPos toWorldAnchor:_touchEndPos mass:STATIC_MASS radius:10];
+        seg->e = 1.5;
+        cpShapeNode * segNode = [cpShapeNode nodeWithShape:seg];
+        [self addChild:segNode z:11];
+        _curSeg = segNode;
+        NSLog(@"Touch Moving");
+    }
+    
+}
+
+- (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{	
+    CGPoint pt = [self convertTouchToNodeSpace:[touches anyObject]];
+    _touchEndPos = pt;
+    NSLog(@"Touch End");
+
+
+	
+}
 
 @end

@@ -7,8 +7,8 @@
 //
 
 #import "GameHUD.h"
-#import "DataModel.h"
 #import "GameLayer.h"
+
 
 @implementation GameHUD
 
