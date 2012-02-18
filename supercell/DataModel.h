@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SpaceManagerCocos2d.h"
-#import "riActor.h"
+
+@class riActor;
+@class CCLayer;
 
 @interface DataModel : NSObject <NSCoding> {
 	CCLayer *_gameLayer;

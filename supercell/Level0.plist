@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Author</key>
-	<string>Bogdan Vladu</string>
-	<key>CreatedWith</key>
-	<string>LevelHelper</string>
 	<key>DefinedTags</key>
 	<array>
 		<string>DEFAULT</string>
@@ -1328,6 +1324,10 @@
 				<string>{{1, 1}, {1, 1}}</string>
 				<key>Image</key>
 				<string>TutorialTexture.png</string>
+				<key>Animation</key>
+				<string></string>
+				<key>Frame</key>
+				<string></string>
 				<key>Opacity</key>
 				<real>1</real>
 				<key>Position</key>
@@ -1398,6 +1398,14 @@
 				<key>Type</key>
 				<integer>2</integer>
 			</dict>
+			<key>CountType</key>
+			<integer>4</integer>
+			<key>BirthTime</key>
+			<integer>0</integer>
+			<key>BirthIntervalRange</key>
+			<string>{2,10}</string>
+			<key>Count</key>
+			<integer>5</integer>
 		</dict>
 		<dict>
 			<key>GeneralProperties</key>

@@ -11,6 +11,7 @@
 #import "DataModel.h"
 #import "WayPoint.h"
 #import "GameHUD.h"
+#import "riActor.h"
 
 @interface Creep : riActor {
 

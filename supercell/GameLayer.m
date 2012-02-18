@@ -8,6 +8,13 @@
 
 #import "GameLayer.h"
 
+#import "DataModel.h"
+#import "GameHUD.h"
+#import "SceneManager.h"
+
+#import "riVerletRope.h"
+#import "riActor.h"
+#import "riLevelLoader.h"
 
 #define kBallCollisionType		1
 #define kCircleCollisionType	2
@@ -81,9 +88,7 @@ enum {
     [self addWaves];
     
     
-    // Call game logic about every second
-    [self schedule:@selector(update:)];
-    [self schedule:@selector(gameLogic:) interval:0.2];		
+	
     
     
     self.currentLevel = 0;
@@ -102,7 +107,9 @@ enum {
 	[gameHUD addChild: menu];
     
     
-    //start the manager!
+    
+    [self schedule:@selector(update:)];
+    [self schedule:@selector(gameLogic:) interval:0.2];	
 	[_spaceManager start]; 	
     
 	return self;
@@ -132,6 +139,8 @@ enum {
     
     [_spaceManager release];
     
+    [[CCSpriteFrameCache sharedSpriteFrameCache] removeUnusedSpriteFrames];
+
 	[super dealloc];
 }
 
@@ -462,6 +471,8 @@ enum {
 
     //	DataModel *m = [DataModel getModel];
     _gameTime = _gameTime + dt;
+    [levelLoader step];
+    
 	Wave * wave = [self getCurrentWave];
 	static double lastTimeTargetAdded = 0;
     double now = [[NSDate date] timeIntervalSince1970];

@@ -7,6 +7,7 @@
 //
 
 #import "Creep.h"
+#import "riActor.h"
 
 @implementation Creep
 

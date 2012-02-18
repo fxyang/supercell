@@ -10,8 +10,6 @@
 
 @implementation riActor
 
-@synthesize actorName = _actorName;
-@synthesize actorId = _actorId;
 @synthesize life = _life;
 @synthesize health = _health;
 @synthesize power = _power;
@@ -27,17 +25,16 @@
 @synthesize actionArray = _actionArray;
 @synthesize waypointArray = _waypointArray;
 @synthesize movementType = _movementType;
+@synthesize curAnimation = _curAnimation;
 
 
 - (riActor *)init{
     if ((self = [super init])) {
-        _actorName = nil;
-        _actorId = -1;
         _life = kActorLifeDefault;
         _health = kActorHealthDefault;
         _power = kActorPowerDefault;
         _score = kActorScoreDefault;
-
+        
         _updateInterval = kActorUpdateIntervalDefault;
         _logicInterval = kActorLogicIntervalDefault;
         _animationIntervale = kActorAnimationIntervalDefault;
@@ -47,10 +44,10 @@
         _actionArray = [[NSMutableArray alloc] initWithCapacity:kActorActionArrayCapacityDefault];
         _waypointArray = [[NSMutableArray alloc] initWithCapacity:kActorWaypointArrayCapacityDefault];
         _movementType = MOVEMENT_STATIC;
+        _curAnimation = nil;
         
         [self schedule:@selector(update:) interval:kActorUpdateIntervalDefault];
         [self schedule:@selector(actorLogic:) interval:kActorLogicIntervalDefault];
-
     }
     return self;                    
 }
@@ -78,20 +75,18 @@
 
 - (riActor *) initWithActor:(riActor *) copyFrom {
     if ((self = [[super init] autorelease])) {
-        self.actorName = copyFrom.actorName;
-        self.actorId = copyFrom.actorId;
         self.life = copyFrom.life;
         self.health = copyFrom.health;
         self.power = copyFrom.power;
         self.score = copyFrom.score;
-
+        
         self.gameLayer = copyFrom.gameLayer;
         self.spaceManager = copyFrom.spaceManager;
         
         _actionArray = [NSMutableArray arrayWithArray:copyFrom.actionArray];
         _waypointArray = [NSMutableArray arrayWithArray:copyFrom.waypointArray];
         _movementType = copyFrom.movementType;
-
+        self.curAnimation = copyFrom.curAnimation;
 	}
 	[self retain];
 	return self;
@@ -104,23 +99,27 @@
 
 
 -(void)actorLogic:(ccTime)dt {
-
+    
 }
 
 -(void)update:(ccTime)dt{
     _life = _life - dt;
 }
 
+//-(void)runActionByName:(NSString *)actName {
+//    SEL doAction = NSSelectorFromString(actName);
+//    if ( [self respondsToSelector:doAction] )
+//        [self performSelector:doAction];
+//}
+
 -(void)dealloc{
     
     [self removeAllChildrenWithCleanup:YES];
-    [_actorName release];
-    _actorName = nil;
     [_actionArray release];
     _actionArray = nil;
     [_waypointArray release];
     _waypointArray = nil;
     [super dealloc];
-
+    
 }
 @end

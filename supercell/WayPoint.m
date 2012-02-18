@@ -12,6 +12,10 @@
 @implementation WayPoint
 
 @synthesize wayPointName = _wayPointName;
+@synthesize nextWayPoint = _nextWayPoint;
+@synthesize travelSpeed = _travelSpeed;
+@synthesize travelAnimation = _travelAnimation;
+@synthesize travelAction = _travelAction;
 
 - (id) init
 {
@@ -19,13 +23,31 @@
 		
 	}
     _wayPointName = nil;
+    _nextWayPoint = nil;
+    _travelSpeed = 0;
+    _travelAnimation = nil;
+    _travelAction = nil;
 	return self;
+}
+
+-(WayPoint *) initWithWayPointName:(NSString *) name_{
+    [self init];
+    if(self != nil)
+        self.wayPointName = name_;
+    return self;
 }
 
 - (void) dealloc{
     [_wayPointName release];
     _wayPointName = nil;
+    [_travelAnimation release];
+    _travelAnimation = nil;
+    [_travelAction release];
+    _travelAction = nil;
     [super dealloc];
 }
+
+
+
 
 @end

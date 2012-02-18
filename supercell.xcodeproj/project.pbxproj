@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B6E2D7C14ECDABD00BC030A /* riCCAnimationCacheExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B6E2D7B14ECDABD00BC030A /* riCCAnimationCacheExtensions.m */; };
 		5B76DD4614CE7DDA00322378 /* CreditsLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B76DD4514CE7DDA00322378 /* CreditsLayer.m */; };
 		5B76DD4914CE8BDC00322378 /* BaseLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B76DD4814CE8BDC00322378 /* BaseLayer.m */; };
 		5B76DD5914D47AF600322378 /* DataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B76DD5814D47AF500322378 /* DataModel.m */; };
@@ -28,7 +29,6 @@
 		5B97306714E835FA00F5CDB2 /* Level0.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B97306614E835FA00F5CDB2 /* Level0.plist */; };
 		5B97306A14E8366700F5CDB2 /* riLevelLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B97306914E8366600F5CDB2 /* riLevelLoader.m */; };
 		5B97306C14E8682700F5CDB2 /* TutorialTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B97306B14E8682700F5CDB2 /* TutorialTexture.png */; };
-		5B97307514E88AB000F5CDB2 /* riActor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B97307314E88AAF00F5CDB2 /* riActor.m */; };
 		5B98527E14CDED5B00C2DC5D /* SceneManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B98527D14CDED5B00C2DC5D /* SceneManager.m */; };
 		5B98528114CDEDDC00C2DC5D /* MenuLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B98528014CDEDDB00C2DC5D /* MenuLayer.m */; };
 		5B992BAB14C9E99D00961C5A /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 5B992B6A14C9E99D00961C5A /* .gitignore */; };
@@ -71,6 +71,7 @@
 		5B99C4B614DC6D19000C9D52 /* riVerletRope.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B99C4B514DC6D19000C9D52 /* riVerletRope.m */; };
 		5B99C4C114DC8D92000C9D52 /* rope.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B99C4C014DC8D91000C9D52 /* rope.png */; };
 		5B99C4C614DD1747000C9D52 /* dragon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B99C4C514DD1747000C9D52 /* dragon.png */; };
+		5BB80B2614EDBBA9004DD9ED /* riActor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB80B2514EDBBA9004DD9ED /* riActor.m */; };
 		5BE5379C14D4CCED002408C3 /* Tower.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BE5379914D4CCED002408C3 /* Tower.m */; };
 		5BE5379D14D4CCED002408C3 /* Wave.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BE5379B14D4CCED002408C3 /* Wave.m */; };
 		5BE537E614D605E5002408C3 /* cpCCNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BE537A814D605E5002408C3 /* cpCCNode.m */; };
@@ -234,6 +235,8 @@
 
 /* Begin PBXFileReference section */
 		5B2BA9E714DD2A4B00417A18 /* CommonHead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonHead.h; sourceTree = "<group>"; };
+		5B6E2D7A14ECDABD00BC030A /* riCCAnimationCacheExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = riCCAnimationCacheExtensions.h; path = riLib/riCCAnimationCacheExtensions.h; sourceTree = "<group>"; };
+		5B6E2D7B14ECDABD00BC030A /* riCCAnimationCacheExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = riCCAnimationCacheExtensions.m; path = riLib/riCCAnimationCacheExtensions.m; sourceTree = "<group>"; };
 		5B76DD4414CE7DDA00322378 /* CreditsLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditsLayer.h; sourceTree = "<group>"; };
 		5B76DD4514CE7DDA00322378 /* CreditsLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditsLayer.m; sourceTree = "<group>"; };
 		5B76DD4714CE8BDC00322378 /* BaseLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseLayer.h; sourceTree = "<group>"; };
@@ -263,8 +266,6 @@
 		5B97306814E8366600F5CDB2 /* riLevelLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = riLevelLoader.h; path = riLib/riLevelLoader.h; sourceTree = "<group>"; };
 		5B97306914E8366600F5CDB2 /* riLevelLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = riLevelLoader.m; path = riLib/riLevelLoader.m; sourceTree = "<group>"; };
 		5B97306B14E8682700F5CDB2 /* TutorialTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TutorialTexture.png; path = Resources/TutorialTexture.png; sourceTree = "<group>"; };
-		5B97307214E88AAE00F5CDB2 /* riActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = riActor.h; path = riLib/riActor.h; sourceTree = "<group>"; };
-		5B97307314E88AAF00F5CDB2 /* riActor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = riActor.m; path = riLib/riActor.m; sourceTree = "<group>"; };
 		5B98527C14CDED5B00C2DC5D /* SceneManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneManager.h; sourceTree = "<group>"; };
 		5B98527D14CDED5B00C2DC5D /* SceneManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneManager.m; sourceTree = "<group>"; };
 		5B98527F14CDEDDB00C2DC5D /* MenuLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuLayer.h; sourceTree = "<group>"; };
@@ -336,6 +337,8 @@
 		5B99C4B514DC6D19000C9D52 /* riVerletRope.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = riVerletRope.m; path = riLib/riVerletRope.m; sourceTree = "<group>"; };
 		5B99C4C014DC8D91000C9D52 /* rope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rope.png; path = Resources/rope.png; sourceTree = "<group>"; };
 		5B99C4C514DD1747000C9D52 /* dragon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = dragon.png; path = Resources/dragon.png; sourceTree = "<group>"; };
+		5BB80B2414EDBBA9004DD9ED /* riActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = riActor.h; path = riLib/riActor.h; sourceTree = "<group>"; };
+		5BB80B2514EDBBA9004DD9ED /* riActor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = riActor.m; path = riLib/riActor.m; sourceTree = "<group>"; };
 		5BE5379814D4CCED002408C3 /* Tower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tower.h; sourceTree = "<group>"; };
 		5BE5379914D4CCED002408C3 /* Tower.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tower.m; sourceTree = "<group>"; };
 		5BE5379A14D4CCED002408C3 /* Wave.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wave.h; sourceTree = "<group>"; };
@@ -760,12 +763,14 @@
 		5B99C4B314DC6B9E000C9D52 /* riLib */ = {
 			isa = PBXGroup;
 			children = (
-				5B97307214E88AAE00F5CDB2 /* riActor.h */,
-				5B97307314E88AAF00F5CDB2 /* riActor.m */,
+				5BB80B2414EDBBA9004DD9ED /* riActor.h */,
+				5BB80B2514EDBBA9004DD9ED /* riActor.m */,
 				5B99C4B414DC6D19000C9D52 /* riVerletRope.h */,
 				5B99C4B514DC6D19000C9D52 /* riVerletRope.m */,
 				5B97306814E8366600F5CDB2 /* riLevelLoader.h */,
 				5B97306914E8366600F5CDB2 /* riLevelLoader.m */,
+				5B6E2D7A14ECDABD00BC030A /* riCCAnimationCacheExtensions.h */,
+				5B6E2D7B14ECDABD00BC030A /* riCCAnimationCacheExtensions.m */,
 			);
 			name = riLib;
 			sourceTree = "<group>";
@@ -1598,7 +1603,8 @@
 				5BE5380D14D605E5002408C3 /* SpaceManager.mm in Sources */,
 				5B99C4B614DC6D19000C9D52 /* riVerletRope.m in Sources */,
 				5B97306A14E8366700F5CDB2 /* riLevelLoader.m in Sources */,
-				5B97307514E88AB000F5CDB2 /* riActor.m in Sources */,
+				5B6E2D7C14ECDABD00BC030A /* riCCAnimationCacheExtensions.m in Sources */,
+				5BB80B2614EDBBA9004DD9ED /* riActor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

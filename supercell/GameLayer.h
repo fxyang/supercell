@@ -7,14 +7,8 @@
 //
 
 
-#import <Foundation/Foundation.h>
-#import "SpaceManager.h"
-
+#import "SpaceManagerCocos2d.h"
 #import "BaseLayer.h"
-#import "DataModel.h"
-
-#import "SceneManager.h"
-#import "GameHUD.h"
 
 #import "Projectile.h"
 #import "Tower.h"
@@ -22,11 +16,12 @@
 #import "Wave.h"
 #import "Creep.h"
 
-#import "riVerletRope.h"
-#import "riActor.h"
-
-#import "riLevelLoader.h"
-
+@class DataModel;
+@class SceneManager;
+@class GameHUD;
+@class riActor;
+@class riLevelLoader;
+@class riVerletRope;
 
 @interface GameLayer : BaseLayer {
     

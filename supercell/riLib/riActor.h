@@ -11,6 +11,7 @@
 
 @class GameLayer;
 @class GameHUD;
+@class CCAnimation;
 
 #define kActorLifeDefault  INFINITY
 #define kActorHealthDefault  100
@@ -30,34 +31,30 @@ enum {
 	MOVEMENT_STATIC = 0, 
 	MOVEMENT_LINE = 1, 
 	MOVEMENT_CIRCLE = 3, 
-	MOVEMENT_BEZIER
+	MOVEMENT_BEZIER = 4
 } MovementType;
 
 @interface riActor : cpCCSprite <NSCopying> {
-    NSString * _actorName;
-    int _actorId;
     cpFloat _life;
     int _health;
     int _power;	
     int _score;	
-
+    
     cpFloat _updateInterval;
     cpFloat _logicInterval;
     cpFloat _animationInterval;
-
     
     GameLayer * _gameLayer;
     GameHUD * _gameHUD;
     SpaceManager * _spaceManager;
-
+    
     NSMutableArray * _waypointArray;
     MovementType _movementType;
     
     NSMutableArray *_actionArray;
+    CCAnimation * _curAnimation;
 }
 
-@property (readwrite, assign) NSString * actorName;
-@property (readwrite, assign) int actorId;
 @property (readwrite, assign) cpFloat life;
 @property (readwrite, assign) int health;
 @property (readwrite, assign) int power;
@@ -67,6 +64,7 @@ enum {
 @property (readwrite, assign) cpFloat logicInterval;
 @property (readwrite, assign) cpFloat animationInterval;
 
+@property (readwrite, assign) CCAnimation * curAnimation;
 
 @property (readwrite, assign) GameLayer * gameLayer;
 @property (readwrite, assign) SpaceManager * spaceManager;
@@ -82,6 +80,7 @@ enum {
 -(void)actorLogic:(ccTime)dt;
 -(void)update:(ccTime)dt;
 
+//-(void)runActionByName:(NSString *)actName;
 
 @end
 

@@ -7,6 +7,8 @@
 //
 
 #import "DataModel.h"
+#import "riActor.h"
+#import "SpaceManagerCocos2d.h"
 
 @implementation DataModel
 
