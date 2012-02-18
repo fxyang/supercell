@@ -67,6 +67,20 @@ enum {
     
     space = [_spaceManager space];
     
+    
+    
+    levelLoader = [[riLevelLoader alloc] initWithContentOfFile:@"Level0"];
+    levelLoader.spaceManager = _spaceManager;
+    
+    if([levelLoader hasWorldBoundaries])
+        [levelLoader createWorldBoundaries:space];
+    
+    [levelLoader addActorsToWorld:space gameLayer:self];
+    
+    
+    
+    
+    
     _actorActionArray = [[NSMutableArray alloc] init];
     
     ropeSegmentSpriteBatchNode = [CCSpriteBatchNode batchNodeWithFile:@"rope.png" ]; 
@@ -183,13 +197,6 @@ enum {
     
     
     
-    levelLoader = [[riLevelLoader alloc] initWithContentOfFile:@"Level0"];
-    levelLoader.spaceManager = _spaceManager;
-    
-    if([levelLoader hasWorldBoundaries])
-        [levelLoader createWorldBoundaries:space];
-    
-    [levelLoader addActorsToWorld:space gameLayer:self];
 
     CCSprite* spr =  [levelLoader spriteWithUniqueName:@"TutorialTexture_3"];
     [spr setColor:ccc3(10, 10, 10)];

@@ -9,6 +9,7 @@
 #import "riLevelLoader.h"
 #import "riActor.h"
 #import "GameLayer.h"
+#import "riCCAnimationCacheExtensions.h"
 
 /// converts degrees to radians
 #define DEGREES_TO_RADIANS(__ANGLE__) ((__ANGLE__) / 180.0f * (float)M_PI)
@@ -80,7 +81,7 @@
 	
 	//LOAD BATCH IMAGES
 	NSArray* batchImages = [dictionary objectForKey:@"LoadedImages"];
-	for(NSDictionary* imageInfo in batchImages)
+	for(NSMutableDictionary* imageInfo in batchImages)
 	{
 		NSMutableDictionary* batchInfo = [[NSMutableDictionary alloc] init];
         
@@ -92,20 +93,19 @@
 		
 		[batchNodes setObject:batchInfo forKey:[imageInfo objectForKey:@"Image"]];
 		[batchInfo release];
-        
-        
-        /*
+
+         NSString * framePlist = [imageInfo objectForKey:@"FramePlist"];
+         NSString * animationPlist = [imageInfo objectForKey:@"AnimationPlist"];
          
-         NSString * framePlist = [imageInfo stringForKey:@"FramePlist"];
-         NSString * animationPlist = [imageInfo stringForKey:@"AnimationPlist"];
-         
-         if(plistName != nil){
-         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:framePlist];
+         if(framePlist != nil){
+             [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:framePlist];
+         }
          if(animationPlist != nil){
-         [[CCAnimationCache sharedAnimationCache] addAnimationsWithFile:animationPlist];
+             [[CCAnimationCache sharedAnimationCache] addAnimationsWithFile:animationPlist];
          }
-         }
-         
+        
+             
+        /*
          //CCAnimation *animation = [[CCAnimationCache sharedAnimationCache] animationByName:@"knight-walk-left.png"];
          
          //if ( animation != nil ) {
@@ -207,15 +207,18 @@
         riActor * actor;
 
         NSString* animationName = [spriteProp objectForKey:@"Animation"];
-        NSString* frame = [spriteProp objectForKey:@"frame"];
+        NSString* frame = [spriteProp objectForKey:@"Frame"];
+        NSString* wayPointName = [spriteProp objectForKey:@"WayPoint"];
+
         
 //        NSLog(@"farme = %@ !",frame);
-        if(frame != nil )
+        if(frame != nil && ![frame isEqualToString:@""])
             actor = [self spriteFromDictionary:spriteProp frameName:frame];
         else
             actor = [self spriteFromDictionary:spriteProp batchNode:batchNode];
 //        
-        actor.curAnimation = [[CCAnimationCache sharedAnimationCache] animationByName:animationName];
+        if(animationName != nil && ![animationName isEqualToString:@""])
+            actor.curAnimation = [[CCAnimationCache sharedAnimationCache] animationByName:animationName];
 
         //Create Actor and ADD to batchNode
         [self setActorProperties:actor actorProperties:actorProp];
@@ -231,7 +234,7 @@
             NSMutableArray* shapes = [self shapeFromDictionary:physicProp
                                                spriteProperties:spriteProp
                                                            data:actor 
-                                                          world:world];
+                                                          world:_space];
             [actorsInStage setObject:shapes forKey:uniqueName];			
         }
         else 
@@ -249,14 +252,14 @@
 
 -(void) createJointFromDictionary:(NSMutableDictionary *) dictionary
 {
-		NSValue* joint = [self jointFromDictionary:dictionary world:world];
+		NSValue* joint = [self jointFromDictionary:dictionary world:_space];
 		if(nil != joint){
             cpConstraint * constraint = (cpConstraint *)[joint pointerValue];
             cpConstraintNode * constraintNode = [cpConstraintNode nodeWithConstraint:constraint];
             
             [jointsInStage setObject:joint forKey:[dictionary objectForKey:@"UniqueName"]];	
-            cpSpaceAddConstraint( world , constraint); //Show Joint
-            [gameLayer addChild:constraintNode z:11];            
+            cpSpaceAddConstraint( _space , constraint); //Show Joint
+            [_gameLayer addChild:constraintNode z:11];            
 		}
 }
 
@@ -282,14 +285,14 @@
             if(birthIntervalRange.x == birthIntervalRange.y && birthIntervalRange.x > 0 && birthIntervalRange.y > 0)
                 birthInterval = birthIntervalRange.x;
             
-            if(countType == INFINITY_PATTERN && birthTime <= gameLayer.gameTime)
+            if(countType == INFINITY_PATTERN && birthTime <= _gameLayer.gameTime)
             {
-                NSLog(@"gameTime = %f ,BirthTime = %f , Count = %d ", gameLayer.gameTime , birthTime,count);
+                NSLog(@"gameTime = %f ,BirthTime = %f , Count = %d ", _gameLayer.gameTime , birthTime,count);
                 birthTime = birthTime + birthInterval;
                 [dictionary setValue:[NSNumber numberWithFloat:birthTime] forKey:@"BirthTime"];
                 [self createActorFromDictionary:dictionary];
             }
-            else if(countType == FINITY_PATTERN && count >= 1 && birthTime <= gameLayer.gameTime)
+            else if(countType == FINITY_PATTERN && count >= 1 && birthTime <= _gameLayer.gameTime)
             {
                 birthTime = birthTime + birthInterval;
                 count--;
@@ -297,14 +300,14 @@
                 [dictionary setValue:[NSNumber numberWithInt:count] forKey:@"Count"];
                 [self createActorFromDictionary:dictionary];
             }
-            else if(countType == INFINITY_RANDOM && birthTime <= gameLayer.gameTime)
+            else if(countType == INFINITY_RANDOM && birthTime <= _gameLayer.gameTime)
             {
                 birthTime = birthTime + birthInterval;
                 [dictionary setValue:[NSNumber numberWithFloat:birthTime] forKey:@"BirthTime"];
                 [self createActorFromDictionary:dictionary];
                 
             }
-            else if(countType == FINITY_RANDOM && count >= 1 && birthTime <= gameLayer.gameTime)
+            else if(countType == FINITY_RANDOM && count >= 1 && birthTime <= _gameLayer.gameTime)
             {
                 birthTime = birthTime + birthInterval;
                 count--;
@@ -335,14 +338,14 @@
             if(birthIntervalRange.x == birthIntervalRange.y && birthIntervalRange.x > 0 && birthIntervalRange.y > 0)
                 birthInterval = birthIntervalRange.x;
             
-            if(countType == INFINITY_PATTERN && birthTime <= gameLayer.gameTime)
+            if(countType == INFINITY_PATTERN && birthTime <= _gameLayer.gameTime)
             {
-                NSLog(@"gameTime = %f ,BirthTime = %f , Count = %d ", gameLayer.gameTime , birthTime,count);
+                NSLog(@"gameTime = %f ,BirthTime = %f , Count = %d ", _gameLayer.gameTime , birthTime,count);
                 birthTime = birthTime + birthInterval;
                 [dictionary setValue:[NSNumber numberWithFloat:birthTime] forKey:@"BirthTime"];
                 [self createJointFromDictionary:dictionary];
             }
-            else if(countType == FINITY_PATTERN && count >= 1 && birthTime <= gameLayer.gameTime)
+            else if(countType == FINITY_PATTERN && count >= 1 && birthTime <= _gameLayer.gameTime)
             {
                 birthTime = birthTime + birthInterval;
                 count--;
@@ -350,14 +353,14 @@
                 [dictionary setValue:[NSNumber numberWithInt:count] forKey:@"Count"];
                 [self createJointFromDictionary:dictionary];
             }
-            else if(countType == INFINITY_RANDOM && birthTime <= gameLayer.gameTime)
+            else if(countType == INFINITY_RANDOM && birthTime <= _gameLayer.gameTime)
             {
                 birthTime = birthTime + birthInterval;
                 [dictionary setValue:[NSNumber numberWithFloat:birthTime] forKey:@"BirthTime"];
                 [self createJointFromDictionary:dictionary];
                 
             }
-            else if(countType == FINITY_RANDOM && count >= 1 && birthTime <= gameLayer.gameTime)
+            else if(countType == FINITY_RANDOM && count >= 1 && birthTime <= _gameLayer.gameTime)
             {
                 birthTime = birthTime + birthInterval;
                 count--;
@@ -372,7 +375,7 @@
 
 }
 
--(void) addActorsToWorld:(cpSpace*)_world gameLayer:(GameLayer*)_gameLayer
+-(void) addActorsToWorld:(cpSpace*)world_ gameLayer:(GameLayer*)gameLayer_
 {
 	
 	NSAssert(addSpritesToLayerWasUsed!=YES, @"You can't use method addObjectsToWorld because you already used addSpritesToLayer. Only one of the two can be used."); 
@@ -380,11 +383,11 @@
 	
 	addObjectsToWordWasUsed = YES;
 	
-	gameLayer = _gameLayer;
-    world = _world;
+	_gameLayer = gameLayer_;
+    _space = world_;
 	
     //ADD batchNodes To GameLyer
-	[self addBatchNodesToLayer:gameLayer];
+	[self addBatchNodesToLayer:_gameLayer];
 	
 	[self step];
     levelLoaded = YES;
@@ -393,17 +396,17 @@
 
         /* ONLY Add Sprites (NO Bodies AND Shapes AND Joints)to GameLayer*/
 
--(void) addSpritesToLayer:(GameLayer*)_gameLayer
+-(void) addSpritesToLayer:(GameLayer*)gameLayer_
 {	
 	NSAssert(addObjectsToWordWasUsed!=YES, @"You can't use method addSpritesToLayer because you already used addObjectToWorld. Only one of the two can be used."); 
 	NSAssert(addSpritesToLayerWasUsed!=YES, @"You can't use method addSpritesToLayer again. You can only use it once. Create a new LevelHelperLoader object if you want to load the level again."); 
 	
 	addSpritesToLayerWasUsed = YES;
     
-	gameLayer = _gameLayer;
-    world = 0;
+	_gameLayer = gameLayer_;
+    _space = nil;
 	
-	[self addBatchNodesToLayer:gameLayer];
+	[self addBatchNodesToLayer:gameLayer_];
 	
 	for(NSDictionary* dictionary in spriteDictsArray)
 	{
@@ -496,7 +499,7 @@
 
 #pragma mark Setup BatchNodes -- Setup Actor's properties from dictionary (Private)
 
--(void) addBatchNodesToLayer:(GameLayer*)_gameLayer
+-(void) addBatchNodesToLayer:(GameLayer*)gameLayer_
 {
 	NSArray *keys = [batchNodes allKeys];
 	int tag = 0;
@@ -535,7 +538,7 @@
 -(riActor*) spriteFromDictionary:(NSDictionary*)spriteProp frameName:(NSString *)frameName
 {
     riActor *actor;
-    if(frameName != nil)
+    if(frameName != nil && ![frameName isEqualToString:@""])
         actor = [riActor spriteWithSpriteFrameName:frameName];
     else
         actor = [riActor spriteWithSpriteFrameName:[spriteProp objectForKey:@"Image"]];
@@ -662,7 +665,7 @@
         body->p = position;
         cpBodySetAngle(body, DEGREES_TO_RADIANS(-1*[[spriteProp objectForKey:@"Angle"] floatValue]));
         
-        //IMPORTENT:, because of using spaceManager to manage space. ONLY one fixture supported.
+        //IMPORTANT:, because of using spaceManager to manage space. ONLY one fixture supported.
         NSLog(@"TOTAL %d fixtures using...",[fixtures count]);
         //        NSAssert([fixtures count] <= 1, @"More than one fixtures");
 		for(NSArray* curFixture in fixtures)
@@ -965,7 +968,7 @@
             cpShape* shape = (cpShape*)[value pointerValue];
             body = shape->body;
             
-            cpSpaceRemoveShape(world, shape);
+            cpSpaceRemoveShape(_space, shape);
             cpShapeFree(shape);
         }
         
@@ -978,7 +981,7 @@
 		
         [actorsInStage removeObjectForKey:name];
 		
-        cpSpaceRemoveBody(world, body);
+        cpSpaceRemoveBody(_space, body);
         cpBodyFree(body);
         
         return YES;
@@ -1095,20 +1098,20 @@
     
 	NSArray * keys = [jointsInStage allKeysForObject:[NSValue valueWithPointer:joint]];
 	
-	if(0 == world)
+	if(0 == _space)
 		return NO;
 	
 	for(NSString* key in keys)
 	{
 		[jointsInStage removeObjectForKey:key];
 	}
-    cpSpaceRemoveConstraint(world, joint);
+    cpSpaceRemoveConstraint(_space, joint);
     
 	return YES;
 }
 
 -(CCSprite*) newSpriteWithUniqueName:(NSString*)uniqueName 
-                        gameLayer:(GameLayer*)_gameLayer
+                        gameLayer:(GameLayer*)gameLayer_
 {
 	for(NSDictionary* dictionary in spriteDictsArray)
 	{
@@ -1128,8 +1131,8 @@
 }
 
 -(NSMutableArray*) newBodyWithUniqueName:(NSString*)uniqueName 
-                                   world:(cpSpace*)_world
-                            gameLayer:(GameLayer*)_gameLayer
+                                   world:(cpSpace*)world_
+                            gameLayer:(GameLayer*)gameLayer_
 {
 	for(NSDictionary* dictionary in spriteDictsArray)
 	{
@@ -1149,7 +1152,7 @@
 			return [self shapeFromDictionary:physicProp
 							 spriteProperties:spriteProp
 										 data:ccsprite 
-										world:_world];
+										world:world_];
 		}
 	}
 	
@@ -1196,7 +1199,7 @@
 }
 
 -(NSMutableArray*)newSpritesWithTag:(LevelHelper_TAG)tag
-                       gameLayer:(GameLayer*)_gameLayer
+                       gameLayer:(GameLayer*)gameLayer_
 {
 	NSMutableArray* array = [[[NSMutableArray alloc] init] autorelease];
 	
@@ -1211,7 +1214,7 @@
 			if(nil != ccsprite)
 			{
 				[array addObject:ccsprite];
-				[_gameLayer addChild:ccsprite];
+				[gameLayer_ addChild:ccsprite];
 			}
 		}
 	}
@@ -1220,8 +1223,8 @@
 }
 
 -(NSMutableArray*) newBodiesWithTag:(LevelHelper_TAG)tag 
-							  world:(cpSpace*)_world
-					   gameLayer:(GameLayer*)_gameLayer
+							  world:(cpSpace*)world_
+					   gameLayer:(GameLayer*)gameLayer_
 {
 	NSMutableArray* array = [[[NSMutableArray alloc] init] autorelease];
 	
@@ -1240,10 +1243,10 @@
 				NSValue* v = [NSValue valueWithPointer:[self shapeFromDictionary:physicProp
 																 spriteProperties:spriteProp
 																			 data:ccsprite 
-																			world:_world]];
+																			world:world_]];
 				[array addObject:v];
 				
-				[_gameLayer addChild:ccsprite];
+				[gameLayer_ addChild:ccsprite];
 			}
 		}
 	}
@@ -1275,7 +1278,7 @@
 		NSDictionary* info = [batchNodes objectForKey:key];
 		
 		CCSpriteBatchNode *v = [info objectForKey:@"CCBatchNode"];
-		[gameLayer removeChild:v cleanup:YES];
+		[_gameLayer removeChild:v cleanup:YES];
 	}
 	[batchNodes release];
 }

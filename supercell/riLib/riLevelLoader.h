@@ -75,8 +75,8 @@ enum LH_JOINT_TYPE
     BOOL levelLoaded;
 	
     SpaceManagerCocos2d * _spaceManager;
-    cpSpace* world; //hold pointer to properly release bodies and joints
-	GameLayer* gameLayer; //hold pointer to properly release the sprites
+    cpSpace* _space; //hold pointer to properly release bodies and joints
+	GameLayer* _gameLayer; //hold pointer to properly release the sprites
 }
 
 @property (readwrite, assign) SpaceManagerCocos2d * spaceManager;

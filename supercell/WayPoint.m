@@ -20,13 +20,13 @@
 - (id) init
 {
 	if ((self = [super init])) {
-		
+        _wayPointName = nil;
+        _nextWayPoint = nil;
+        _travelSpeed = 0;
+        _travelAnimation = nil;
+        _travelAction = nil;
 	}
-    _wayPointName = nil;
-    _nextWayPoint = nil;
-    _travelSpeed = 0;
-    _travelAnimation = nil;
-    _travelAction = nil;
+ 
 	return self;
 }
 

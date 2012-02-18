@@ -10,7 +10,6 @@
 
 @interface WayPoint : CCNode {
     NSString * _wayPointName;
-    
     WayPoint * _nextWayPoint;
     CGFloat _travelSpeed;
     CCAnimation * _travelAnimation;
