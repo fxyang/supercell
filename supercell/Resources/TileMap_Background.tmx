@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="64" height="24" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="grass_background" tilewidth="32" tileheight="32">
+  <image source="grass_background.png" width="2048" height="1024"/>
+ </tileset>
+ <layer name="Background" width="64" height="24">
+  <data encoding="base64" compression="zlib">
+   eJzt10OTmAkUhtGObdu2tYrVHXTHtm3MJrZt29ZsYtu2bc1UzfkB6T8w9S3O9ql6F3dxo4SEhEQlGtGJQUxiEZs4xCUe8UlAQhKRmCQkJRnJSUFKUpGaNKQlHenJQEYykZksZCUb2clBTnKRmzzkJR/5KUBBClGYIhSlGMUpQUlKUZoylKVcJI3yVKAilahMFapSjerUoCahhFGL2tShLuFEUI/6NKAhjWhME5rSjOa0oCWtaE0b2tKO9nSgI53oTBe60o3u9KAnvehNH/rSj/4MYCCDGMwQhkbSGMZwRjCSUYxmDGMZx3gmMJFJTGYKU5nGdGYwk1nMZg5zmcd8FrCQRSxmCUtZxnJWsJJVrGYNa1nHejawkU1sZgtb2cZ2drCTXexmD3vZx34ORNI4yCEOc4SjHOM4JzjJKU5zhrOc4zwXuMglLnOFq1zjOje4yS1uc4e73OM+D3jIIx7zhKc84zkveMkrXvOGt7zjPR/4yCc+84WvfOM7P/jJL35H0ogSxf0TjejEICaxiE0c4hKP+CQgIYlITBKSkozkpCAlqUhNGtKSjvRkICOZyEwWspKN7OQgJ7nITR7yko/8FKAghShMEYpSjOKUoCSlKE0ZylIukkZ5KlCRSlSmClWpRnVqUJNQwqhFbepQl3AiqEd9GtCQRjSmCU1pRnNa0JJWtKYNbWlHezrQkU50pgtd6UZ3etCTXvSmD33pR38GMJBBDGYIQyNp/BsSCAQCgUAgEAgEAoHA/1/5qP5/KlKJylShKtWoTg1qEkoYtahNHeoSTgT1qE8DGtKIxjShKc1oTgta0orWtKEt7WhPBzrSic50oSvd6E4PetKL3vShL/3ozwAGMojBDGEof/1hyzCGM4KRjGI0YxjLOMYzgYlMYjJTmMo0pjODmcxiNnOYyzzms4CFLGIxS1jKMpazgpWsYjVrWMs61rOBjWxiM1vYyja2s4Od7GI3e9jLPvZzgL//sOUghzjMEY5yjOOc4CSnOM0ZznKO81zgIpe4zBWuco3r3OAmt7jNHe5yj/s84CGPeMwTnvKM57zgJa94zRve8o73fOAjn/jMF77yje/84Ce/+M0/f9jyH06py7s=
+  </data>
+ </layer>
+</map>
