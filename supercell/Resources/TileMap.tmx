@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="24" height="32" tilewidth="32" tileheight="32">
+<map version="1.0" orientation="orthogonal" width="64" height="24" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="tmw_desert_spacing" tilewidth="32" tileheight="32" spacing="1" margin="1">
   <image source="tmw_desert_spacing.png" width="265" height="199"/>
   <tile id="29">
@@ -8,19 +8,48 @@
    </properties>
   </tile>
  </tileset>
- <layer name="Background" width="24" height="32">
-  <data encoding="base64" compression="zlib">
-   eJyTY2BgkBvFwxZzQTGtzB01f9T8UfNHzR81f9T8UfNHzR81f2iZDwAVTlGR
-  </data>
- </layer>
- <objectgroup name="Waypoints" width="24" height="32">
-  <object name="Waypoint1" x="576" y="288"/>
-  <object name="Waypoint2" x="352" y="256"/>
-  <object name="Waypoint3" x="192" y="384"/>
-  <object name="Waypoint4" x="192" y="640"/>
-  <object name="Waypoint5" x="352" y="800"/>
-  <object name="Waypoint6" x="576" y="768"/>
-  <object name="Waypoint7" x="640" y="608"/>
-  <object name="Waypoint0" x="640" y="480"/>
+ <objectgroup name="Waypoints" width="64" height="24">
+  <object name="Enemy1" x="1600" y="128">
+   <properties>
+    <property name="Action" value="CCBezierTo"/>
+    <property name="Animation" value="fly"/>
+    <property name="ControlPointA" value="Enemy1_ControlPointA"/>
+    <property name="ControlPointB" value="Enemy1_ControlPointB"/>
+    <property name="NextWaypoint" value="Enemy3"/>
+    <property name="Speed" value="1"/>
+   </properties>
+  </object>
+  <object name="Enemy2" x="288" y="96">
+   <properties>
+    <property name="Action" value="CCJumpTo"/>
+    <property name="Animation" value="fly"/>
+    <property name="Height" value="-50"/>
+    <property name="Jumps" value="4"/>
+    <property name="NextWaypoint" value="Enemy1"/>
+    <property name="Speed" value="1"/>
+   </properties>
+  </object>
+  <object name="Enemy3" x="288" y="480">
+   <properties>
+    <property name="Action" value="CCMoveTo"/>
+    <property name="Animation" value="fly"/>
+    <property name="NextWaypoint" value="Enemy4"/>
+    <property name="Speed" value="1"/>
+   </properties>
+  </object>
+  <object name="Enemy4" x="1600" y="480">
+   <properties>
+    <property name="Action" value="CCJumpTo"/>
+    <property name="Animation" value="fly"/>
+    <property name="Height" value="100"/>
+    <property name="Jumps" value="4"/>
+    <property name="NextWaypoint" value=""/>
+    <property name="Speed" value="1"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="ControlPoints" width="64" height="24">
+  <object name="Enemy1_ControlPointA" x="640" y="64"/>
+  <object name="Enemy1_ControlPointB" x="1504" y="608"/>
  </objectgroup>
 </map>

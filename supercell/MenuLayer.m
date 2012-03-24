@@ -12,19 +12,20 @@
 @implementation MenuLayer
 
 -(id) init{
+    
+    CGSize winSize = [[CCDirector sharedDirector] winSize];
 	self = [super init];
     
-	CCLabelTTF *titleLeft = [CCLabelTTF labelWithString:@"Menu " fontName:@"Marker Felt" fontSize:48];
-	CCLabelTTF *titleRight = [CCLabelTTF labelWithString:@" System" fontName:@"Marker Felt" fontSize:48];
-	CCLabelTTF *titleQuotes = [CCLabelTTF labelWithString:@"\"                        \"" fontName:@"Marker Felt" fontSize:48];
-	CCLabelTTF *titleCenterTop = [CCLabelTTF labelWithString:@"How to build a..." fontName:@"Marker Felt" fontSize:26];
-	CCLabelTTF *titleCenterBottom = [CCLabelTTF labelWithString:@"Part 1" fontName:@"Marker Felt" fontSize:48];
+	CCLabelTTF *title = [CCLabelTTF labelWithString:@"Menu System" fontName:@"Marker Felt" fontSize:kMenuTitleFontSize];
     
     float delayTime = 0.3f;
     
+    [CCMenuItemFont setFontSize:kMenuItemFontSize];
 	CCMenuItemFont *startNew = [CCMenuItemFont itemFromString:@"New Game" target:self selector: @selector(onNewGame:)];
+    CCMenuItemFont *setup = [CCMenuItemFont itemFromString:@"Setting" target:self selector: @selector(onSetting:)];
+	CCMenuItemFont *levels = [CCMenuItemFont itemFromString:@"Levels" target:self selector: @selector(onNewLevel:)];
 	CCMenuItemFont *credits = [CCMenuItemFont itemFromString:@"Credits" target:self selector: @selector(onCredits:)];
-	CCMenu *menu = [CCMenu menuWithItems:startNew, credits, nil];
+	CCMenu *menu = [CCMenu menuWithItems:startNew,setup,levels,credits, nil];
     
     
     for (CCMenuItemFont *each in [menu children]) {
@@ -37,34 +38,19 @@
         delayTime += 0.2f;
         [each runAction: action];
     }
+
     
-	titleCenterTop.position = ccp(160, 380);
-	[self addChild: titleCenterTop];
-    
-	titleCenterBottom.position = ccp(160, 300);
-	[self addChild: titleCenterBottom];
-    
-	titleQuotes.position = ccp(160, 345);
-	[self addChild: titleQuotes];
-    
-    titleLeft.position = ccp(80, -80);
-    CCAction *titleLeftAction = [CCSequence actions:
+    title.position = ccp(winSize.width/2, winSize.height/2 +100);
+    CCAction *titleAction = [CCSequence actions:
                                  [CCDelayTime actionWithDuration: delayTime],
                                  [CCEaseBackOut actionWithAction:
-                                  [CCMoveTo actionWithDuration: 1.0 position:ccp(80,345)]],nil];
-    [self addChild: titleLeft];
-    [titleLeft runAction: titleLeftAction];
+                                  [CCMoveBy actionWithDuration: 1.0 position:ccp(0,100)]],nil];
+    [self addChild: title];
+    [title runAction: titleAction];
     
-    titleRight.position = ccp(220, 520);
-    CCAction *titleRightAction = [CCSequence actions:
-                                  [CCDelayTime actionWithDuration: delayTime],
-                                  [CCEaseBackOut actionWithAction:
-                                   [CCMoveTo actionWithDuration: 1.0 position:ccp(220,345)]],nil];
-    [self addChild: titleRight];
-    [titleRight runAction: titleRightAction];
     
-	menu.position = ccp(160, 200);
-	[menu alignItemsVerticallyWithPadding: 40.0f];
+	menu.position = ccp(winSize.width/2, winSize.height/2 - 100);
+	[menu alignItemsVerticallyWithPadding: 80.0f];
 	[self addChild:menu z: 2];
 
     
@@ -73,6 +59,14 @@
 
 - (void)onNewGame:(id)sender{
 	[SceneManager goPlay];
+}
+
+- (void)onSetting:(id)sender{
+	[SceneManager goCredits];
+}
+
+- (void)onNewLevel:(id)sender{
+	[SceneManager goCredits];
 }
 
 - (void)onCredits:(id)sender{

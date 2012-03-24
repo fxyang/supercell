@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>animations</key>
+	<dict>
+		<key>lemon_blink</key>
+		<dict>
+			<key>frames</key>
+			<array>
+				<string>lemon_blink_80_80_0.png</string>
+				<string>lemon_blink_80_80_1.png</string>
+				<string>lemon_blink_80_80_2.png</string>
+				<string>lemon_blink_80_80_3.png</string>
+				<string>lemon_blink_80_80_4.png</string>
+				<string>lemon_blink_80_80_5.png</string>
+				<string>lemon_blink_80_80_6.png</string>
+				<string>lemon_blink_80_80_7.png</string>
+				<string>lemon_blink_80_80_8.png</string>
+				<string>lemon_blink_80_80_9.png</string>
+				<string>lemon_blink_80_80_10.png</string>
+				<string>lemon_blink_80_80_11.png</string>
+				<string>lemon_blink_80_80_12.png</string>
+			</array>
+			<key>delay</key>
+			<real>0.5</real>
+		</dict>
+	</dict>
+</dict>
+</plist>

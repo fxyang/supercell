@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>animations</key>
+	<dict>
+		<key>Flower_Purple_48_93_grow</key>
+		<dict>
+			<key>frames</key>
+			<array>
+				<string>flower_9_1.png</string>
+				<string>flower_9_2.png</string>
+				<string>flower_9_3.png</string>
+				<string>flower_9_4.png</string>
+				<string>flower_9_5.png</string>
+			</array>
+			<key>delay</key>
+			<real>20</real>
+		</dict>
+	</dict>
+</dict>
+</plist>

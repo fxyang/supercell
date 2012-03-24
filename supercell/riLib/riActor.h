@@ -12,8 +12,13 @@
 @class GameLayer;
 @class GameHUD;
 @class CCAnimation;
+@class riTiledMapWaypoint;
+@class Garden;
 
 #define kActorLifeDefault  INFINITY
+#define kActorAgeDefault 0
+#define kActorSpeedDefault 10
+
 #define kActorHealthDefault  100
 #define kActorPowerDefault  100
 #define kActorScoreDefault  0
@@ -22,65 +27,103 @@
 #define kActorActionArrayCapacityDefault  100
 #define kActorWaypointArrayCapacityDefault  10
 
-#define kActorUpdateIntervalDefault 0.2
+#define kActorUpdateIntervalDefault 0.05
 #define kActorLogicIntervalDefault 0.2
 #define kActorAnimationIntervalDefault 0.05
 
-typedef 
-enum { 
-	MOVEMENT_STATIC = 0, 
-	MOVEMENT_LINE = 1, 
-	MOVEMENT_CIRCLE = 3, 
-	MOVEMENT_BEZIER = 4
-} MovementType;
+typedef enum { 
+	kBodyStatic = 0, 
+	kBodyKinematic = 1,
+    kBodyDynamic = 2,
+    kBodyNoPhysic = 3
+} BodyType;
 
 @interface riActor : cpCCSprite <NSCopying> {
-    cpFloat _life;
+    
+    NSString * _actorType;
+    NSString * _name;
+    int _countType;
+    
+    float _life;
+    float _age;
+    int _speed;
+	float _speedVar;
+
     int _health;
     int _power;	
     int _score;	
+
     
-    cpFloat _updateInterval;
-    cpFloat _logicInterval;
-    cpFloat _animationInterval;
+    float _updateInterval;
+    float _logicInterval;
     
-    GameLayer * _gameLayer;
+    riTiledMapWaypoint * _curWaypoint;
+    NSArray * _waypoints;
+    NSArray * _positions;
+
+    
+    CCActionInterval * _curAnimate;
+    CCActionInterval * _curMovement;
+    CCParticleSystemQuad * _curParticle;
+
+    BOOL _runningCurAnimate;
+    BOOL _curParticleToFollow;
+
+    BOOL positionAdjusted;
+    
+    CGPoint _lastPos;
+    float _lastRot;
+    BodyType _bodyType;
+    
     GameHUD * _gameHUD;
-    SpaceManager * _spaceManager;
-    
-    NSMutableArray * _waypointArray;
-    MovementType _movementType;
-    
-    NSMutableArray *_actionArray;
-    CCAnimation * _curAnimation;
+    GameLayer * _gameLayer;
+
 }
 
-@property (readwrite, assign) cpFloat life;
-@property (readwrite, assign) int health;
-@property (readwrite, assign) int power;
-@property (readwrite, assign) int score;
+@property (nonatomic, retain) NSString * actorType;
+@property (nonatomic, retain) NSString * name;
+@property (nonatomic, assign) int countType;
 
-@property (readwrite, assign) cpFloat updateInterval;
-@property (readwrite, assign) cpFloat logicInterval;
-@property (readwrite, assign) cpFloat animationInterval;
+@property (nonatomic, assign) float life;
+@property (nonatomic, assign) float age;
+@property (nonatomic, assign) int speed;
 
-@property (readwrite, assign) CCAnimation * curAnimation;
+@property (nonatomic, assign) int health;
+@property (nonatomic, assign) int power;
+@property (nonatomic, assign) int score;
 
-@property (readwrite, assign) GameLayer * gameLayer;
-@property (readwrite, assign) SpaceManager * spaceManager;
-@property (readwrite, retain) NSMutableArray * actionArray;
-@property (readwrite, retain) NSMutableArray * waypointArray;
-@property (readwrite, assign) MovementType movementType;
+@property (nonatomic, assign) float updateInterval;
+@property (nonatomic, assign) float logicInterval;
+
+@property (nonatomic, assign) float speedVar;
+
+@property (nonatomic, retain) CCActionInterval * curAnimate;
+@property (nonatomic, assign) BOOL runningCurAnimate;
+@property (nonatomic, retain) CCActionInterval * curMovement;
+@property (nonatomic, retain) CCParticleSystemQuad * curParticle;
+@property (nonatomic, assign) BOOL curParticleToFollow;
+
+@property (nonatomic, assign) riTiledMapWaypoint * curWaypoint;
+@property (nonatomic, retain) NSArray * waypoints;
+@property (nonatomic, retain) NSArray * positions;
+
+@property (nonatomic, assign) BodyType  bodyType;
+@property (nonatomic, assign) GameLayer * gameLayer;
+
+
 
 
 
 - (riActor *) init;
-- (riActor *) initWithTexture:(CCTexture2D *)texture width:(int)w height:(int)h column:(int)c row:(int)r;
+
 - (riActor *) initWithActor:(riActor *) copyFrom;
+-(void) perform;
+-(void) runActionFollow:(riTiledMapWaypoint *)waypoint;
 -(void)actorLogic:(ccTime)dt;
 -(void)update:(ccTime)dt;
 
-//-(void)runActionByName:(NSString *)actName;
+-(void)speedUp:(float)s;
+-(BOOL)isMature;
 
 @end
 

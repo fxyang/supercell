@@ -11,7 +11,7 @@
 #import "DataModel.h"
 
 
-#define TRANSITION_DURATION (1.2f)
+#define TRANSITION_DURATION (0.2f)
 
 @interface FadeWhiteTransition : CCTransitionFade
 +(id) transitionWithDuration:(ccTime) t scene:(CCScene*)s;
@@ -84,7 +84,7 @@ Class nextTransition()
     GameHUD * myGameHUD = [GameHUD sharedHUD];
 	[scene addChild:myGameHUD z:2];
 	
-	DataModel *m = [DataModel getModel];
+	DataModel *m = [DataModel sharedDataModel];
 	m._gameLayer = layer;
 	m._gameHUDLayer = myGameHUD;
 }

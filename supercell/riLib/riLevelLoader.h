@@ -20,31 +20,27 @@ typedef enum
 	NUMBER_OF_TAGS 	= 2
 } LevelHelper_TAG;
 
-typedef enum { 
-	BODY_STATIC = 0, 
-	BODY_KINEMATIC = 1,
-    BODY_DYNAMIC = 2,
-    BODY_NOPHYSIC = 3
-} BodyType;
 
 typedef enum { 
-    SINGLE_PATTERN = 0,
-	INFINITY_PATTERN = 1, 
-	INFINITY_RANDOM = 2,
-    FINITY_PATTERN = 3,
-    FINITY_RANDOM = 4
+    kCountSingle = 0,
+    kCountLimitFinity = 1,
+    kCountFinity = 2,
+	kCountInfinity = 3 
 } CountType;
 
-enum LH_JOINT_TYPE
+typedef enum
 {
-	LH_DISTANCE_JOINT = 0,
-	LH_REVOLUTE_JOINT,
-	LH_PRISMATIC_JOINT,
-	LH_PULLEY_JOINT,
-	LH_GEAR_JOINT,
-	LH_LINE_JOINT,
-	LH_WELD_JOINT
-};
+	kPinJoint = 0,
+	kSpringJoint = 1,
+	kRotarySpringJoint = 2,
+    kSlideJoint = 3,
+	kGrooveJoint = 4,
+	kPivotJoint = 5,
+    kMotorJoint = 6,
+	kGearJoint = 7,
+    kRatchetJoint = 8,
+    kRotaryLimitJoint = 9
+} JointType;
 
 #define BATCH_NODE_CAPACITY 100 //you should change this value if you have more then 100 sprites in a texture image
 
@@ -58,12 +54,13 @@ enum LH_JOINT_TYPE
 
 @interface riLevelLoader : NSObject<riLevelLoaderCustomCCSprite> {
 	
-	NSMutableArray* spriteDictsArray;	//array of NSDictionary with keys GeneralProperties (NSDictionary) and PhysicProperties (NSDictionary)
-	NSMutableArray* jointDictsArray;	//array of NSDictionary
-    NSMutableArray * backstageDictsArray;
-
+//    CCTMXTiledMap * _tiledMap;
     
-	NSMutableDictionary* actorsInStage;	//key - uniqueSpriteName	value - CCSprite* or NSValue with b2Body*
+	NSMutableArray* actorDictsArray;	//array of NSDictionary with keys GeneralProperties (NSDictionary) and PhysicProperties (NSDictionary)
+	NSMutableArray* jointDictsArray;	//array of NSDictionary
+
+    NSMutableArray* actorsInStage;
+	NSMutableDictionary* shapesInStage;	//key - uniqueSpriteName	value - CCSprite* or NSValue with b2Body*
 	NSMutableDictionary* actorsInStageNoPhysics;   //key - uniqueSpriteName    value - CCSprite*
 	NSMutableDictionary* jointsInStage;   //key - uniqueJointName     value - NSValue withPointer of b2Joint*
 	NSMutableDictionary* batchNodes;		//key - textureName			value - NSDictionary
@@ -79,7 +76,10 @@ enum LH_JOINT_TYPE
 	GameLayer* _gameLayer; //hold pointer to properly release the sprites
 }
 
-@property (readwrite, assign) SpaceManagerCocos2d * spaceManager;
+@property (nonatomic, assign) cpSpace * space;
+@property (nonatomic, assign) GameLayer * gameLayer;
+@property (nonatomic, assign) SpaceManagerCocos2d * spaceManager;
+
 
 -(id) initWithContentOfFile:(NSString*)levelFile;
 
@@ -97,21 +97,31 @@ enum LH_JOINT_TYPE
 
 -(void) step;
 
--(void) addActorsToWorld:(cpSpace*)world gameLayer:(GameLayer*)cocosLayer;
+-(void) addEverythingToSpace:(cpSpace*)world gameLayer:(GameLayer*)cocosLayer;
 
 -(void) addSpritesToLayer:(GameLayer*)cocosLayer;
 
--(BOOL) hasWorldBoundaries;
+-(riActor *) addActorWithName:(NSString *)name;
+-(void) increaseActorWithName:(NSString *)name count:(int)incremental delay:(float)delay;
 
--(void) createWorldBoundaries:(cpSpace*)world;
+-(BOOL) removeActor:(riActor*)actor cleanup:(BOOL)clean;
+-(BOOL) removeShapeOfActor:(riActor*)actor;
+
+-(BOOL) hasSpaceBoundaries;
+
+-(void) createSpaceBoundaries:(cpSpace*)world;
 
 -(unsigned int) numberOfBatchNodesUsed;
 
--(riActor*) spriteWithUniqueName:(NSString*)name; 
+-(riActor*) spriteWithName:(NSString*)name; 
 
--(cpBody*) bodyWithUniqueName:(NSString*)name;
+-(cpBody*) bodyWithName:(NSString*)name;
 
--(riActor*) newSpriteWithUniqueName:(NSString*)name 
+-(riActor*) actorWithDictionary:(NSDictionary *) dictionar;
+
+-(riActor*) actorWithName:(NSString*)name;
+
+-(riActor*) actorWithName:(NSString*)name 
                         gameLayer:(GameLayer*)cocosLayer; 
 
 //discution
@@ -119,7 +129,7 @@ enum LH_JOINT_TYPE
 //in cpShape->data there is cpBody, in cpBody->data there is CCSprite
 //this was done in order to be able to release a body from the cpSpace
 
--(NSMutableArray*) newBodyWithUniqueName:(NSString*)name 
+-(NSMutableArray*) newBodyWithName:(NSString*)name 
                                    world:(cpSpace*)world 
                             gameLayer:(GameLayer*)cocosLayer;
 
@@ -134,30 +144,25 @@ enum LH_JOINT_TYPE
 							  world:(cpSpace*)world 
 					   gameLayer:(GameLayer*)cocosLayer;
 
--(BOOL) removeSpriteWithUniqueName:(NSString*)name;
+-(BOOL) removeSpriteWithName:(NSString*)name;
 
 -(BOOL) removeSprite:(riActor*)ccsprite;
 
 -(BOOL) removeAllSprites;
 
--(BOOL) removeBodyWithUniqueName:(NSString*)name;
+-(BOOL) removeBodyWithName:(NSString*)name;
 
 -(BOOL) removeAllBodies;
 
--(cpConstraint*) jointWithUniqueName:(NSString*)name;
+-(cpConstraint*) jointWithName:(NSString*)name;
 
--(BOOL) removeJointWithUniqueName:(NSString*)name;
+-(BOOL) removeJointWithName:(NSString*)name;
 
 -(BOOL) removeJoint:(cpConstraint*) joint;
 
 -(BOOL) removeAllJoints;
 
--(void) setSpriteProperties:(riActor*)actor 
-           spriteProperties:(NSDictionary*)spriteProp;
-
--(void) setActorProperties:(riActor*)actor
-           actorProperties:(NSDictionary*)actorProp;
-
 @end
 
 #endif
+ 

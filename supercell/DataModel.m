@@ -15,21 +15,18 @@
 @synthesize _gameLayer;
 @synthesize _gameHUDLayer;
 
-@synthesize _projectiles;
-@synthesize _towers;
-@synthesize _targets;
-@synthesize _waypoints;
-
-@synthesize _waves;
 
 @synthesize _equipments;
-@synthesize _actor;
+@synthesize waypoints = _waypoints;
+@synthesize controlPoints = _controlPoints;
+
+@synthesize tiledMaps = _tiledMaps;
 
 @synthesize _gestureRecognizer;
 
 static DataModel *_sharedContext = nil;
 
-+(DataModel*)getModel 
++(DataModel*)sharedDataModel 
 {
 	if (!_sharedContext) {
 		_sharedContext = [[self alloc] init];
@@ -50,14 +47,13 @@ static DataModel *_sharedContext = nil;
 - (id) init
 {
 	if ((self = [super init])) {
-		_projectiles = [[NSMutableArray alloc] init];
-		_towers = [[NSMutableArray alloc] init];
-		_targets = [[NSMutableArray alloc] init];
-		
-		_waypoints = [[NSMutableArray alloc] init];
         _equipments = [[NSMutableArray alloc] init];
+        
+        _waypoints = [[NSMutableDictionary alloc] init];
+        _controlPoints = [[NSMutableDictionary alloc] init];
 
-		_waves = [[NSMutableArray alloc] init];
+        _tiledMaps = [[NSMutableArray alloc] init];
+
 	}
 	return self;
 }
@@ -66,27 +62,18 @@ static DataModel *_sharedContext = nil;
 	self._gameLayer = nil;
 	self._gameHUDLayer = nil;
 	self._gestureRecognizer = nil;
-	
-	[_projectiles release];
-	_projectiles = nil;
-	
-	[_towers release];
-	_towers = nil;
-	
-	[_targets release];
-	_targets = nil;	
-	
-	[_waypoints release];
-	_waypoints = nil;
+
 	
     [_equipments release];
 	_equipments = nil;
+
     
-    [_actor release];
-	_actor = nil;
+	self.waypoints = nil;
+    self.controlPoints = nil;
+
+    [_tiledMaps release];
+    _tiledMaps = nil;
     
-	[_waves release];
-	_waves = nil;	
 	[super dealloc];
 }
 

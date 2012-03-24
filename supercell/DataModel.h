@@ -10,39 +10,36 @@
 
 @class riActor;
 @class CCLayer;
+@class CCTMXTiledMap;
 
 @interface DataModel : NSObject <NSCoding> {
 	CCLayer *_gameLayer;
 	CCLayer *_gameHUDLayer;	
 	
-	NSMutableArray *_projectiles;
-	NSMutableArray *_towers;
-	NSMutableArray *_targets;	
-	NSMutableArray *_waypoints;	
-	
-	NSMutableArray *_waves;	
     NSMutableArray * _equipments;
-	riActor *  _actor;
+
+    NSMutableDictionary * _controlPoints;
+
+    NSMutableDictionary * _waypoints;
+    NSMutableArray * _tiledMaps;
     
 	UIPanGestureRecognizer *_gestureRecognizer;
 }
 
-@property (nonatomic, retain) CCLayer *_gameLayer;
-@property (nonatomic, retain) CCLayer *_gameHUDLayer;
+@property (assign) CCLayer *_gameLayer;
+@property (assign) CCLayer *_gameHUDLayer;
 
-@property (nonatomic, retain) NSMutableArray * _projectiles;
-@property (nonatomic, retain) NSMutableArray * _towers;
-@property (nonatomic, retain) NSMutableArray * _targets;
-@property (nonatomic, retain) NSMutableArray * _waypoints;
-
-@property (nonatomic, retain) NSMutableArray * _waves;
 
 @property (nonatomic, retain) NSMutableArray * _equipments;
-@property (nonatomic, retain) riActor * _actor;
+@property (nonatomic, retain) NSMutableDictionary * waypoints;
+@property (nonatomic, retain) NSMutableDictionary * controlPoints;
+
+@property (nonatomic, retain) NSMutableArray * tiledMaps;
+
 
 
 @property (nonatomic, retain) UIPanGestureRecognizer *_gestureRecognizer;
 
-+ (DataModel*)getModel;
++ (DataModel*)sharedDataModel;
 
 @end

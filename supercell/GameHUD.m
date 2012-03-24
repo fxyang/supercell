@@ -8,12 +8,14 @@
 
 #import "GameHUD.h"
 #import "GameLayer.h"
+#import "riJoystick.h"
 
 
 @implementation GameHUD
 
-@synthesize resources = resources;
+@synthesize money = money;
 @synthesize baseHpPercentage = baseHpPercentage;
+@synthesize joystick;
 
 int waveCount;
 
@@ -51,9 +53,10 @@ static GameHUD *_sharedHUD = nil;
 		CGSize winSize = [CCDirector sharedDirector].winSize;
         
         [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGB565];
-        background = [CCSprite spriteWithFile:@"hud.png"];
-        background.anchorPoint = ccp(0,0);
-        //[self addChild:background];
+//        background = [CCSprite spriteWithFile:@"hud.png"];
+//        background.anchorPoint = ccp(0,0);
+//        background.position = ccp(0,30);
+//        [self addChild:background];
         
         [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_Default];
 		
@@ -63,17 +66,17 @@ static GameHUD *_sharedHUD = nil;
             NSString *image = [images objectAtIndex:i];
             CCSprite *sprite = [CCSprite spriteWithFile:image];
             float offsetFraction = ((float)(i+1))/(images.count+1);
-            sprite.position = ccp(winSize.width*offsetFraction, 35);
+            sprite.position = ccp(winSize.width*offsetFraction, 55);
             sprite.tag = i+1;
             printf("tag %i", sprite.tag);
-            //[self addChild:sprite];
+            [self addChild:sprite];
             [movableSprites addObject:sprite];
             
             //Set up and place towerCost labels
             CCLabelTTF *towerCost = [CCLabelTTF labelWithString:@"$" fontName:@"Marker Felt" fontSize:10];
-            towerCost.position = ccp(winSize.width*offsetFraction, 15);
+            towerCost.position = ccp(winSize.width*offsetFraction, 35);
             towerCost.color = ccc3(0, 0, 0);
-            //[self addChild:towerCost z:1];
+            [self addChild:towerCost z:1];
             
             //Set cost values
             switch (i) {
@@ -94,28 +97,21 @@ static GameHUD *_sharedHUD = nil;
             }
         }
         
-        
-        //CGSize winSize = [CCDirector sharedDirector].winSize;
+            
+        piggyBank = 0;
         
         // Set up Resources and Resource label
-        resources = 100;
-        self->resourceLabel = [CCLabelTTF labelWithString:@"Money $100" dimensions:CGSizeMake(150, 25) alignment:UITextAlignmentRight fontName:@"Marker Felt" fontSize:20];
-        resourceLabel.position = ccp(30, (winSize.height - 15));
-        resourceLabel.color = ccc3(255,80,20);
-        [self addChild:resourceLabel z:1];
+        money = 100;
+        self->moneyLabel = [CCLabelTTF labelWithString:@"Money $100" dimensions:CGSizeMake(150, 25) alignment:UITextAlignmentRight fontName:@"Marker Felt" fontSize:20];
+        moneyLabel.position = ccp(30, (winSize.height - 15));
+        moneyLabel.color = ccc3(100,0,100);
+        [self addChild:moneyLabel z:1];
         
         // Set up BaseHplabel
         CCLabelTTF *baseHpLabel = [CCLabelTTF labelWithString:@"Base Health" dimensions:CGSizeMake(150, 25) alignment:UITextAlignmentRight fontName:@"Marker Felt" fontSize:20];
         baseHpLabel.position = ccp((winSize.width - 185), (winSize.height - 15));
         baseHpLabel.color = ccc3(255,80,20);
         [self addChild:baseHpLabel z:1];
-        
-        // Set up wavecount label
-        waveCount = 1;
-        self->waveCountLabel = [CCLabelTTF labelWithString:@"Wave 1" dimensions:CGSizeMake(150, 25) alignment:UITextAlignmentRight fontName:@"Marker Felt" fontSize:20];
-        waveCountLabel.position = ccp(((winSize.width/2) - 80), (winSize.height - 15));
-        waveCountLabel.color = ccc3(100,0,100);
-        [self addChild:waveCountLabel z:1];
         
         baseHpPercentage = 100;
         
@@ -126,6 +122,10 @@ static GameHUD *_sharedHUD = nil;
         [self->healthBar setScale:0.5]; 
         self->healthBar.position = ccp(winSize.width -55, winSize.height -15);
         [self addChild:healthBar z:1];
+        
+        
+//        joystick = [[riJoystick alloc] init];
+//        [self addChild:joystick z:JOYSTICK_Z tag:JOYSTICK_TAG];
         
         
         [[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
@@ -139,8 +139,8 @@ static GameHUD *_sharedHUD = nil;
     baseHpPercentage += amount;
     
     if (baseHpPercentage <= 25) {
-        [self->healthBar setSprite:[CCSprite spriteWithFile:@"health_bar_red.png"]];
-        [self->healthBar setScale:0.5]; 
+        [healthBar setSprite:[CCSprite spriteWithFile:@"health_bar_red.png"]];
+        [healthBar setScale:0.5]; 
     }
     
     if (baseHpPercentage <= 0) {
@@ -149,21 +149,22 @@ static GameHUD *_sharedHUD = nil;
         //Implement Game Over Scenario
     }
     
-    [self->healthBar setPercentage:baseHpPercentage];
+    [healthBar setPercentage:baseHpPercentage];
 }
 
--(void) updateResources:(int)amount{
-    resources += amount;
-    [self->resourceLabel setString:[NSString stringWithFormat: @"Money $%i",resources]];
+-(void) updateMoney:(int)amount{
+    money += amount;
+    if(money < 0) money = 0;
+    [moneyLabel setString:[NSString stringWithFormat: @"Money $%i",money]];
 }
 
--(void) updateResourcesNom{
-    resources += 1;
-    [self->resourceLabel setString:[NSString stringWithFormat: @"Money $%i",resources]];
-}
--(void) updateWaveCount{
-    waveCount++;
-    [self->waveCountLabel setString:[NSString stringWithFormat: @"Wave %i",waveCount]];
+-(void) updateMoney{
+    piggyBank++;
+    if(piggyBank >= 5 && money < kDefaultCredit){
+        money += 1;
+        piggyBank = 0;
+    }
+    [self updateMoney:0];
 }
 
 
@@ -173,7 +174,7 @@ static GameHUD *_sharedHUD = nil;
     CCSprite * newSprite = nil;
     for (CCSprite *sprite in movableSprites) {
         if (CGRectContainsPoint(sprite.boundingBox, touchLocation)) {  
-			DataModel *m = [DataModel getModel];
+			DataModel *m = [DataModel sharedDataModel];
 			m._gestureRecognizer.enabled = NO;
 			
 			selSpriteRange = [CCSprite spriteWithFile:@"Range.png"];
@@ -210,10 +211,13 @@ static GameHUD *_sharedHUD = nil;
         selSprite.position = newPos;
 		selSpriteRange.position = newPos;
 		
-		DataModel *m = [DataModel getModel];
+		DataModel *m = [DataModel sharedDataModel];
 		CGPoint touchLocationInGameLayer = [m._gameLayer convertTouchToNodeSpace:touch];
-		
-		BOOL isBuildable = [(GameLayer *)m._gameLayer canBuildOnTilePosition: touchLocationInGameLayer];
+		        
+        CCTMXTiledMap * tiledMap = [[m.tiledMaps objectAtIndex:0] objectForKey:@"TiledMap"];
+        
+        
+		BOOL isBuildable = [(GameLayer *)m._gameLayer canBuildOnTilePosition: touchLocationInGameLayer tiledMap:tiledMap];
 		if (isBuildable) {
 			selSprite.opacity = 200;
 		} else {
@@ -224,7 +228,7 @@ static GameHUD *_sharedHUD = nil;
 
 - (void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event {  
 	CGPoint touchLocation = [self convertTouchToNodeSpace:touch];	
-	DataModel *m = [DataModel getModel];
+	DataModel *m = [DataModel sharedDataModel];
     
 	if (selSprite) {
 		CGRect backgroundRect = CGRectMake(background.position.x, 
@@ -234,7 +238,9 @@ static GameHUD *_sharedHUD = nil;
 		
 		if (!CGRectContainsPoint(backgroundRect, touchLocation)) {
 			CGPoint touchLocationInGameLayer = [m._gameLayer convertTouchToNodeSpace:touch];
-			[(GameLayer *)m._gameLayer addTower: touchLocationInGameLayer: selSprite.tag];
+            NSLog(@"Touching in GameHUD { %f , %f }",touchLocation.x,touchLocation.y);
+            NSLog(@"Touching in GameLayer { %f , %f }",touchLocationInGameLayer.x,touchLocationInGameLayer.y);
+
 		}
 		
 		[self removeChild:selSprite cleanup:YES];
@@ -255,6 +261,8 @@ static GameHUD *_sharedHUD = nil;
 {
 	[movableSprites release];
     movableSprites = nil;
+    [joystick release];
+    joystick = nil;
 	[super dealloc];
 }
 @end

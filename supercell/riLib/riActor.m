@@ -7,86 +7,138 @@
 //
 
 #import "riActor.h"
+#import "riTiledMapWaypoint.h"
 
 @implementation riActor
 
+@synthesize actorType = _actorType;
+@synthesize name = _name;
+@synthesize countType = _countType;
+
 @synthesize life = _life;
+@synthesize age = _age;
+@synthesize speed = _speed;
+
 @synthesize health = _health;
 @synthesize power = _power;
 @synthesize score = _score;
 
 @synthesize updateInterval = _updateInterval;
 @synthesize logicInterval = _logicInterval;
-@synthesize animationInterval = _animationIntervale;
+@synthesize speedVar = _speedVar;
 
+
+@synthesize curWaypoint = _curWaypoint;
+@synthesize waypoints = _waypoints;
+@synthesize positions = _positions;
+
+@synthesize curAnimate = _curAnimate;
+@synthesize runningCurAnimate = _runningCurAnimate;
+@synthesize curMovement = _curMovement;
+@synthesize curParticle = _curParticle;
+@synthesize curParticleToFollow = _curParticleToFollow;
+
+
+@synthesize bodyType = _bodyType;
 
 @synthesize gameLayer = _gameLayer;
-@synthesize spaceManager = _spaceManager;
-@synthesize actionArray = _actionArray;
-@synthesize waypointArray = _waypointArray;
-@synthesize movementType = _movementType;
-@synthesize curAnimation = _curAnimation;
-
 
 - (riActor *)init{
     if ((self = [super init])) {
+        
+        _actorType = nil;
+        _name = nil;
+        _countType = 0;
+        
         _life = kActorLifeDefault;
+        _age = kActorAgeDefault;
+        _speed = kActorSpeedDefault;
+
         _health = kActorHealthDefault;
         _power = kActorPowerDefault;
         _score = kActorScoreDefault;
         
         _updateInterval = kActorUpdateIntervalDefault;
         _logicInterval = kActorLogicIntervalDefault;
-        _animationIntervale = kActorAnimationIntervalDefault;
+        _speedVar = 1.0;
         
         _gameLayer = nil;
-        _spaceManager = nil;
-        _actionArray = [[NSMutableArray alloc] initWithCapacity:kActorActionArrayCapacityDefault];
-        _waypointArray = [[NSMutableArray alloc] initWithCapacity:kActorWaypointArrayCapacityDefault];
-        _movementType = MOVEMENT_STATIC;
-        _curAnimation = nil;
         
-        [self schedule:@selector(update:) interval:kActorUpdateIntervalDefault];
-        [self schedule:@selector(actorLogic:) interval:kActorLogicIntervalDefault];
+        _curAnimate = nil;
+        _curMovement = nil;
+        _curParticle = nil;
+        _runningCurAnimate = NO;
+        _curParticleToFollow = YES;
+        
+        _curWaypoint = nil;
+        positionAdjusted = NO;
+        _waypoints = nil;
+        _positions = nil;
+        
+        _lastPos = [self position];
+        _lastRot = 0;
+        
+        _bodyType = kBodyStatic;
+        
+        [self schedule:@selector(update:) interval:_updateInterval];
+        [self schedule:@selector(actorLogic:) interval:_logicInterval];
     }
+    
+
     return self;                    
 }
 
-- (riActor *) initWithTexture:(CCTexture2D *)texture width:(int)w height:(int)h column:(int)c row:(int)r {
-    [self init];
+-(void)dealloc{
     
-    NSMutableArray *actorAnimFrames = [NSMutableArray array];
-    for (int i = 0; i < r; i++) {
-        [actorAnimFrames removeAllObjects];
-        for (int j = 0; j < c; j++) {
-            CCSpriteFrame *frame = [CCSpriteFrame frameWithTexture:texture rect:CGRectMake(j*w, i*h, w, h)];
-            [actorAnimFrames addObject:frame];
-        }
-        CCAnimation *actorAnimation = [CCAnimation animationWithFrames:actorAnimFrames delay:_animationIntervale];
-        CCAnimate *actorAnimate = [CCAnimate actionWithAnimation:actorAnimation restoreOriginalFrame:NO];
-        CCSequence *seq = [CCSequence actions: actorAnimate,nil];
-        
-        [_actionArray addObject:[CCRepeatForever actionWithAction: seq ]];
-    }
+    self.actorType = nil;
+    self.name = nil;
     
-    return self;
-}
+    self.waypoints = nil;
+    self.positions = nil;
+    
+    [self stopAllActions];
+    
+    [self removeAllChildrenWithCleanup:YES];
+    
+    self.curAnimate = nil;
+    self.curMovement = nil;
+    self.curParticle = nil;
 
+    
+    [super dealloc];
+    
+}
 
 - (riActor *) initWithActor:(riActor *) copyFrom {
     if ((self = [[super init] autorelease])) {
+        self.actorType = copyFrom.actorType;
+        self.name = copyFrom.name;
+        self.countType = copyFrom.countType;
+
         self.life = copyFrom.life;
+        self.age = copyFrom.age;
+
         self.health = copyFrom.health;
         self.power = copyFrom.power;
         self.score = copyFrom.score;
         
+        self.speedVar = copyFrom.speedVar;
+        
         self.gameLayer = copyFrom.gameLayer;
         self.spaceManager = copyFrom.spaceManager;
         
-        _actionArray = [NSMutableArray arrayWithArray:copyFrom.actionArray];
-        _waypointArray = [NSMutableArray arrayWithArray:copyFrom.waypointArray];
-        _movementType = copyFrom.movementType;
-        self.curAnimation = copyFrom.curAnimation;
+        
+        self.curAnimate = copyFrom.curAnimate;
+        self.runningCurAnimate = copyFrom.runningCurAnimate;
+        self.curMovement = copyFrom.curMovement;
+        self.curParticle = copyFrom.curParticle;
+        self.curParticleToFollow = copyFrom.curParticleToFollow;
+
+        
+        self.curWaypoint = copyFrom.curWaypoint;
+        
+        self.bodyType = copyFrom.bodyType;
+
 	}
 	[self retain];
 	return self;
@@ -97,29 +149,98 @@
 	return copy;
 }
 
+-(void)runActionFollow:(riTiledMapWaypoint *)waypoint{
+    CCActionInterval * move = nil;
+    if(waypoint !=nil){
+        if(positionAdjusted || cpveql(self.position, waypoint.position)){
+            self.curWaypoint = [waypoint nextWaypoint];
+            move = [waypoint getNextActionFor:self];
+        }else{
+            self.curWaypoint = waypoint;
+            move = [_curWaypoint getAdjustmentActionFor:self];            
+        }
+        
+        positionAdjusted = YES;
+        if(move != nil){
+//            if([[move class] isSubclassOfClass:[CCActionInterval class]]){
+            
+            
+                self.curMovement = [CCSequence actions:move,
+                        [CCCallFuncO actionWithTarget:self selector:@selector(runActionFollow:) object:_curWaypoint], 
+                                nil];
+                self.curMovement = [CCSpeed actionWithAction:self.curMovement speed:_speedVar];
+                [self runAction:_curMovement];
+            
+            
 
--(void)actorLogic:(ccTime)dt {
+//            }
+//            else{
+//                self.curMovement = [CCSpeed actionWithAction:move speed:_speedVar];
+//                [self runAction:_curMovement];
+//            }
+            
+            
+        }
+    }
     
+}
+
+-(void)perform{
+
+    [self runActionFollow:_curWaypoint];
+    if(_curAnimate != nil){
+        self.curAnimate = [CCSpeed actionWithAction:(CCActionInterval*)_curAnimate speed:_speedVar];
+
+        [self runAction:_curAnimate];
+        _runningCurAnimate = YES;
+    }
+}
+
+             
+-(void)actorLogic:(ccTime)dt {
+
+
 }
 
 -(void)update:(ccTime)dt{
-    _life = _life - dt;
+//    _life = _life - dt;
+    _age = _age + dt;
+    
+    if(_bodyType == kBodyKinematic){
+        CGPoint pos = [self position];
+
+        CGPoint faceVector = ccpSub(pos, _lastPos);
+        CGFloat faceAngle = ccpToAngle(faceVector);
+        CGFloat cocosAngle = 90 + CC_RADIANS_TO_DEGREES(-1 * faceAngle);
+        
+        float rotateSpeed = 0.1 / M_PI; // 0.1 second to roate 180 degrees
+        float rotateDuration = fabs(faceAngle * rotateSpeed);    
+        
+        [self runAction:[CCSequence actions:
+                         [CCRotateTo actionWithDuration:rotateDuration angle:cocosAngle],
+                         nil]];		
+        _lastPos = pos;
+    }
+    if(_curParticleToFollow)
+        _curParticle.position = self.position;
+
 }
 
-//-(void)runActionByName:(NSString *)actName {
-//    SEL doAction = NSSelectorFromString(actName);
-//    if ( [self respondsToSelector:doAction] )
-//        [self performSelector:doAction];
-//}
+-(void)speedUp:(float)s{
+    
+    if(_curMovement != nil && [[_curMovement class] isSubclassOfClass:[CCSpeed class]])
+        [(CCSpeed*)_curMovement setSpeed:s];
+    
+    if(_curAnimate != nil && [[_curAnimate class] isSubclassOfClass:[CCSpeed class]])
+        [(CCSpeed*)_curAnimate setSpeed:s];
+    
+    _speedVar = s;
 
--(void)dealloc{
-    
-    [self removeAllChildrenWithCleanup:YES];
-    [_actionArray release];
-    _actionArray = nil;
-    [_waypointArray release];
-    _waypointArray = nil;
-    [super dealloc];
-    
 }
+
+-(BOOL)isMature{
+    return YES;
+}
+
+
 @end

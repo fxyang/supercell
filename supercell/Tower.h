@@ -7,7 +7,6 @@
 //
 
 #import "cocos2d.h"
-#import "Creep.h"
 #import "SimpleAudioEngine.h"
 #import "Projectile.h"
 #import "DataModel.h"
@@ -15,7 +14,7 @@
 @interface Tower : CCSprite {
 	int _range;
 	
-	Creep * _target;
+//	Creep * _target;
 	
 	CCSprite * selSpriteRange;
 	
@@ -26,9 +25,9 @@
 @property (nonatomic, assign) int range;
 
 @property (nonatomic, retain) CCSprite * nextProjectile;
-@property (nonatomic, retain) Creep * target;
+//@property (nonatomic, retain) Creep * target;
 
-- (Creep *)getClosestTarget;
+//- (Creep *)getClosestTarget;
 
 @end
 
@@ -38,8 +37,8 @@
 
 + (id)tower;
 
-- (void)setClosestTarget:(Creep *)closestTarget;
-- (void)towerLogic:(ccTime)dt;
+//- (void)setClosestTarget:(Creep *)closestTarget;
+//- (void)towerLogic:(ccTime)dt;
 - (void)creepMoveFinished:(id)sender;
 - (void)finishFiring;
 
@@ -51,8 +50,8 @@
 
 + (id)tower;
 
-- (void)setClosestTarget:(Creep *)closestTarget;
-- (void)towerLogic:(ccTime)dt;
+//- (void)setClosestTarget:(Creep *)closestTarget;
+//- (void)towerLogic:(ccTime)dt;
 - (void)creepMoveFinished:(id)sender;
 - (void)finishFiring;
 

@@ -12,6 +12,9 @@
 #import "GameLayer.h"
 #import "CreditsLayer.h"
 
+#define kMenuTitleFontSize 60
+#define kMenuItemFontSize 48
+
 @interface MenuLayer : BaseLayer {
 }
 

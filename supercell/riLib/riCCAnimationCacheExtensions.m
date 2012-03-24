@@ -21,7 +21,7 @@
     }
     
     NSArray* animationNames = [animations allKeys];
-    
+        
     for( NSString *name in animationNames ) {
         NSDictionary* animationDict = [animations objectForKey:name];
         NSArray *frameNames = [animationDict objectForKey:@"frames"];
@@ -37,7 +37,7 @@
         
         for( NSString *frameName in frameNames ) {
             CCSpriteFrame *frame = [[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:frameName];
-            CCLOG(@"ISCCAnimationCacheExtensions: Animation '%@' refers to frame '%@' which is not currently in the CCSpriteFrameCache. This frame will not be added to the animation.", name, frameName);
+//            CCLOG(@"ISCCAnimationCacheExtensions: Animation '%@' refers to frame '%@' which is not currently in the CCSpriteFrameCache. This frame will not be added to the animation.", name, frameName);
             
             if ( frame != nil ) {
                 [frames addObject:frame];

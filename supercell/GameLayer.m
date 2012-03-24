@@ -16,10 +16,63 @@
 #import "riActor.h"
 #import "riLevelLoader.h"
 
-#define kBallCollisionType		1
-#define kCircleCollisionType	2
-#define kRectCollisionType		3
-#define kFragShapeCollisionType	4
+#import "riJoystick.h"
+#import "Player.h"
+
+void hitButterflyCallback(cpSpace *space, void *obj, void *data)
+{
+    GameLayer *game = data;
+    riActor * actor = (riActor *)obj;
+    
+//    cpShape * shape = [(riActor *)[game getChildByTag:BULLET_TAG] shape];
+//    if (shape != nil) {
+//        [[game spaceManager] removeAndFreeShape:shape];
+//        [game removeChild:[game getChildByTag:BULLET_TAG] cleanup:YES];
+//    }
+    
+    [actor stopAction:actor.curMovement];
+    
+    
+    riActor * coin = [riActor spriteWithFile:@"gold_coin_128_128.png"];
+    coin.position = actor.position;
+    coin.scale = 0.1;
+    
+    CCParticleSystemQuad * coinParticle = [CCParticleSystemQuad particleWithFile:@"CoinParticle.plist"];
+    coinParticle.position = actor.position;
+    coinParticle.autoRemoveOnFinish = YES;
+    
+    coin.curParticle = coinParticle;
+    coin.curParticleToFollow = YES;
+    
+    [game addChild:coin z:kCoinZ];
+    [game addChild:coinParticle z:kCoinParticleZ];
+    
+    [coin runAction:[CCSequence actions:[CCSpawn actions:[CCSequence actions:[CCScaleTo actionWithDuration:0.05 scale:0.3], [CCScaleTo actionWithDuration:1.45 scale:0.2],nil],[CCMoveTo actionWithDuration:1.5 position:ccp(abs(game.position.x),kWinHeight)],nil],
+                     [CCCallFuncND actionWithTarget:game selector:@selector(coinStop:) data:coin],
+                     nil]];
+    
+    
+    CCActionInterval * butterflyDead = [CCSpawn actions:
+                                        [CCRepeat actionWithAction:[CCAnimate actionWithAnimation:[[CCAnimationCache sharedAnimationCache] animationByName:[NSString stringWithFormat:@"%@_dead",[actor name]]]] times:10],
+                                        [CCFadeOut actionWithDuration:0.5],
+                                        nil];
+    
+    [actor runAction:[CCSequence actions:butterflyDead,[CCCallFuncND actionWithTarget:game selector:@selector(butterflyDead:) data:actor], nil]];
+    
+//    [actor speedUp:1.5];
+    
+    
+//    riActor * net = [riActor spriteWithFile:@"net_green.png"];
+//    net.position = actor.position;
+//    [game addChild:net z:1300 tag:NET_TAG];
+//    [net runAction:[CCSequence actions:[CCScaleTo actionWithDuration:0.3 scale:1.2],[CCScaleTo actionWithDuration:0.2 scale:0.6],[CCCallFunc actionWithTarget:game selector:@selector(netStop)],nil]];
+
+    if([actor countType] == kCountLimitFinity)
+        [[game levelLoader] increaseActorWithName:actor.name count:1 delay:2.0];
+    [[game levelLoader] removeShapeOfActor:actor];
+    [[GameHUD sharedHUD] updateMoney:1];
+
+}
 
 static cpFloat
 springForce(cpConstraint *spring, cpFloat dist)
@@ -27,24 +80,28 @@ springForce(cpConstraint *spring, cpFloat dist)
     return cpfmin(cpDampedSpringGetRestLength(spring) - dist, 0.2f)*cpDampedSpringGetStiffness(spring);
 }
 
+@interface GameLayer (PrivateMethods)
+
+- (void) handleCollisionWithhandleCollisionWithButterfly:(CollisionMoment)moment arbiter:(cpArbiter*)arb space:(cpSpace*)space;
+@end
+
 
 @implementation GameLayer
 
 @synthesize gameTime = _gameTime;
+@synthesize levelLoader = _levelLoader;
 
 @synthesize spaceManager = _spaceManager;
-@synthesize tileMap = _tileMap;
+@synthesize space = _space;
+
+@synthesize parallaxNode = _parallaxNode;
+
 @synthesize background = _background;
-@synthesize actorSprite = _actorSprite;
-@synthesize actorActionArray = _actorActionArray;
 
 @synthesize currentLevel = _currentLevel;
 
-@synthesize flyActionArray = _flyActionArray;
-
-@synthesize dragon = _dragon;
-@synthesize moveAction = _moveAction;
-@synthesize flyAction = _flyAction;
+@synthesize actorsArray = _actorsArray;
+@synthesize player = _player;
 
 enum {
     kTagSpriteSheet = 1,
@@ -59,60 +116,73 @@ enum {
     self.isTouchEnabled = YES;
     
     _gameTime = 0;
+    _winSize = [[CCDirector sharedDirector] winSize];
+    
+    
+    gameHUD = [GameHUD sharedHUD];
+    [gameHUD schedule:@selector(updateMoney) interval: 2.0];
     
 	_spaceManager = [[SpaceManagerCocos2d alloc] init];
-//	[_spaceManager addWindowContainmentWithFriction:1.0 elasticity:0.5 inset:cpvzero];
 	_spaceManager.constantDt = 1.0/55.0;
     _spaceManager.damping = 1.0;
+    _spaceManager.rehashStaticEveryStep = YES;
+//    _spaceManager.gravity = ccp(300,0);
     
-    space = [_spaceManager space];
+    self.space = [_spaceManager space];
+    _actorsArray = [[NSMutableArray alloc] init];
+    _player = [[Player alloc] init];
+    
+    //Load TiledMAP
+    _levelLoader = [[riLevelLoader alloc] initWithContentOfFile:@"Level0"];
+    _levelLoader.spaceManager = _spaceManager;
+    _levelLoader.space = _space;
+    _levelLoader.gameLayer = self;
+    
+    if([_levelLoader hasSpaceBoundaries])
+        [_levelLoader createSpaceBoundaries:_space];
+    
+    [_levelLoader addEverythingToSpace:_space gameLayer:self];
+    
+    _tiledMaps = [DataModel sharedDataModel].tiledMaps;
+    _background = [[[_tiledMaps objectAtIndex:0] objectForKey:@"TiledMap"] layerNamed:@"Background"];
+
+    
+    _parallaxNode = [CCParallaxNode node];
+    for(NSDictionary * tm in _tiledMaps){
+        CCTMXTiledMap * tiledMap = [tm objectForKey:@"TiledMap"];
+        int z = [[tm objectForKey:@"OrderZ"] intValue];
+        CGPoint ratio = CGPointFromString([tm objectForKey:@"Ratio"]);
+        CGPoint offset = CGPointFromString([tm objectForKey:@"Offset"]);
+        tiledMap.tag = z;
+        [_parallaxNode addChild:tiledMap z:z parallaxRatio:ratio positionOffset:offset];
+    }
+
+    [self addChild:_parallaxNode z:kParallaxNodeZ tag:kParallaxNodeTag];
+    
+
+    [self addWeaponAt:ccp(_winSize.width/2,10)];
+    
+    self.position = ccp(-_winSize.width/2, 0);
     
     
-    
-    levelLoader = [[riLevelLoader alloc] initWithContentOfFile:@"Level0"];
-    levelLoader.spaceManager = _spaceManager;
-    
-    if([levelLoader hasWorldBoundaries])
-        [levelLoader createWorldBoundaries:space];
-    
-    [levelLoader addActorsToWorld:space gameLayer:self];
+    CCParticleSystemQuad * dandelionParticle = [CCParticleSystemQuad particleWithFile:@"DandelionParticle.plist"];
+    dandelionParticle.position = ccp(_winSize.width/2,_winSize.height/2);
+    dandelionParticle.autoRemoveOnFinish = YES;
+    [self addChild:dandelionParticle z:kDandelionParticleZ];
     
     
-    
-    
-    
-    _actorActionArray = [[NSMutableArray alloc] init];
-    
+
     ropeSegmentSpriteBatchNode = [CCSpriteBatchNode batchNodeWithFile:@"rope.png" ]; 
     [ropeSegmentSpriteBatchNode retain];
     [self addChild:ropeSegmentSpriteBatchNode z:10]; 
 
-    [self addActorAt:ccp(200,800)];
-    [_actorSprite runAction:[_actorSprite.actionArray  objectAtIndex:0]];
-
-    
-    _curSeg = nil;
-    
-    self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"TileMap.tmx"];
-    self.background = [_tileMap layerNamed:@"Background"];
-    self.background.anchorPoint = ccp(0, 0);
-    [self addChild:_tileMap z:0];
-    
-    [self addWaypoint];
-    [self addWaves];
-    
-    
-	
     
     
     self.currentLevel = 0;
-    
-    //self.position = ccp(-228, -122);
-    self.position = ccp(0, 0);
+
 
     
-    gameHUD = [GameHUD sharedHUD];
-    [gameHUD schedule:@selector(updateResourcesNom) interval: 2.0];
+
     
 	CCMenuItemFont *back = [CCMenuItemFont itemFromString:@"back" target:self selector: @selector(back:)];
 	CCMenu *menu = [CCMenu menuWithItems: back, nil];
@@ -124,7 +194,16 @@ enum {
     
     [self schedule:@selector(update:)];
     [self schedule:@selector(gameLogic:) interval:0.2];	
+    
+    [_spaceManager addCollisionCallbackBetweenType:kButterflyCollisionType 
+								otherType:kBulletCollisionType 
+								   target:self 
+								 selector:@selector(handleCollisionWithButterfly:arbiter:space:)
+                                  moments:COLLISION_BEGIN, nil];
+    
 	[_spaceManager start]; 	
+    
+
     
 	return self;
 }
@@ -134,6 +213,8 @@ enum {
 {
     [_spaceManager stop];
 
+    self.levelLoader = nil;
+    
     [self removeAllChildrenWithCleanup:YES];
 
     [verletRope release];
@@ -141,181 +222,88 @@ enum {
 
     [ropeSegmentSpriteBatchNode release];
     ropeSegmentSpriteBatchNode = nil;
-    
-    [_actorSprite release];
-    _actorSprite = nil;
 
-    [_actorActionArray release];
-    _actorActionArray = nil;
     
     [actorSpriteBatchNode release];
     actorSpriteBatchNode = nil;
     
     [_spaceManager release];
+    _spaceManager = nil;
+    
     
     [[CCSpriteFrameCache sharedSpriteFrameCache] removeUnusedSpriteFrames];
+    
+    
+    [[DataModel sharedDataModel].waypoints removeAllObjects];
+    [[DataModel sharedDataModel].tiledMaps removeAllObjects];
 
+
+    [[gameHUD joystick] resetJoystick];
+    
+    [_actorsArray release];
+    _actorsArray = nil;
+    
+    [_player release];
+    _player = nil;
+    
 	[super dealloc];
 }
 
--(void)addActorAt:(CGPoint) pt{
-    
-    CCTexture2D *actorTexture = [[CCTextureCache sharedTextureCache] addImage:@"dragon.png"];
-    actorSpriteBatchNode = [CCSpriteBatchNode batchNodeWithTexture:actorTexture capacity:10];
-    [actorSpriteBatchNode retain];
-    [self addChild:actorSpriteBatchNode z:10]; 
-    
-    _actorSprite = [[riActor alloc] initWithTexture:actorTexture width:75 height:70 column:10 row:8];
-    CCSpriteFrame *frameFirst = [CCSpriteFrame frameWithTexture:actorTexture rect:CGRectMake(0, 0, 75, 70)];
-    [_actorSprite setDisplayFrame: frameFirst];
-    _actorSprite.position = pt;
-    _actorSprite.gameLayer = self;
-    _actorSprite.ignoreRotation = YES;
-    _actorSprite.spaceManager = _spaceManager;
-    cpShape *actorShape = [_spaceManager addCircleAt:pt mass:1 radius:20];
-    actorShape->collision_type = kBallCollisionType;
-    actorShape->e = 1.0;
-    _actorSprite.shape = actorShape;
-    
-    _actorSprite.life = 100.0;
-    
-    [actorSpriteBatchNode addChild:_actorSprite];
-    
-    
-    cpShape *pivotShape = [_spaceManager addCircleAt:cpv(228,280) mass:STATIC_MASS radius:10];
-    pivotShape->e = 0.1f;
-    pivotShape->u = 1.0f;
-    pivotShape->collision_type = kBallCollisionType;
-    cpCCSprite * pivotSprite = [cpCCSprite spriteWithFile:@"Enemy1.png"];
-    pivotSprite.shape = pivotShape;
-    pivotSprite.autoFreeShapeAndBody = YES;
-    pivotSprite.spaceManager = _spaceManager;
-    [self addChild:pivotSprite z:10];
-    [pivotSprite runAction:[CCRepeatForever actionWithAction:[CCSequence actions:[CCMoveBy actionWithDuration:4.0f position:ccp(300,0)],[CCMoveBy actionWithDuration:4.0f position:ccp(-300,0)],nil]]];
-    
-    ropeNodeA = pivotShape->body;
-    
-    
-    
-
-    CCSprite* spr =  [levelLoader spriteWithUniqueName:@"TutorialTexture_3"];
-    [spr setColor:ccc3(10, 10, 10)];
-    cpBody* ball = [levelLoader bodyWithUniqueName:@"TutorialTexture_3"];
-    ball->p = ccp(500, 200);
-
-        
-    //cpConstraint* joint = [lh jointWithUniqueName:@"TutorialTexture_4_18_TutorialTexture_3_1"];
-    
-}
-
--(void)addRope{
-    //Remove Rope 
-    if(verletRope !=nil && verletRope.status == kRopeStatusActive){       
-        [verletRope removeRopeWithCutAt:CGPointZero duration:0.5f];
-    }else if((verletRope !=nil && verletRope.status == kRopeStatusRemoved) || verletRope == nil){
-        int ropeLength = cpvdist(ropeNodeA->p, [_actorSprite shape]->body->p);
-        
-        cpConstraint * ropeConstraint = [_spaceManager addSlideToBody:ropeNodeA fromBody:_actorSprite.body toBodyAnchor:cpv(0.0,0.0) fromBodyAnchor:cpv(0.0,0.0) minLength:0 maxLength:ropeLength];
-        
-        //        cpConstraint * ropeConstraint = [_spaceManager addSpringToBody:ropeNodeA fromBody:_actorSprite.body restLength:ropeLength stiffness:10 damping:10];
-        //        cpDampedSpringSetSpringForceFunc(ropeConstraint, springForce);
-        
-        
-        verletRope = [[riVerletRope alloc] initWithConstraint:ropeConstraint spriteSheet:ropeSegmentSpriteBatchNode isSolid:NO spaceManager:_spaceManager];
-        verletRope.gameLayer = self;
-    }
-    
-    
-    [_actorSprite applyImpulse:ccpMult([_actorSprite body]->v, [_actorSprite body]->m *1.5)];
-}
-
--(void)addWaves {
-	DataModel *m = [DataModel getModel];
-	
-	Wave *wave = nil;
-	wave = [[Wave alloc] initWithCreep:[FastRedCreep creep] SpawnRate:10 RedCreeps:0 GreenCreeps:5];
-	[m._waves addObject:wave];
-	wave = nil;
-	wave = [[Wave alloc] initWithCreep:[FastRedCreep creep] SpawnRate:10 RedCreeps:5 GreenCreeps:5];
-	[m._waves addObject:wave];
-	wave = nil;	
-    wave = [[Wave alloc] initWithCreep:[FastRedCreep creep] SpawnRate:10 RedCreeps:5 GreenCreeps:5];
-	[m._waves addObject:wave];
-	wave = nil;
-	wave = [[Wave alloc] initWithCreep:[FastRedCreep creep] SpawnRate:10 RedCreeps:5 GreenCreeps:5];
-	[m._waves addObject:wave];
-    wave = nil;
-    wave = [[Wave alloc] initWithCreep:[FastRedCreep creep] SpawnRate:10 RedCreeps:5 GreenCreeps:5];
-	[m._waves addObject:wave];
-	wave = nil;
-}
-
-- (Wave *)getCurrentWave{
-	
-	DataModel *m = [DataModel getModel];	
-	Wave * wave = (Wave *) [m._waves objectAtIndex:self.currentLevel];
-	
-	return wave;
-}
-
-- (Wave *)getNextWave{
-	
-	DataModel *m = [DataModel getModel];
-	
-	self.currentLevel++;
-	
-	if (self.currentLevel >= 5){
-        self.currentLevel = 0;
-        NSLog(@"you have reached the end of the game!");
-    }
-	
-    Wave * wave = (Wave *) [m._waves objectAtIndex:self.currentLevel];
-    
-    return wave;
-}
 
 
-
--(void)addWaypoint {
-	DataModel *m = [DataModel getModel];
-	
-	CCTMXObjectGroup *objectsGroup = [self.tileMap objectGroupNamed:@"Waypoints"];
-	WayPoint *wp = nil;
-	NSMutableDictionary *wayPoint;
+-(void)addWeaponAt:(CGPoint) pt{
     
-    NSMutableArray * wpArray = objectsGroup.objects;
-    if (wpArray != nil){
-        int n = [wpArray count];
-        for(int i = 0;i < n; i++){
-            wayPoint = [wpArray objectAtIndex:i];
-            int x = [[wayPoint valueForKey:@"x"] intValue];
-            int y = [[wayPoint valueForKey:@"y"] intValue];
-            NSString * wname = [wayPoint valueForKey:@"name"];
-            wp = [WayPoint node];
-            wp.position = ccp(x, y);
-            wp.wayPointName = wname;
-            [m._waypoints addObject:wp];
-        }
-        NSAssert([m._waypoints count] > 0, @"Waypoint objects missing");
-        wp = nil;
-    }
+    
+//    cpShape *weaponShape = [_spaceManager addCircleAt:pt mass:INFINITY radius:10];
+//    weaponShape->e = 0.1f;
+//    weaponShape->u = 1.0f;
+//    weaponShape->collision_type = GARDEN_COLLISION_TYPE;
+//    weaponShape->group = 1;
+    _weapon = [riActor spriteWithFile:@"Enemy1.png"];
+    _weapon.position = pt;
+//    _weapon.shape = weaponShape;
+//    _weapon.autoFreeShapeAndBody = YES;
+//    _weapon.spaceManager = _spaceManager;
+    [gameHUD addChild:_weapon z:kHeroZ tag:kHeroTag];
+
 
 }
 
-- (CGPoint) tileCoordForPosition:(CGPoint) position 
+//
+//-(void)addRope{
+//    //Remove Rope 
+//    if(verletRope !=nil && verletRope.status == kRopeStatusActive){       
+//        [verletRope removeRopeWithCutAt:CGPointZero duration:0.5f];
+//    }else if((verletRope !=nil && verletRope.status == kRopeStatusRemoved) || verletRope == nil){
+//        int ropeLength = cpvdist(ropeNodeA->p, [_actorSprite shape]->body->p);
+//        
+//        cpConstraint * ropeConstraint = [_spaceManager addSlideToBody:ropeNodeA fromBody:_actorSprite.body toBodyAnchor:cpv(0.0,0.0) fromBodyAnchor:cpv(0.0,0.0) minLength:0 maxLength:ropeLength];
+//        
+//        //        cpConstraint * ropeConstraint = [_spaceManager addSpringToBody:ropeNodeA fromBody:_actorSprite.body restLength:ropeLength stiffness:10 damping:10];
+//        //        cpDampedSpringSetSpringForceFunc(ropeConstraint, springForce);
+//        
+//        
+//        verletRope = [[riVerletRope alloc] initWithConstraint:ropeConstraint spriteSheet:ropeSegmentSpriteBatchNode isSolid:NO spaceManager:_spaceManager];
+//        verletRope.gameLayer = self;
+//    }    
+//    [_actorSprite applyImpulse:ccpMult([_actorSprite body]->v, [_actorSprite body]->m *1.5)];
+//}
+
+
+- (CGPoint) tileCoordForPosition:(CGPoint) position tiledMap:(CCTMXTiledMap *) tiledMap
 {
-	int x = position.x / self.tileMap.tileSize.width;
-	int y = ((self.tileMap.mapSize.height * self.tileMap.tileSize.height) - position.y) / self.tileMap.tileSize.height;
+	int x = position.x / tiledMap.tileSize.width;
+	int y = ((tiledMap.mapSize.height * tiledMap.tileSize.height) - position.y) / tiledMap.tileSize.height;
 	
 	return ccp(x,y);
 }
 
-- (BOOL) canBuildOnTilePosition:(CGPoint) pos 
+- (BOOL) canBuildOnTilePosition:(CGPoint) pos tiledMap:(CCTMXTiledMap *) tiledMap
 {
-	CGPoint towerLoc = [self tileCoordForPosition: pos];
+	CGPoint towerLoc = [self tileCoordForPosition: pos tiledMap:tiledMap];
 	
 	int tileGid = [self.background tileGIDAt:towerLoc];
-	NSDictionary *props = [self.tileMap propertiesForGID:tileGid];
+	NSDictionary *props = [tiledMap propertiesForGID:tileGid];
 	NSString *type = [props valueForKey:@"buildable"];
 	
 	if([type isEqualToString: @"1"]) {
@@ -325,15 +313,14 @@ enum {
 	return NO;
 }
 
--(void)addTower: (CGPoint)pos: (int)towerTag{
-	DataModel *m = [DataModel getModel];
+-(void)addTower: (CGPoint)pos: (int)towerTag tileMap: (CCTMXTiledMap*)tiledMap{
 	
 	Tower *target = nil;
-	
-	CGPoint towerLoc = [self tileCoordForPosition: pos];
+    
+	CGPoint towerLoc = [self tileCoordForPosition: pos tiledMap:tiledMap];
 	
 	int tileGid = [self.background tileGIDAt:towerLoc];
-	NSDictionary *props = [self.tileMap propertiesForGID:tileGid];
+	NSDictionary *props = [tiledMap propertiesForGID:tileGid];
 	NSString *type = [props valueForKey:@"buildable"];
 	
 	
@@ -343,33 +330,33 @@ enum {
         
         switch (towerTag) {
             case 1:
-                if (gameHUD.resources >= 25) {
+                if (gameHUD.money >= 25) {
                     target = [MachineGunTower tower];
-                    [gameHUD updateResources:-25];
+                    [gameHUD updateMoney:-25];
                 }
                 else
                     return;
                 break;
             case 2:
-                if (gameHUD.resources >= 35) {
+                if (gameHUD.money >= 35) {
                     target = [FreezeTower tower];
-                    [gameHUD updateResources:-35];
+                    [gameHUD updateMoney:-35];
                 }
                 else
                     return;
                 break;
             case 3:
-                if (gameHUD.resources >= 25) {
+                if (gameHUD.money >= 25) {
                     target = [MachineGunTower tower];
-                    [gameHUD updateResources:-25];
+                    [gameHUD updateMoney:-25];
                 }
                 else
                     return;
                 break;
             case 4:
-                if (gameHUD.resources >= 25) {
+                if (gameHUD.money >= 25) {
                     target = [MachineGunTower tower];
-                    [gameHUD updateResources:-25];
+                    [gameHUD updateMoney:-25];
                 }  
                 else
                     return;
@@ -378,11 +365,11 @@ enum {
                 break;
         }
         
-		target.position = ccp((towerLoc.x * 32) + 16, self.tileMap.contentSize.height - (towerLoc.y * 32) - 16);
+		target.position = ccp((towerLoc.x * 32) + 16, tiledMap.contentSize.height - (towerLoc.y * 32) - 16);
 		[self addChild:target z:1];
 		
 		target.tag = 1;
-		[m._towers addObject:target];
+//		[m._towers addObject:target];
         
 		
 	} else {
@@ -391,191 +378,72 @@ enum {
 	
 }
 
--(void)addTarget {
-    
-	DataModel *m = [DataModel getModel];
-	Wave * wave = [self getCurrentWave];
-	if (wave.redCreeps <= 0 && wave.greenCreeps <= 0) {
-        
-        return; //
-	}
-	
-	//wave.totalCreeps--;
-	
-    Creep *target = nil;
-    if ((arc4random() % 2) == 0) {
-        if (wave.redCreeps > 0) {
-            target = [FastRedCreep creep];
-            wave.redCreeps--;
-        }
-        else if (wave.greenCreeps >0){
-            target = [StrongGreenCreep creep];
-            wave.greenCreeps--;
-            // NSLog(@"no more red");
-        }
-    } 
-    else {
-        if (wave.greenCreeps >0) {
-            target = [StrongGreenCreep creep];
-            wave.greenCreeps--;
-        }
-        else if (wave.redCreeps >0){
-            target = [FastRedCreep creep];
-            wave.redCreeps--;
-            //NSLog(@"no more green");
-            
-        }
-    }	
-	
-	WayPoint *waypoint = [target getCurrentWaypoint ];
-	target.position = waypoint.position;	
-	waypoint = [target getNextWaypoint ];
-	
-	[self addChild:target z:1];
-	
-	int moveDuration = target.moveDuration;	
-	id actionMove = [CCMoveTo actionWithDuration:moveDuration position:waypoint.position];
-	id actionMoveDone = [CCCallFuncN actionWithTarget:self selector:@selector(FollowPath:)];
-	[target runAction:[CCSequence actions:actionMove, actionMoveDone, nil]];
-	
-	// Add to targets array
-	target.tag = 1;
-	[m._targets addObject:target];
-	
-}
-
--(void)FollowPath:(id)sender {
-    
-	Creep *creep = (Creep *)sender;
-	
-	WayPoint * waypoint = [creep getNextWaypoint];
-    
-	int moveDuration = creep.moveDuration;
-	id actionMove = [CCMoveTo actionWithDuration:moveDuration position:waypoint.position];
-    
-	id actionMoveDone = [CCCallFuncN actionWithTarget:self selector:@selector(FollowPath:)];
-	[creep stopAllActions];
-	[creep runAction:[CCSequence actions:actionMove, actionMoveDone, nil]];
-}
-
--(void)ResumePath:(id)sender {
-    Creep *creep = (Creep *)sender;
-    
-    WayPoint * cWaypoint = [creep getCurrentWaypoint];//destination
-    WayPoint * lWaypoint = [creep getLastWaypoint];//startpoint
-    
-    float waypointDist = fabsf(cWaypoint.position.x - lWaypoint.position.x);
-    float creepDist = fabsf(cWaypoint.position.x - creep.position.x);
-    float distFraction = creepDist / waypointDist;
-    float moveDuration = creep.moveDuration * distFraction; //Time it takes to go from one way point to another * the fraction of how far is left to go (meaning it will move at the correct speed)
-    id actionMove = [CCMoveTo actionWithDuration:moveDuration position:cWaypoint.position];   
-    id actionMoveDone = [CCCallFuncN actionWithTarget:self selector:@selector(FollowPath:)];
-	[creep stopAllActions];
-	[creep runAction:[CCSequence actions:actionMove, actionMoveDone, nil]];
-}
 
 -(void)gameLogic:(ccTime)dt {
 
-    //	DataModel *m = [DataModel getModel];
     _gameTime = _gameTime + dt;
-    [levelLoader step];
+    [_levelLoader step];
     
-	Wave * wave = [self getCurrentWave];
-	static double lastTimeTargetAdded = 0;
-    double now = [[NSDate date] timeIntervalSince1970];
-    if(lastTimeTargetAdded == 0 || now - lastTimeTargetAdded >= wave.spawnRate) {
-        [self addTarget];
-        lastTimeTargetAdded = now;
-    }
 }
 
 - (void)update:(ccTime)dt {
     
-	DataModel *m = [DataModel getModel];
-	NSMutableArray *projectilesToDelete = [[NSMutableArray alloc] init];
-    
-	for (Projectile *projectile in m._projectiles) {
-		
-		CGRect projectileRect = CGRectMake(projectile.position.x - (projectile.contentSize.width/2), 
-										   projectile.position.y - (projectile.contentSize.height/2), 
-										   projectile.contentSize.width, 
-										   projectile.contentSize.height);
-        
-		NSMutableArray *targetsToDelete = [[NSMutableArray alloc] init];
-        
-		for (CCSprite *target in m._targets) {
-            
-			CGRect targetRect = CGRectMake(target.position.x - (target.contentSize.width/2), 
-										   target.position.y - (target.contentSize.height/2), 
-										   target.contentSize.width, 
-										   target.contentSize.height);
-            
-			if (CGRectIntersectsRect(projectileRect, targetRect)) {
-                
-				[projectilesToDelete addObject:projectile];
-                Creep *creep = (Creep *)target;
-                if (projectile.tag ==1){//MachineGun Projectile
-                    creep.health--;
-                    
-                    if (creep.health <= 0) {
-                        [targetsToDelete addObject:target];
-                        [gameHUD updateResources:1];
-                    }
-                    break;
-                }
-                else if (projectile.tag ==2){//Freeze projectile
-                    id actionFreeze = [CCMoveTo actionWithDuration:1.5 position:creep.position];    
-                    id actionMoveResume = [CCCallFuncN actionWithTarget:self selector:@selector(ResumePath:)];  
-                    [creep stopAllActions];
-                    [creep runAction:[CCSequence actions:actionFreeze, actionMoveResume, nil]];
-                    break;
-                }
-                break;
-                
-			}						
-		}
-		
-		for (CCSprite *target in targetsToDelete) {
-			[m._targets removeObject:target];
-			[self removeChild:target cleanup:YES];									
-		}
-		
-		[targetsToDelete release];
-	}
-	
-	for (CCSprite *projectile in projectilesToDelete) {
-		[m._projectiles removeObject:projectile];
-		[self removeChild:projectile cleanup:YES];
-	}
-	[projectilesToDelete release];
-    
-    
-    Wave *wave = [self getCurrentWave];
-    if ([m._targets count] ==0 && wave.redCreeps <= 0 && wave.greenCreeps <= 0) {
-        [self getNextWave];
-        [gameHUD updateWaveCount];
-    }
-    
 
     if(verletRope != nil)
         [verletRope update:dt];
+    
+//    if(_sign != nil){
+//        
+//        if(!cpveql(_signLastPt, ccp(INFINITY,INFINITY))){
+//            CGPoint diff = ccpSub(_sign.position, _signLastPt);
+//            diff.y = 0;
+//            [self setPosition:ccpAdd(self.position, diff)];
+////            [self runAction:[CCMoveTo actionWithDuration:dt position:ccpAdd(self.position, diff)]];
+//        }
+//            _signLastPt = _sign.position;
+//        
+//    }
+    
+    
 
     
+    
+//    CCParticleSystemQuad * particle = (CCParticleSystemQuad *)[self getChildByTag:3000];
+//    riActor * bullet = (riActor *)[self getChildByTag:BULLET_TAG];
+//    if(particle != nil && bullet != nil){
+//        particle.position = bullet.position;
+//    }
+
+// Scroll....    
+//    if(!cpveql(_weaponPos, ccp(INFINITY,INFINITY))){
+//        CGPoint pt = [self getChildByTag:HERO_TAG].position;
+////        CGPoint diff = ccpSub(_actorPos, pt);
+//
+////        [self setPosition:ccpAdd(self.position, diff)];
+//        _weaponPos = pt;
+//    }
+
+// Joystick support...
+//    CGPoint v = cpvmult([gameHUD joystick].velocity, 200.0);
+//    riActor * hero = (riActor *)[self getChildByTag:HERO_TAG];
+//    [hero body]->v = v;
 }
 
 
-- (CGPoint)boundLayerPos:(CGPoint)newPos {
+- (CGPoint)boundLayerPos:(CGPoint)newPos tiledMap:(CCTMXTiledMap*)tiledMap {
+
+    
     CGSize winSize = [CCDirector sharedDirector].winSize;
     CGPoint retval = newPos;
     retval.x = MIN(retval.x, 0);
-    retval.x = MAX(retval.x, -_tileMap.contentSize.width+winSize.width); 
+    retval.x = MAX(retval.x, -tiledMap.contentSize.width+winSize.width); 
     retval.y = MIN(0, retval.y);
-    retval.y = MAX(-_tileMap.contentSize.height+winSize.height, retval.y); 
+    retval.y = MAX(-tiledMap.contentSize.height+winSize.height, retval.y); 
     return retval;
 }
 
 - (void)handlePanFrom:(UIPanGestureRecognizer *)recognizer {
-    
+    CCTMXTiledMap * tiledMap = [[_tiledMaps objectAtIndex:0] objectForKey:@"TiledMap"];
     if (recognizer.state == UIGestureRecognizerStateBegan) {    
         
         CGPoint touchLocation = [recognizer locationInView:recognizer.view];
@@ -587,7 +455,7 @@ enum {
         CGPoint translation = [recognizer translationInView:recognizer.view];
         translation = ccp(translation.x, -translation.y);
         CGPoint newPos = ccpAdd(self.position, translation);
-        self.position = [self boundLayerPos:newPos];  
+        self.position = [self boundLayerPos:newPos tiledMap:tiledMap ];  
         [recognizer setTranslation:CGPointZero inView:recognizer.view];    
         
     } else if (recognizer.state == UIGestureRecognizerStateEnded) {
@@ -595,7 +463,7 @@ enum {
 		float scrollDuration = 0.2;
 		CGPoint velocity = [recognizer velocityInView:recognizer.view];
 		CGPoint newPos = ccpAdd(self.position, ccpMult(ccp(velocity.x, velocity.y * -1), scrollDuration));
-		newPos = [self boundLayerPos:newPos];
+		newPos = [self boundLayerPos:newPos tiledMap:tiledMap];
         
 		[self stopAllActions];
 		CCMoveTo *moveTo = [CCMoveTo actionWithDuration:scrollDuration position:newPos];            
@@ -616,16 +484,51 @@ enum {
 	[SceneManager goMenu];
 }
 
--(void) addLine{
-    
+-(void) bulletStop:(riActor*)bullet{
+    if(bullet != nil){
+        if(bullet.score >0) [gameHUD updateMoney:bullet.score - 1];
+        
+        CCParticleSystemQuad * bulletExplosionParticle = [CCParticleSystemQuad particleWithFile:@"BulletExplosionParticle.plist"];
+        bulletExplosionParticle.position = bullet.position;
+        bulletExplosionParticle.autoRemoveOnFinish = YES;
+        [self addChild:bulletExplosionParticle z:kBulletParticleZ];
+        
+        [[self spaceManager] removeAndFreeShape:[bullet shape]];
+        [self removeChild:bullet cleanup:YES]; 
+        bullet = nil;
+    }
+}
+
+//-(void) netStop{
+//    riActor * net = (riActor *)[self getChildByTag:NET_TAG];
+//    if(net != nil)
+//        [self removeChild:net cleanup:YES];
+//}
+
+-(void) butterflyDead:(riActor*)actor{
+    if(actor != nil){
+        [_levelLoader removeActor:actor cleanup:NO];
+        
+    }
+}
+
+-(void) coinStop:(riActor*)coin{
+    [self removeChild:coin cleanup:YES];
 }
 
 #pragma mark Touch Functions
 - (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {	
-	//Calculate a vector based on where we touched and where the ball is
 	CGPoint pt = [self convertTouchToNodeSpace:[touches anyObject]];
     _touchBeginPos = pt;
+    _touchBeginTime = [[NSDate date] timeIntervalSince1970];
+
+    
+    CCAction * backgroundAction =  [[CCActionManager sharedManager] getActionByTag:kBackgroundActionTag target:self];
+    if(backgroundAction != nil)
+        [self stopAction:backgroundAction]; 
+    
+    
 	//CGPoint forceVect = ccpSub(pt, ballSprite.position);
 	
 	//cpFloat len = cpvlength(forceVect);
@@ -665,8 +568,6 @@ enum {
         [scene addChild:[GameLayer node]];
         [[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:.4 scene:scene  withColor:ccBLUE]];
     }
-    NSLog(@"Touch Start");
-
 }
 
 - (void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -674,24 +575,7 @@ enum {
     CGPoint pt = [self convertTouchToNodeSpace:[touches anyObject]];
     _touchEndPos = pt;
     
-    int seglen = 20;
-    int segno = 0;
-    segno = cpvdist(_touchEndPos, _touchBeginPos) / seglen;
-    if(segno >0){
-        if(_curSeg != nil){
-            [_spaceManager removeAndFreeShape:[_curSeg shape]];
-            [self removeChild:_curSeg cleanup:YES];
-            _curSeg = nil;
-            NSLog(@"seg removed");
 
-        }
-        cpShape * seg = [_spaceManager addSegmentAtWorldAnchor:_touchBeginPos toWorldAnchor:_touchEndPos mass:STATIC_MASS radius:10];
-        seg->e = 1.5;
-        cpShapeNode * segNode = [cpShapeNode nodeWithShape:seg];
-        [self addChild:segNode z:11];
-        _curSeg = segNode;
-        NSLog(@"Touch Moving");
-    }
     
 }
 
@@ -699,10 +583,83 @@ enum {
 {	
     CGPoint pt = [self convertTouchToNodeSpace:[touches anyObject]];
     _touchEndPos = pt;
-    NSLog(@"Touch End");
+    
+    _touchEndTime = [[NSDate date] timeIntervalSince1970];
+
+    float touchTime = _touchEndTime - _touchBeginTime;
+
+    
+    float dis = ccpDistance(_touchEndPos, _touchBeginPos);
+    
+    if(dis < kFingerNoMovementFactor || touchTime > kFingerTouchTimeFactor){
+        
+        float touchPower = 500 + touchTime * 500;
+        touchPower = touchPower < 1000 ? touchPower : 1000;
+        NSLog(@"touch last: %f",touchPower);
+        if(touchPower < 750)
+            [gameHUD updateMoney:-1];
+        else 
+            [gameHUD updateMoney:-2];
+        
+        riActor * bullet = [riActor spriteWithFile:@"Enemy1.png"];
+        bullet.scale = 0.3;
+        
+        CGPoint weaponPos = ccpSub(_weapon.position, self.position);
+        
+        cpShape * bulletShape = [_spaceManager addCircleAt:weaponPos mass:1 radius:6];
+        bulletShape->collision_type = kBulletCollisionType;
+        bulletShape->group = 1;
+        bullet.shape = bulletShape;
+        [bullet applyImpulse:cpvmult(ccpNormalize(cpvsub(_touchEndPos, weaponPos )),touchPower)];
+        
+        CCParticleSystemQuad * bulletParticle = [CCParticleSystemQuad particleWithFile:@"BulletParticle.plist"];
+        bulletParticle.position = weaponPos;
+        bulletParticle.autoRemoveOnFinish = YES;
+        
+        bullet.curParticle = bulletParticle;
+        
+        [self addChild:bullet z:kBulletZ tag:kBulletTag];
+        [self addChild:bulletParticle z:kBulletParticleZ];
+        
+        
+        [bullet runAction:[CCSequence actions:[CCEaseOut actionWithAction:[CCScaleTo actionWithDuration:3 scale:0.5] rate:2] ,[CCCallFuncND actionWithTarget:self selector:@selector(bulletStop:) data:bullet],nil]];
+    }else{
+//        float wipeSpeed = 0.1 * dis/(_touchEndTime - _touchBeginTime);
 
 
+        CGPoint diff = ccpSub(_touchEndPos, _touchBeginPos);
+        
+        CCAction * backgroundAction =  [[CCActionManager sharedManager] getActionByTag:kBackgroundActionTag target:self];
+        if(backgroundAction == nil && abs(diff.x) > abs(diff.y) && abs(diff.x) > kFingerMovementFactorX){
+            diff.y = 0;
+            CGPoint newPos = ccpAdd(self.position, diff);
+                        
+            if(newPos.x < -_winSize.width)
+                newPos.x = -_winSize.width;
+            if(newPos.x > 0)
+                newPos.x = 0;
+            
+            backgroundAction = [CCEaseOut actionWithAction:[CCMoveTo actionWithDuration:touchTime*5 position:newPos] rate:3];
+            backgroundAction.tag = kBackgroundActionTag;
+            [self runAction:backgroundAction];
+        }
+        
+    }
+
+
+
+    
 	
 }
+
+- (void) handleCollisionWithButterfly:(CollisionMoment)moment arbiter:(cpArbiter*)arb space:(cpSpace*)space
+{	
+    CP_ARBITER_GET_SHAPES(arb,a,b);
+    cpSpaceAddPostStepCallback(_space, hitButterflyCallback, a->data, self);
+    riActor * bullet = (riActor *)b->data;
+    bullet.score ++;
+}
+
+
 
 @end
