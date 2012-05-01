@@ -96,6 +96,8 @@ typedef enum {
     CCParallaxNode * _parallaxNode;
     
     NSMutableArray * _actorsArray;
+    NSMutableArray * _bulletsArray;
+
     Player * _player;
 
 }
@@ -122,7 +124,7 @@ typedef enum {
 
 - (void) back: (id) sender;
 
-
+-(void) bulletStop:(riActor*)bullet;
 
 
 @end

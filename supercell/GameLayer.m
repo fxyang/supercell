@@ -19,58 +19,58 @@
 #import "riJoystick.h"
 #import "Player.h"
 
+void bulletStopCallback(cpSpace *space, void *obj, void *data)
+{
+    GameLayer *game = data;
+    riActor * bullet = (riActor *)obj;
+    [game bulletStop:bullet];
+    
+}
+
 void hitButterflyCallback(cpSpace *space, void *obj, void *data)
 {
     GameLayer *game = data;
     riActor * actor = (riActor *)obj;
     
-//    cpShape * shape = [(riActor *)[game getChildByTag:BULLET_TAG] shape];
-//    if (shape != nil) {
-//        [[game spaceManager] removeAndFreeShape:shape];
-//        [game removeChild:[game getChildByTag:BULLET_TAG] cleanup:YES];
-//    }
-    
-    [actor stopAction:actor.curMovement];
-    
-    
-    riActor * coin = [riActor spriteWithFile:@"gold_coin_128_128.png"];
-    coin.position = actor.position;
-    coin.scale = 0.1;
-    
-    CCParticleSystemQuad * coinParticle = [CCParticleSystemQuad particleWithFile:@"CoinParticle.plist"];
-    coinParticle.position = actor.position;
-    coinParticle.autoRemoveOnFinish = YES;
-    
-    coin.curParticle = coinParticle;
-    coin.curParticleToFollow = YES;
-    
-    [game addChild:coin z:kCoinZ];
-    [game addChild:coinParticle z:kCoinParticleZ];
-    
-    [coin runAction:[CCSequence actions:[CCSpawn actions:[CCSequence actions:[CCScaleTo actionWithDuration:0.05 scale:0.3], [CCScaleTo actionWithDuration:1.45 scale:0.2],nil],[CCMoveTo actionWithDuration:1.5 position:ccp(abs(game.position.x),kWinHeight)],nil],
-                     [CCCallFuncND actionWithTarget:game selector:@selector(coinStop:) data:coin],
-                     nil]];
-    
-    
-    CCActionInterval * butterflyDead = [CCSpawn actions:
-                                        [CCRepeat actionWithAction:[CCAnimate actionWithAnimation:[[CCAnimationCache sharedAnimationCache] animationByName:[NSString stringWithFormat:@"%@_dead",[actor name]]]] times:10],
-                                        [CCFadeOut actionWithDuration:0.5],
-                                        nil];
-    
-    [actor runAction:[CCSequence actions:butterflyDead,[CCCallFuncND actionWithTarget:game selector:@selector(butterflyDead:) data:actor], nil]];
-    
-//    [actor speedUp:1.5];
-    
-    
-//    riActor * net = [riActor spriteWithFile:@"net_green.png"];
-//    net.position = actor.position;
-//    [game addChild:net z:1300 tag:NET_TAG];
-//    [net runAction:[CCSequence actions:[CCScaleTo actionWithDuration:0.3 scale:1.2],[CCScaleTo actionWithDuration:0.2 scale:0.6],[CCCallFunc actionWithTarget:game selector:@selector(netStop)],nil]];
-
-    if([actor countType] == kCountLimitFinity)
-        [[game levelLoader] increaseActorWithName:actor.name count:1 delay:2.0];
-    [[game levelLoader] removeShapeOfActor:actor];
-    [[GameHUD sharedHUD] updateMoney:1];
+    if(actor.health <= actor.demage){
+        [actor stopAction:actor.curMovement];
+        
+        int n = actor.score;
+        for(int i = 1;i <= n; i++){
+            riActor * coin = [riActor spriteWithFile:@"gold_coin_128_128.png"];
+            coin.position = actor.position;
+            coin.scale = 0.3;
+            
+            CCParticleSystemQuad * coinParticle = [CCParticleSystemQuad particleWithFile:@"CoinParticle.plist"];
+            coinParticle.position = actor.position;
+            coinParticle.autoRemoveOnFinish = YES;
+            
+            coin.curParticle = coinParticle;
+            coin.curParticleToFollow = YES;
+            
+            [game addChild:coin z:kCoinZ];
+            [game addChild:coinParticle z:kCoinParticleZ];
+            
+            float duration = 1.0 + 0.5 *i;
+            
+            [coin runAction:[CCSequence actions:[CCSpawn actions:[CCSequence actions:[CCScaleTo actionWithDuration:0.05 scale:0.3], [CCScaleTo actionWithDuration:1.45 scale:0.1],nil],[CCMoveTo actionWithDuration:duration position:ccp(abs(game.position.x),kWinHeight)],nil],
+                             [CCCallFuncND actionWithTarget:game selector:@selector(coinStop:) data:coin],
+                             nil]];
+        }
+        
+        CCActionInterval * butterflyDead = [CCSpawn actions:
+                                            [CCRepeat actionWithAction:[CCAnimate actionWithAnimation:[[CCAnimationCache sharedAnimationCache] animationByName:[NSString stringWithFormat:@"%@_dead",[actor name]]]] times:20],
+                                            [CCFadeOut actionWithDuration:0.7],
+                                            nil];
+        
+        [actor runAction:[CCSequence actions:butterflyDead,[CCCallFuncND actionWithTarget:game selector:@selector(butterflyDead:) data:actor], nil]];
+        
+        
+        if([actor countType] == kCountLimitFinity)
+            [[game levelLoader] increaseActorWithName:actor.name count:1 delay:2.0];
+        
+        [[game levelLoader] removeShapeOfActor:actor];
+    }
 
 }
 
@@ -130,6 +130,8 @@ enum {
     
     self.space = [_spaceManager space];
     _actorsArray = [[NSMutableArray alloc] init];
+    _bulletsArray = [[NSMutableArray alloc] init];
+
     _player = [[Player alloc] init];
     
     //Load TiledMAP
@@ -242,6 +244,9 @@ enum {
     
     [_actorsArray release];
     _actorsArray = nil;
+    
+    [_bulletsArray release];
+    _bulletsArray = nil;
     
     [_player release];
     _player = nil;
@@ -486,29 +491,22 @@ enum {
 
 -(void) bulletStop:(riActor*)bullet{
     if(bullet != nil){
-        if(bullet.score >0) [gameHUD updateMoney:bullet.score - 1];
-        
         CCParticleSystemQuad * bulletExplosionParticle = [CCParticleSystemQuad particleWithFile:@"BulletExplosionParticle.plist"];
         bulletExplosionParticle.position = bullet.position;
         bulletExplosionParticle.autoRemoveOnFinish = YES;
         [self addChild:bulletExplosionParticle z:kBulletParticleZ];
         
         [[self spaceManager] removeAndFreeShape:[bullet shape]];
+        [_bulletsArray removeObject:bullet];
         [self removeChild:bullet cleanup:YES]; 
         bullet = nil;
     }
 }
 
-//-(void) netStop{
-//    riActor * net = (riActor *)[self getChildByTag:NET_TAG];
-//    if(net != nil)
-//        [self removeChild:net cleanup:YES];
-//}
-
 -(void) butterflyDead:(riActor*)actor{
     if(actor != nil){
+        [[GameHUD sharedHUD] updateMoney:actor.score];
         [_levelLoader removeActor:actor cleanup:NO];
-        
     }
 }
 
@@ -593,6 +591,12 @@ enum {
     
     if(dis < kFingerNoMovementFactor || touchTime > kFingerTouchTimeFactor){
         
+
+        for(riActor * b in _bulletsArray){
+            if([b touchedInLayer:self withTouchs:touches])
+                break;
+        }
+        
         float touchPower = 500 + touchTime * 500;
         touchPower = touchPower < 1000 ? touchPower : 1000;
         NSLog(@"touch last: %f",touchPower);
@@ -602,7 +606,10 @@ enum {
             [gameHUD updateMoney:-2];
         
         riActor * bullet = [riActor spriteWithFile:@"Enemy1.png"];
+        bullet.gameLayer = self;
         bullet.scale = 0.3;
+        bullet.power = 1;
+        bullet.life = 3;
         
         CGPoint weaponPos = ccpSub(_weapon.position, self.position);
         
@@ -610,7 +617,12 @@ enum {
         bulletShape->collision_type = kBulletCollisionType;
         bulletShape->group = 1;
         bullet.shape = bulletShape;
-        [bullet applyImpulse:cpvmult(ccpNormalize(cpvsub(_touchEndPos, weaponPos )),touchPower)];
+        
+        CGPoint direction = cpvsub(_touchEndPos, weaponPos );
+        if(!cpveql(direction, cpvzero))
+            direction = ccpNormalize(direction);
+        
+        [bullet applyImpulse:cpvmult(direction,touchPower)];
         
         CCParticleSystemQuad * bulletParticle = [CCParticleSystemQuad particleWithFile:@"BulletParticle.plist"];
         bulletParticle.position = weaponPos;
@@ -619,13 +631,16 @@ enum {
         bullet.curParticle = bulletParticle;
         
         [self addChild:bullet z:kBulletZ tag:kBulletTag];
+        [_bulletsArray addObject:bullet];
+        
         [self addChild:bulletParticle z:kBulletParticleZ];
         
         
-        [bullet runAction:[CCSequence actions:[CCEaseOut actionWithAction:[CCScaleTo actionWithDuration:3 scale:0.5] rate:2] ,[CCCallFuncND actionWithTarget:self selector:@selector(bulletStop:) data:bullet],nil]];
+        [bullet runAction:[CCSequence actions:[CCEaseOut actionWithAction:[CCScaleTo actionWithDuration:bullet.life scale:0.5] rate:2] ,[CCCallFuncND actionWithTarget:self selector:@selector(bulletStop:) data:bullet],nil]];
+        
+        [gameHUD updateMoney:bullet.score - 1];
+        
     }else{
-//        float wipeSpeed = 0.1 * dis/(_touchEndTime - _touchBeginTime);
-
 
         CGPoint diff = ccpSub(_touchEndPos, _touchBeginPos);
         
@@ -639,7 +654,7 @@ enum {
             if(newPos.x > 0)
                 newPos.x = 0;
             
-            backgroundAction = [CCEaseOut actionWithAction:[CCMoveTo actionWithDuration:touchTime*5 position:newPos] rate:3];
+            backgroundAction = [CCEaseOut actionWithAction:[CCMoveTo actionWithDuration:touchTime*1 position:newPos] rate:1];
             backgroundAction.tag = kBackgroundActionTag;
             [self runAction:backgroundAction];
         }
@@ -656,8 +671,19 @@ enum {
 {	
     CP_ARBITER_GET_SHAPES(arb,a,b);
     cpSpaceAddPostStepCallback(_space, hitButterflyCallback, a->data, self);
+    cpSpaceAddPostStepCallback(_space, bulletStopCallback, b->data, self);
+
+    riActor * actor = (riActor *)a->data;
     riActor * bullet = (riActor *)b->data;
+    
+    actor.demage = actor.demage + bullet.power;
     bullet.score ++;
+    
+    
+    NSLog(@"Butterfly health = %f , score = %d",actor.health,actor.score);
+    NSLog(@"Bullet score = %d",bullet.score);
+
+    
 }
 
 

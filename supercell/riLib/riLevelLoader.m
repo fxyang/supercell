@@ -1022,28 +1022,49 @@
 }
 
 -(void) setActorPropertiesWithDictionary:(NSDictionary*)actorProp forActor:(riActor*)actor{
+    
     if(actorProp != nil){
-        [actor setLife: 0? kActorLifeDefault : [[actorProp objectForKey:@"Life"] floatValue]];
-        [actor setAge: 0? kActorAgeDefault : [[actorProp objectForKey:@"Age"] floatValue]];
         
+        float life = [[actorProp objectForKey:@"Life"] floatValue];
+        life = life == 0 ? kActorLifeDefault : life;
+        actor.life = life;
+        
+        float age = [[actorProp objectForKey:@"Age"] floatValue];
+        age = age == 0 ? kActorAgeDefault : age;
+        actor.age = age;
+                
         NSString * s = [actorProp objectForKey:@"Speed"];
         int speed = 0;
         if(s != nil){
             CGPoint sp = riPointFromString(s);
-            if(sp.x == sp.y)
-                speed = (int)sp.x;
-            else
-                speed = arc4random()% (int)abs(sp.y - sp.x) + (int)abs(sp.x);
-
+            if(sp.x == sp.y) speed = (int)sp.x;
+            else speed = arc4random()% (int)abs(sp.y - sp.x) + (int)abs(sp.x);
         }
-        [actor setSpeed:speed];
+        actor.speed = speed;
 
-        [actor setHealth: 0? kActorHealthDefault : [[actorProp objectForKey:@"Health"] intValue]];
-        [actor setPower: 0? kActorPowerDefault : [[actorProp objectForKey:@"Power"] intValue]];
-        [actor setScore: 0? kActorScoreDefault : [[actorProp objectForKey:@"Score"] intValue]];
+        float health = [[actorProp objectForKey:@"Health"] floatValue];
+        health = health == 0 ? kActorHealthDefault : health;
+        actor.health = health;
         
-        [actor setUpdateInterval: 0? kActorUpdateIntervalDefault : [[actorProp objectForKey:@"UpdateInterval"] floatValue]];
-        [actor setLogicInterval: 0? kActorLogicIntervalDefault : [[actorProp objectForKey:@"LogicInterval"] floatValue]];
+        float demage = [[actorProp objectForKey:@"Demage"] floatValue];
+        demage = demage == 0 ? kActorDemageDefault : demage;
+        actor.demage = demage;
+        
+        float power = [[actorProp objectForKey:@"Power"] floatValue];
+        power = power == 0 ? kActorPowerDefault : power;
+        actor.power = power;
+        
+        int score = [[actorProp objectForKey:@"Score"] intValue];
+        score = score == 0 ? kActorScoreDefault : score;
+        actor.score = score;
+        
+        float updateInterval = [[actorProp objectForKey:@"UpdateInterval"] floatValue];
+        updateInterval = updateInterval == 0 ? kActorUpdateIntervalDefault : updateInterval;
+        actor.updateInterval = updateInterval;
+        
+        float logicInterval = [[actorProp objectForKey:@"LogicInterval"] floatValue];
+        logicInterval = logicInterval == 0 ? kActorLogicIntervalDefault : logicInterval;
+        actor.logicInterval = logicInterval;
         
         NSArray * waypoints = [actorProp objectForKey:@"Waypoints"];
         if(waypoints != nil){
@@ -1055,7 +1076,7 @@
                 riTiledMapWaypoint* wp = [[DataModel sharedDataModel].waypoints objectForKey:w];
                 actor.curWaypoint = wp;
                 
-                //If actor in cpvzero, reset its position to waypoint's position.
+                //If actor's position cpvzero, reset its position to waypoint's position.
                 if(cpveql(cpvzero, actor.position))
                     actor.position = wp.position;
             }

@@ -48,7 +48,7 @@
 			<key>OrderZ</key>
 			<integer>2</integer>
 			<key>Ratio</key>
-			<string>{1.2,1}</string>
+			<string>{0.3,1}</string>
 			<key>Offset</key>
 			<string>{-1024,0}</string>
 		</dict>
@@ -58,7 +58,7 @@
 			<key>OrderZ</key>
 			<integer>1</integer>
 			<key>Ratio</key>
-			<string>{1,1}</string>
+			<string>{0.1,1}</string>
 			<key>Offset</key>
 			<string>{-1024,0}</string>
 		</dict>
@@ -77,13 +77,33 @@
 	<array>
 		<dict>
 			<key>Image</key>
-			<string>Butterfly_fly_48_48.png</string>
+			<string>butterfly_blue_48_48_fly.png</string>
 			<key>OrderZ</key>
 			<string>9</string>
 			<key>Animation</key>
-			<string>Butterfly_48_48.plist</string>
+			<string>butterfly_blue_48_48_ani.plist</string>
 			<key>Frame</key>
-			<string>Butterfly_fly_48_48.plist</string>
+			<string>butterfly_blue_48_48_fly.plist</string>
+		</dict>
+		<dict>
+			<key>Image</key>
+			<string>butterfly_black_48_48_fly.png</string>
+			<key>OrderZ</key>
+			<string>9</string>
+			<key>Animation</key>
+			<string>butterfly_black_48_48_ani.plist</string>
+			<key>Frame</key>
+			<string>butterfly_black_48_48_fly.plist</string>
+		</dict>
+		<dict>
+			<key>Image</key>
+			<string>butterfly_white_48_48_fly.png</string>
+			<key>OrderZ</key>
+			<string>9</string>
+			<key>Animation</key>
+			<string>butterfly_white_48_48_ani.plist</string>
+			<key>Frame</key>
+			<string>butterfly_white_48_48_fly.plist</string>
 		</dict>
 		<dict>
 			<key>Image</key>
@@ -634,9 +654,9 @@
 				<key>Color</key>
 				<string>{{1, 1}, {1, 1}}</string>
 				<key>Image</key>
-				<string>Butterfly_fly_48_48.png</string>
+				<string>butterfly_blue_48_48_fly.png</string>
 				<key>Frame</key>
-				<string>Butterfly_fly_48_48_1.png</string>
+				<string>butterfly_blue_48_48_fly_1.png</string>
 				<key>Opacity</key>
 				<real>1</real>
 				<key>Positions</key>
@@ -649,13 +669,13 @@
 				<key>Scale</key>
 				<string>{1, 1}</string>
 				<key>Size</key>
-				<string>{64, 32}</string>
+				<string>{48,48}</string>
 				<key>Tag</key>
 				<integer>0</integer>
 				<key>UV</key>
 				<string>{{68, 105}, {64, 32}}</string>
 				<key>Name</key>
-				<string>Butterfly_48_48</string>
+				<string>butterfly_blue_48_48</string>
 				<key>OrderZ</key>
 				<integer>11</integer>
 			</dict>
@@ -726,6 +746,10 @@
 			</dict>
 			<key>CountType</key>
 			<integer>1</integer>
+			<key>Health</key>
+			<integer>1</integer>
+			<key>Score</key>
+			<integer>1</integer>
 			<key>BirthTime</key>
 			<integer>0</integer>
 			<key>BirthIntervalRange</key>
@@ -735,7 +759,235 @@
 				<string>Flower_Purple_48_93</string>
 			</array>
 			<key>Count</key>
-			<integer>30</integer>
+			<integer>20</integer>
+		</dict>
+		<dict>
+			<key>GeneralProperties</key>
+			<dict>
+				<key>Angle</key>
+				<real>0</real>
+				<key>Color</key>
+				<string>{{1, 1}, {1, 1}}</string>
+				<key>Image</key>
+				<string>butterfly_black_48_48_fly.png</string>
+				<key>Frame</key>
+				<string>butterfly_black_48_48_fly_1.png</string>
+				<key>Opacity</key>
+				<real>0.8</real>
+				<key>Positions</key>
+				<array>
+					<string>{128,544}</string>
+					<string>{628,344}</string>
+				</array>
+				<key>SHName</key>
+				<string>TutorialTexture_5</string>
+				<key>Scale</key>
+				<string>{0.8, 0.8}</string>
+				<key>Size</key>
+				<string>{48, 48}</string>
+				<key>Tag</key>
+				<integer>0</integer>
+				<key>Name</key>
+				<string>butterfly_black_48_48</string>
+				<key>OrderZ</key>
+				<integer>11</integer>
+			</dict>
+			<key>PhysicProperties</key>
+			<dict>
+				<key>Category</key>
+				<integer>1</integer>
+				<key>CollisionType</key>
+				<integer>4</integer>
+				<key>Mass</key>
+				<real>0.2000000029802322</real>
+				<key>FixedRot</key>
+				<false/>
+				<key>Friction</key>
+				<real>0.2000000029802322</real>
+				<key>Group</key>
+				<integer>0</integer>
+				<key>IsCircle</key>
+				<true/>
+				<key>IsSenzor</key>
+				<false/>
+				<key>Mask</key>
+				<integer>65535</integer>
+				<key>Restitution</key>
+				<real>0.2000000029802322</real>
+				<key>ShapeFixtures_</key>
+				<array>
+					<array>
+						<string>{-33.9615, -6.9105}</string>
+						<string>{-18.9622, -11.7019}</string>
+						<string>{-6.0462, -2.32737}</string>
+						<string>{0.828468, 3.71399}</string>
+						<string>{-4.37962, 13.2969}</string>
+						<string>{-26.2536, 10.5887}</string>
+					</array>
+					<array>
+						<string>{28.9521, -6.49385}</string>
+						<string>{29.7854, -0.452469}</string>
+						<string>{13.7445, 12.4636}</string>
+						<string>{15.8277, -0.660797}</string>
+					</array>
+					<array>
+						<string>{0.828468, 3.71399}</string>
+						<string>{15.8277, -0.660797}</string>
+						<string>{13.7445, 12.4636}</string>
+						<string>{-4.37962, 13.2969}</string>
+					</array>
+					<array>
+						<string>{16.0361, -10.2437}</string>
+						<string>{28.9521, -6.49385}</string>
+						<string>{15.8277, -0.660797}</string>
+					</array>
+				</array>
+				<key>BodyType</key>
+				<integer>1</integer>
+			</dict>
+			<key>ActorProperties</key>
+			<dict>
+				<key>Speed</key>
+				<string>{80,120}</string>
+				<key>Waypoints</key>
+				<array>
+					<string>Enemy1</string>
+					<string>Enemy2</string>
+				</array>
+				<key>ActorType</key>
+				<string>Butterfly</string>
+			</dict>
+			<key>CountType</key>
+			<integer>1</integer>
+			<key>Health</key>
+			<integer>1</integer>
+			<key>Score</key>
+			<string>1</string>
+			<key>BirthTime</key>
+			<integer>0</integer>
+			<key>BirthIntervalRange</key>
+			<string>{5,20}</string>
+			<key>RelatedActors</key>
+			<array>
+				<string>Flower_Purple_48_93</string>
+			</array>
+			<key>Count</key>
+			<integer>10</integer>
+		</dict>
+		<dict>
+			<key>GeneralProperties</key>
+			<dict>
+				<key>Angle</key>
+				<real>0</real>
+				<key>Color</key>
+				<string>{{1, 1}, {1, 1}}</string>
+				<key>Image</key>
+				<string>butterfly_white_48_48_fly.png</string>
+				<key>Frame</key>
+				<string>butterfly_white_48_48_fly_1.png</string>
+				<key>Opacity</key>
+				<real>1</real>
+				<key>Positions</key>
+				<array>
+					<string>{128,544}</string>
+					<string>{628,344}</string>
+				</array>
+				<key>SHName</key>
+				<string>TutorialTexture_5</string>
+				<key>Scale</key>
+				<string>{2, 2}</string>
+				<key>Size</key>
+				<string>{38, 38}</string>
+				<key>Tag</key>
+				<integer>0</integer>
+				<key>UV</key>
+				<string>{{68, 105}, {64, 32}}</string>
+				<key>Name</key>
+				<string>butterfly_white_48_48</string>
+				<key>OrderZ</key>
+				<integer>11</integer>
+			</dict>
+			<key>PhysicProperties</key>
+			<dict>
+				<key>Category</key>
+				<integer>1</integer>
+				<key>CollisionType</key>
+				<integer>4</integer>
+				<key>Mass</key>
+				<real>0.2000000029802322</real>
+				<key>FixedRot</key>
+				<false/>
+				<key>Friction</key>
+				<real>0.2000000029802322</real>
+				<key>Group</key>
+				<integer>0</integer>
+				<key>IsCircle</key>
+				<true/>
+				<key>IsSenzor</key>
+				<false/>
+				<key>Mask</key>
+				<integer>65535</integer>
+				<key>Restitution</key>
+				<real>0.2000000029802322</real>
+				<key>ShapeFixtures_</key>
+				<array>
+					<array>
+						<string>{-33.9615, -6.9105}</string>
+						<string>{-18.9622, -11.7019}</string>
+						<string>{-6.0462, -2.32737}</string>
+						<string>{0.828468, 3.71399}</string>
+						<string>{-4.37962, 13.2969}</string>
+						<string>{-26.2536, 10.5887}</string>
+					</array>
+					<array>
+						<string>{28.9521, -6.49385}</string>
+						<string>{29.7854, -0.452469}</string>
+						<string>{13.7445, 12.4636}</string>
+						<string>{15.8277, -0.660797}</string>
+					</array>
+					<array>
+						<string>{0.828468, 3.71399}</string>
+						<string>{15.8277, -0.660797}</string>
+						<string>{13.7445, 12.4636}</string>
+						<string>{-4.37962, 13.2969}</string>
+					</array>
+					<array>
+						<string>{16.0361, -10.2437}</string>
+						<string>{28.9521, -6.49385}</string>
+						<string>{15.8277, -0.660797}</string>
+					</array>
+				</array>
+				<key>BodyType</key>
+				<integer>1</integer>
+			</dict>
+			<key>ActorProperties</key>
+			<dict>
+				<key>Speed</key>
+				<string>{80,120}</string>
+				<key>Health</key>
+				<integer>3</integer>
+				<key>Score</key>
+				<integer>3</integer>
+				<key>Waypoints</key>
+				<array>
+					<string>Enemy1</string>
+					<string>Enemy2</string>
+				</array>
+				<key>ActorType</key>
+				<string>Butterfly</string>
+			</dict>
+			<key>CountType</key>
+			<integer>1</integer>
+			<key>BirthTime</key>
+			<integer>0</integer>
+			<key>BirthIntervalRange</key>
+			<string>{5,20}</string>
+			<key>RelatedActors</key>
+			<array>
+				<string>Flower_Purple_48_93</string>
+			</array>
+			<key>Count</key>
+			<integer>5</integer>
 		</dict>
 		<dict>
 			<key>GeneralProperties</key>

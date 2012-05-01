@@ -18,10 +18,12 @@
 #define kActorLifeDefault  INFINITY
 #define kActorAgeDefault 0
 #define kActorSpeedDefault 10
+#define kActorSpeedVarDefault 1.0
 
-#define kActorHealthDefault  100
-#define kActorPowerDefault  100
-#define kActorScoreDefault  0
+#define kActorHealthDefault  1
+#define kActorDemageDefault 0
+#define kActorPowerDefault  1
+#define kActorScoreDefault  1
 
 
 #define kActorActionArrayCapacityDefault  100
@@ -49,8 +51,10 @@ typedef enum {
     int _speed;
 	float _speedVar;
 
-    int _health;
-    int _power;	
+    float _health;
+    float _demage;
+
+    float _power;	
     int _score;	
 
     
@@ -88,8 +92,10 @@ typedef enum {
 @property (nonatomic, assign) float age;
 @property (nonatomic, assign) int speed;
 
-@property (nonatomic, assign) int health;
-@property (nonatomic, assign) int power;
+@property (nonatomic, assign) float health;
+@property (nonatomic, assign) float demage;
+
+@property (nonatomic, assign) float power;
 @property (nonatomic, assign) int score;
 
 @property (nonatomic, assign) float updateInterval;
@@ -124,6 +130,7 @@ typedef enum {
 
 -(void)speedUp:(float)s;
 -(BOOL)isMature;
+-(BOOL)touchedInLayer:(CCLayer *)layer withTouchs:(NSSet *)touches;
 
 @end
 

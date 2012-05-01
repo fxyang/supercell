@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>animations</key>
+	<dict>
+		<key>butterfly_black_48_48_fly</key>
+		<dict>
+			<key>frames</key>
+			<array>
+				<string>butterfly_black_48_48_fly_1.png</string>
+				<string>butterfly_black_48_48_fly_2.png</string>
+				<string>butterfly_black_48_48_fly_3.png</string>
+				<string>butterfly_black_48_48_fly_4.png</string>
+				<string>butterfly_black_48_48_fly_5.png</string>
+				<string>butterfly_black_48_48_fly_6.png</string>
+				<string>butterfly_black_48_48_fly_7.png</string>
+				<string>butterfly_black_48_48_fly_8.png</string>
+                <string>butterfly_black_48_48_fly_9.png</string>
+				<string>butterfly_black_48_48_fly_10.png</string>
+				<string>butterfly_black_48_48_fly_11.png</string>
+				<string>butterfly_black_48_48_fly_12.png</string>
+				<string>butterfly_black_48_48_fly_13.png</string>
+				<string>butterfly_black_48_48_fly_14.png</string>
+				<string>butterfly_black_48_48_fly_15.png</string>
+				<string>butterfly_black_48_48_fly_16.png</string>
+                <string>butterfly_black_48_48_fly_17.png</string>
+				<string>butterfly_black_48_48_fly_18.png</string>
+			</array>
+			<key>delay</key>
+			<real>0.01</real>
+		</dict>
+		<key>butterfly_black_48_48_dead</key>
+		<dict>
+			<key>frames</key>
+			<array>
+				<string>butterfly_black_48_48_fly_1.png</string>
+				<string>butterfly_black_48_48_fly_2.png</string>
+				<string>butterfly_black_48_48_fly_3.png</string>
+				<string>butterfly_black_48_48_fly_4.png</string>
+				<string>butterfly_black_48_48_fly_5.png</string>
+				<string>butterfly_black_48_48_fly_6.png</string>
+				<string>butterfly_black_48_48_fly_7.png</string>
+				<string>butterfly_black_48_48_fly_8.png</string>
+                <string>butterfly_black_48_48_fly_9.png</string>
+				<string>butterfly_black_48_48_fly_10.png</string>
+				<string>butterfly_black_48_48_fly_11.png</string>
+				<string>butterfly_black_48_48_fly_12.png</string>
+				<string>butterfly_black_48_48_fly_13.png</string>
+				<string>butterfly_black_48_48_fly_14.png</string>
+				<string>butterfly_black_48_48_fly_15.png</string>
+				<string>butterfly_black_48_48_fly_16.png</string>
+                <string>butterfly_black_48_48_fly_17.png</string>
+				<string>butterfly_black_48_48_fly_18.png</string>
+			</array>
+			<key>delay</key>
+			<real>0.005</real>
+		</dict>
+	</dict>
+</dict>
+</plist>

@@ -20,6 +20,8 @@
 @synthesize speed = _speed;
 
 @synthesize health = _health;
+@synthesize demage = _demage;
+
 @synthesize power = _power;
 @synthesize score = _score;
 
@@ -52,15 +54,18 @@
         
         _life = kActorLifeDefault;
         _age = kActorAgeDefault;
+        
         _speed = kActorSpeedDefault;
+        _speedVar = kActorSpeedVarDefault;
 
         _health = kActorHealthDefault;
+        _demage = kActorDemageDefault;
+
         _power = kActorPowerDefault;
         _score = kActorScoreDefault;
         
         _updateInterval = kActorUpdateIntervalDefault;
         _logicInterval = kActorLogicIntervalDefault;
-        _speedVar = 1.0;
         
         _gameLayer = nil;
         
@@ -119,6 +124,8 @@
         self.age = copyFrom.age;
 
         self.health = copyFrom.health;
+        self.demage = copyFrom.demage;
+
         self.power = copyFrom.power;
         self.score = copyFrom.score;
         
@@ -161,25 +168,14 @@
         }
         
         positionAdjusted = YES;
-        if(move != nil){
-//            if([[move class] isSubclassOfClass:[CCActionInterval class]]){
-            
+        if(move != nil){            
             
                 self.curMovement = [CCSequence actions:move,
                         [CCCallFuncO actionWithTarget:self selector:@selector(runActionFollow:) object:_curWaypoint], 
                                 nil];
                 self.curMovement = [CCSpeed actionWithAction:self.curMovement speed:_speedVar];
                 [self runAction:_curMovement];
-            
-            
 
-//            }
-//            else{
-//                self.curMovement = [CCSpeed actionWithAction:move speed:_speedVar];
-//                [self runAction:_curMovement];
-//            }
-            
-            
         }
     }
     
@@ -203,8 +199,13 @@
 }
 
 -(void)update:(ccTime)dt{
-//    _life = _life - dt;
+
     _age = _age + dt;
+    if(_demage >0)
+        _demage = _demage - dt;
+    if(_demage <0)
+        _demage = 0;
+    
     
     if(_bodyType == kBodyKinematic){
         CGPoint pos = [self position];
@@ -240,6 +241,21 @@
 
 -(BOOL)isMature{
     return YES;
+}
+
+-(BOOL)touchedInLayer:(CCLayer *)layer withTouchs:(NSSet *)touches{
+    
+    CGRect box = [self boundingBox];
+    for(id touch in touches){
+        if(layer != nil){
+            CGPoint pt = [layer convertTouchToNodeSpace:touch];            
+            if(CGRectContainsPoint(box, pt)){
+                NSLog(@"Touched.............");
+                return YES;
+            }
+        }
+    }
+    return NO;
 }
 
 

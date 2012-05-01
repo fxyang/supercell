@@ -39,6 +39,13 @@
 		5B76DD8F14D4A68D00322378 /* TileMap.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 5B76DD8214D4A68D00322378 /* TileMap.tmx */; };
 		5B76DD9014D4A68D00322378 /* tmw_desert_spacing.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B76DD8314D4A68D00322378 /* tmw_desert_spacing.png */; };
 		5B76DD9914D4A87400322378 /* Projectile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B76DD9814D4A87300322378 /* Projectile.m */; };
+		5B8087E3151FF18E004452F5 /* butterfly_blue_48_48_ani.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B8087E2151FF18E004452F5 /* butterfly_blue_48_48_ani.plist */; };
+		5B8087E5151FFE9D004452F5 /* butterfly_black_48_48_ani.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B8087E4151FFE9D004452F5 /* butterfly_black_48_48_ani.plist */; };
+		5B8087E81520011D004452F5 /* butterfly_black_48_48_fly.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B8087E61520011D004452F5 /* butterfly_black_48_48_fly.png */; };
+		5B8087E91520011D004452F5 /* butterfly_black_48_48_fly.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B8087E71520011D004452F5 /* butterfly_black_48_48_fly.plist */; };
+		5B8087EC15200D2E004452F5 /* butterfly_white_48_48_fly.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B8087EA15200D2E004452F5 /* butterfly_white_48_48_fly.plist */; };
+		5B8087ED15200D2E004452F5 /* butterfly_white_48_48_fly.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B8087EB15200D2E004452F5 /* butterfly_white_48_48_fly.png */; };
+		5B8087EF15200D56004452F5 /* butterfly_white_48_48_ani.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B8087EE15200D56004452F5 /* butterfly_white_48_48_ani.plist */; };
 		5B97306714E835FA00F5CDB2 /* Level0.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B97306614E835FA00F5CDB2 /* Level0.plist */; };
 		5B97306A14E8366700F5CDB2 /* riLevelLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B97306914E8366600F5CDB2 /* riLevelLoader.m */; };
 		5B97306C14E8682700F5CDB2 /* TutorialTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B97306B14E8682700F5CDB2 /* TutorialTexture.png */; };
@@ -78,7 +85,6 @@
 		5B992BCA14C9E99D00961C5A /* cpSweep1D.c in Sources */ = {isa = PBXBuildFile; fileRef = 5B992BA714C9E99D00961C5A /* cpSweep1D.c */; };
 		5B992BCB14C9E99D00961C5A /* cpVect.c in Sources */ = {isa = PBXBuildFile; fileRef = 5B992BA814C9E99D00961C5A /* cpVect.c */; };
 		5B992BCC14C9E99D00961C5A /* VERSION.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5B992BAA14C9E99D00961C5A /* VERSION.txt */; };
-		5B99C4AC14D9C67C000C9D52 /* pig_head_64_96.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B99C4AB14D9C67C000C9D52 /* pig_head_64_96.png */; };
 		5B99C4AF14DA09B4000C9D52 /* ball_grey_10_10.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B99C4AE14DA09B4000C9D52 /* ball_grey_10_10.png */; };
 		5B99C4B114DA1A51000C9D52 /* ball_rope_10_10.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B99C4B014DA1A51000C9D52 /* ball_rope_10_10.png */; };
 		5B99C4B614DC6D19000C9D52 /* riVerletRope.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B99C4B514DC6D19000C9D52 /* riVerletRope.m */; };
@@ -94,9 +100,8 @@
 		5BD54E2C15001EF200DA732E /* paper_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 5BD54E2B15001EF200DA732E /* paper_background.png */; };
 		5BD54E32150159F000DA732E /* riRollingTiledMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD54E31150159F000DA732E /* riRollingTiledMap.m */; };
 		5BD54E341501780400DA732E /* wall-texture.png in Resources */ = {isa = PBXBuildFile; fileRef = 5BD54E331501780300DA732E /* wall-texture.png */; };
-		5BD54E371502B3EC00DA732E /* Butterfly_fly_48_48.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BD54E351502B3EB00DA732E /* Butterfly_fly_48_48.plist */; };
-		5BD54E381502B3EC00DA732E /* Butterfly_fly_48_48.png in Resources */ = {isa = PBXBuildFile; fileRef = 5BD54E361502B3EB00DA732E /* Butterfly_fly_48_48.png */; };
-		5BD54E3A1502B52F00DA732E /* Butterfly_48_48.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BD54E391502B52F00DA732E /* Butterfly_48_48.plist */; };
+		5BD54E371502B3EC00DA732E /* butterfly_blue_48_48_fly.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BD54E351502B3EB00DA732E /* butterfly_blue_48_48_fly.plist */; };
+		5BD54E381502B3EC00DA732E /* butterfly_blue_48_48_fly.png in Resources */ = {isa = PBXBuildFile; fileRef = 5BD54E361502B3EB00DA732E /* butterfly_blue_48_48_fly.png */; };
 		5BD54E4015059BCF00DA732E /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD54E3F15059BC900DA732E /* Player.m */; };
 		5BD54E431506FC5500DA732E /* Flower_Purple_48_93.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BD54E411506FC5200DA732E /* Flower_Purple_48_93.plist */; };
 		5BD54E441506FC5500DA732E /* Flower_Purple_48_93.png in Resources */ = {isa = PBXBuildFile; fileRef = 5BD54E421506FC5300DA732E /* Flower_Purple_48_93.png */; };
@@ -303,6 +308,13 @@
 		5B76DD8314D4A68D00322378 /* tmw_desert_spacing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tmw_desert_spacing.png; path = Resources/tmw_desert_spacing.png; sourceTree = "<group>"; };
 		5B76DD9714D4A87200322378 /* Projectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Projectile.h; sourceTree = "<group>"; };
 		5B76DD9814D4A87300322378 /* Projectile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Projectile.m; sourceTree = "<group>"; };
+		5B8087E2151FF18E004452F5 /* butterfly_blue_48_48_ani.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = butterfly_blue_48_48_ani.plist; path = Resources/butterfly_blue_48_48_ani.plist; sourceTree = "<group>"; };
+		5B8087E4151FFE9D004452F5 /* butterfly_black_48_48_ani.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = butterfly_black_48_48_ani.plist; path = Resources/butterfly_black_48_48_ani.plist; sourceTree = "<group>"; };
+		5B8087E61520011D004452F5 /* butterfly_black_48_48_fly.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = butterfly_black_48_48_fly.png; path = Resources/butterfly_black_48_48_fly.png; sourceTree = "<group>"; };
+		5B8087E71520011D004452F5 /* butterfly_black_48_48_fly.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = butterfly_black_48_48_fly.plist; path = Resources/butterfly_black_48_48_fly.plist; sourceTree = "<group>"; };
+		5B8087EA15200D2E004452F5 /* butterfly_white_48_48_fly.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = butterfly_white_48_48_fly.plist; path = Resources/butterfly_white_48_48_fly.plist; sourceTree = "<group>"; };
+		5B8087EB15200D2E004452F5 /* butterfly_white_48_48_fly.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = butterfly_white_48_48_fly.png; path = Resources/butterfly_white_48_48_fly.png; sourceTree = "<group>"; };
+		5B8087EE15200D56004452F5 /* butterfly_white_48_48_ani.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = butterfly_white_48_48_ani.plist; path = Resources/butterfly_white_48_48_ani.plist; sourceTree = "<group>"; };
 		5B97306614E835FA00F5CDB2 /* Level0.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Level0.plist; sourceTree = "<group>"; };
 		5B97306814E8366600F5CDB2 /* riLevelLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = riLevelLoader.h; path = riLib/riLevelLoader.h; sourceTree = "<group>"; };
 		5B97306914E8366600F5CDB2 /* riLevelLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = riLevelLoader.m; path = riLib/riLevelLoader.m; sourceTree = "<group>"; };
@@ -371,7 +383,6 @@
 		5B992BA814C9E99D00961C5A /* cpVect.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cpVect.c; sourceTree = "<group>"; };
 		5B992BA914C9E99D00961C5A /* prime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prime.h; sourceTree = "<group>"; };
 		5B992BAA14C9E99D00961C5A /* VERSION.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VERSION.txt; sourceTree = "<group>"; };
-		5B99C4AB14D9C67C000C9D52 /* pig_head_64_96.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pig_head_64_96.png; path = Resources/pig_head_64_96.png; sourceTree = "<group>"; };
 		5B99C4AE14DA09B4000C9D52 /* ball_grey_10_10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ball_grey_10_10.png; path = Resources/ball_grey_10_10.png; sourceTree = "<group>"; };
 		5B99C4B014DA1A51000C9D52 /* ball_rope_10_10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ball_rope_10_10.png; path = Resources/ball_rope_10_10.png; sourceTree = "<group>"; };
 		5B99C4B414DC6D19000C9D52 /* riVerletRope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = riVerletRope.h; path = riLib/riVerletRope.h; sourceTree = "<group>"; };
@@ -391,9 +402,8 @@
 		5BD54E30150159F000DA732E /* riRollingTiledMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = riRollingTiledMap.h; path = riLib/riRollingTiledMap.h; sourceTree = "<group>"; };
 		5BD54E31150159F000DA732E /* riRollingTiledMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = riRollingTiledMap.m; path = riLib/riRollingTiledMap.m; sourceTree = "<group>"; };
 		5BD54E331501780300DA732E /* wall-texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "wall-texture.png"; path = "Resources/wall-texture.png"; sourceTree = "<group>"; };
-		5BD54E351502B3EB00DA732E /* Butterfly_fly_48_48.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Butterfly_fly_48_48.plist; path = Resources/Butterfly_fly_48_48.plist; sourceTree = "<group>"; };
-		5BD54E361502B3EB00DA732E /* Butterfly_fly_48_48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Butterfly_fly_48_48.png; path = Resources/Butterfly_fly_48_48.png; sourceTree = "<group>"; };
-		5BD54E391502B52F00DA732E /* Butterfly_48_48.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Butterfly_48_48.plist; path = Resources/Butterfly_48_48.plist; sourceTree = "<group>"; };
+		5BD54E351502B3EB00DA732E /* butterfly_blue_48_48_fly.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = butterfly_blue_48_48_fly.plist; path = Resources/butterfly_blue_48_48_fly.plist; sourceTree = "<group>"; };
+		5BD54E361502B3EB00DA732E /* butterfly_blue_48_48_fly.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = butterfly_blue_48_48_fly.png; path = Resources/butterfly_blue_48_48_fly.png; sourceTree = "<group>"; };
 		5BD54E3E15059BC700DA732E /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		5BD54E3F15059BC900DA732E /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
 		5BD54E411506FC5200DA732E /* Flower_Purple_48_93.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Flower_Purple_48_93.plist; path = Resources/Flower_Purple_48_93.plist; sourceTree = "<group>"; };
@@ -1046,6 +1056,10 @@
 		5BF2814B14C77DFB007C1169 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				5B8087EA15200D2E004452F5 /* butterfly_white_48_48_fly.plist */,
+				5B8087EB15200D2E004452F5 /* butterfly_white_48_48_fly.png */,
+				5B8087E61520011D004452F5 /* butterfly_black_48_48_fly.png */,
+				5B8087E71520011D004452F5 /* butterfly_black_48_48_fly.plist */,
 				5BA9F18E151BED1C007FB381 /* Dandelion.png */,
 				5B182C2A15197956002A3CDE /* TileMap_Background.tmx */,
 				5B182C26151970CA002A3CDE /* grass_background.plist */,
@@ -1061,8 +1075,8 @@
 				5BD54E4715099D1500DA732E /* net_green.png */,
 				5BD54E411506FC5200DA732E /* Flower_Purple_48_93.plist */,
 				5BD54E421506FC5300DA732E /* Flower_Purple_48_93.png */,
-				5BD54E351502B3EB00DA732E /* Butterfly_fly_48_48.plist */,
-				5BD54E361502B3EB00DA732E /* Butterfly_fly_48_48.png */,
+				5BD54E351502B3EB00DA732E /* butterfly_blue_48_48_fly.plist */,
+				5BD54E361502B3EB00DA732E /* butterfly_blue_48_48_fly.png */,
 				5BD54E331501780300DA732E /* wall-texture.png */,
 				5BD54E2B15001EF200DA732E /* paper_background.png */,
 				5BD54E2314FDAB0900DA732E /* joystick_background.png */,
@@ -1076,7 +1090,6 @@
 				5B99C4C014DC8D91000C9D52 /* rope.png */,
 				5B99C4B014DA1A51000C9D52 /* ball_rope_10_10.png */,
 				5B99C4AE14DA09B4000C9D52 /* ball_grey_10_10.png */,
-				5B99C4AB14D9C67C000C9D52 /* pig_head_64_96.png */,
 				5BE5381214D90423002408C3 /* Enemy1.png */,
 				5BE5381314D90423002408C3 /* Enemy2.png */,
 				5BE5381014D86B68002408C3 /* underwater_768_1024.png */,
@@ -1103,7 +1116,9 @@
 				5BF2815D14C77DFB007C1169 /* iTunesArtwork */,
 				5B97306614E835FA00F5CDB2 /* Level0.plist */,
 				5B62B16614F5971F00E8A112 /* lemon_80_80.plist */,
-				5BD54E391502B52F00DA732E /* Butterfly_48_48.plist */,
+				5B8087E2151FF18E004452F5 /* butterfly_blue_48_48_ani.plist */,
+				5B8087E4151FFE9D004452F5 /* butterfly_black_48_48_ani.plist */,
+				5B8087EE15200D56004452F5 /* butterfly_white_48_48_ani.plist */,
 				5BD54E451506FCDB00DA732E /* Flower_Purple.plist */,
 			);
 			name = Resources;
@@ -1502,7 +1517,6 @@
 				5BE5381114D86B68002408C3 /* underwater_768_1024.png in Resources */,
 				5BE5381414D90424002408C3 /* Enemy1.png in Resources */,
 				5BE5381514D90424002408C3 /* Enemy2.png in Resources */,
-				5B99C4AC14D9C67C000C9D52 /* pig_head_64_96.png in Resources */,
 				5B99C4AF14DA09B4000C9D52 /* ball_grey_10_10.png in Resources */,
 				5B99C4B114DA1A51000C9D52 /* ball_rope_10_10.png in Resources */,
 				5B99C4C114DC8D92000C9D52 /* rope.png in Resources */,
@@ -1518,9 +1532,8 @@
 				5BD54E2814FDAB0A00DA732E /* joystick_thumb.png in Resources */,
 				5BD54E2C15001EF200DA732E /* paper_background.png in Resources */,
 				5BD54E341501780400DA732E /* wall-texture.png in Resources */,
-				5BD54E371502B3EC00DA732E /* Butterfly_fly_48_48.plist in Resources */,
-				5BD54E381502B3EC00DA732E /* Butterfly_fly_48_48.png in Resources */,
-				5BD54E3A1502B52F00DA732E /* Butterfly_48_48.plist in Resources */,
+				5BD54E371502B3EC00DA732E /* butterfly_blue_48_48_fly.plist in Resources */,
+				5BD54E381502B3EC00DA732E /* butterfly_blue_48_48_fly.png in Resources */,
 				5BD54E431506FC5500DA732E /* Flower_Purple_48_93.plist in Resources */,
 				5BD54E441506FC5500DA732E /* Flower_Purple_48_93.png in Resources */,
 				5BD54E461506FCDC00DA732E /* Flower_Purple.plist in Resources */,
@@ -1537,6 +1550,13 @@
 				5B182C29151970CB002A3CDE /* grass_background.png in Resources */,
 				5B182C2B15197956002A3CDE /* TileMap_Background.tmx in Resources */,
 				5BA9F18F151BED1C007FB381 /* Dandelion.png in Resources */,
+				5B8087E3151FF18E004452F5 /* butterfly_blue_48_48_ani.plist in Resources */,
+				5B8087E5151FFE9D004452F5 /* butterfly_black_48_48_ani.plist in Resources */,
+				5B8087E81520011D004452F5 /* butterfly_black_48_48_fly.png in Resources */,
+				5B8087E91520011D004452F5 /* butterfly_black_48_48_fly.plist in Resources */,
+				5B8087EC15200D2E004452F5 /* butterfly_white_48_48_fly.plist in Resources */,
+				5B8087ED15200D2E004452F5 /* butterfly_white_48_48_fly.png in Resources */,
+				5B8087EF15200D56004452F5 /* butterfly_white_48_48_ani.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
