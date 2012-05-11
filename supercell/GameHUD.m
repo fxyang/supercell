@@ -51,13 +51,7 @@ static GameHUD *_sharedHUD = nil;
 	if ((self=[super init]) ) {
 		
 		CGSize winSize = [CCDirector sharedDirector].winSize;
-        
-        [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGB565];
-//        background = [CCSprite spriteWithFile:@"hud.png"];
-//        background.anchorPoint = ccp(0,0);
-//        background.position = ccp(0,30);
-//        [self addChild:background];
-        
+                
         [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_Default];
 		
         movableSprites = [[NSMutableArray alloc] init];
@@ -221,28 +215,15 @@ static GameHUD *_sharedHUD = nil;
 		if (isBuildable) {
 			selSprite.opacity = 200;
 		} else {
-			selSprite.opacity = 50;		
+			selSprite.opacity = 50;
 		}
 	}
 }
 
 - (void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event {  
-	CGPoint touchLocation = [self convertTouchToNodeSpace:touch];	
 	DataModel *m = [DataModel sharedDataModel];
     
-	if (selSprite) {
-		CGRect backgroundRect = CGRectMake(background.position.x, 
-                                           background.position.y, 
-                                           background.contentSize.width, 
-                                           background.contentSize.height);
-		
-		if (!CGRectContainsPoint(backgroundRect, touchLocation)) {
-			CGPoint touchLocationInGameLayer = [m._gameLayer convertTouchToNodeSpace:touch];
-            NSLog(@"Touching in GameHUD { %f , %f }",touchLocation.x,touchLocation.y);
-            NSLog(@"Touching in GameLayer { %f , %f }",touchLocationInGameLayer.x,touchLocationInGameLayer.y);
-
-		}
-		
+	if (selSprite) {	
 		[self removeChild:selSprite cleanup:YES];
 		selSprite = nil;		
 		[self removeChild:selSpriteRange cleanup:YES];

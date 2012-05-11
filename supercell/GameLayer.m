@@ -514,6 +514,8 @@ enum {
     [self removeChild:coin cleanup:YES];
 }
 
+
+
 #pragma mark Touch Functions
 - (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {	
@@ -570,10 +572,11 @@ enum {
 
 - (void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {	
-    CGPoint pt = [self convertTouchToNodeSpace:[touches anyObject]];
-    _touchEndPos = pt;
     
-
+    UITouch * touch = [touches anyObject];
+    
+    CGPoint pt = [self convertTouchToNodeSpace:touch];
+    _touchEndPos = pt;
     
 }
 
@@ -640,7 +643,8 @@ enum {
         
         [gameHUD updateMoney:bullet.score - 1];
         
-    }else{
+    }
+    else{
 
         CGPoint diff = ccpSub(_touchEndPos, _touchBeginPos);
         
