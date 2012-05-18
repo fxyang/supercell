@@ -162,7 +162,7 @@ enum {
     [self addChild:_parallaxNode z:kParallaxNodeZ tag:kParallaxNodeTag];
     
 
-    [self addWeaponAt:ccp(_winSize.width/2,10)];
+    [self addWeaponAt:kWeaponPosition];
     
     self.position = ccp(-_winSize.width/2, 0);
     
@@ -577,32 +577,35 @@ enum {
     
     CGPoint pt = [self convertTouchToNodeSpace:touch];
     _touchEndPos = pt;
+    _touchEndTime = [[NSDate date] timeIntervalSince1970];
+
     
 }
 
 - (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {	
     CGPoint pt = [self convertTouchToNodeSpace:[touches anyObject]];
-    _touchEndPos = pt;
     
+    _touchEndPos = pt;
     _touchEndTime = [[NSDate date] timeIntervalSince1970];
 
     float touchTime = _touchEndTime - _touchBeginTime;
-
+    CGPoint touchMove = ccpSub(_touchEndPos, _touchBeginPos);
+    float touchDistance = ccpLength(touchMove);
+    if (touchTime < 0.001) touchTime = 0.001;
     
-    float dis = ccpDistance(_touchEndPos, _touchBeginPos);
     
-    if(dis < kFingerNoMovementFactor || touchTime > kFingerTouchTimeFactor){
-        
+//    if(touchDistance < kFingerNoMovementFactor || touchTime > kFingerTouchTimeFactor){
+    if(_touchBeginPos.x < 100 && _touchBeginPos.y < 100){
 
-        for(riActor * b in _bulletsArray){
-            if([b touchedInLayer:self withTouchs:touches])
-                break;
-        }
         
-        float touchPower = 500 + touchTime * 500;
+//        float touchPower = 500 + touchTime * 500;
+        float touchSpeed = touchDistance/touchTime;
+        float touchPower = touchSpeed /2;
+        NSLog(@"touch speed : %f",touchSpeed);
+
+        
         touchPower = touchPower < 1000 ? touchPower : 1000;
-        NSLog(@"touch last: %f",touchPower);
         if(touchPower < 750)
             [gameHUD updateMoney:-1];
         else 
@@ -645,13 +648,17 @@ enum {
         
     }
     else{
+        
+        for(riActor * b in _bulletsArray){
+            if([b touchedInLayer:self withTouchs:touches])
+                break;
+        }
 
-        CGPoint diff = ccpSub(_touchEndPos, _touchBeginPos);
         
         CCAction * backgroundAction =  [[CCActionManager sharedManager] getActionByTag:kBackgroundActionTag target:self];
-        if(backgroundAction == nil && abs(diff.x) > abs(diff.y) && abs(diff.x) > kFingerMovementFactorX){
-            diff.y = 0;
-            CGPoint newPos = ccpAdd(self.position, diff);
+        if(backgroundAction == nil && abs(touchMove.x) > abs(touchMove.y) && abs(touchMove.x) > kFingerMovementFactorX){
+            touchMove.y = 0;
+            CGPoint newPos = ccpAdd(self.position, touchMove);
                         
             if(newPos.x < -_winSize.width)
                 newPos.x = -_winSize.width;
@@ -682,10 +689,6 @@ enum {
     
     actor.demage = actor.demage + bullet.power;
     bullet.score ++;
-    
-    
-    NSLog(@"Butterfly health = %f , score = %d",actor.health,actor.score);
-    NSLog(@"Bullet score = %d",bullet.score);
 
     
 }
