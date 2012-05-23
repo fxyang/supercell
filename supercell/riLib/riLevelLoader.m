@@ -444,25 +444,25 @@
     // bottom
     shape = cpSegmentShapeNew(staticBody, ccp(wb.origin.x, ss.height - (wb.origin.y + wb.size.height)), 
                               ccp(wb.origin.x+ wb.size.width, ss.height - (wb.origin.y + wb.size.height)), 0.0f);
-    shape->e = 1.0f; shape->u = 1.0f;
+    shape->e = 1.0f; shape->u = 1.0f; shape->collision_type = 0;
     cpSpaceAddStaticShape(space, shape);
     
     // top
     shape = cpSegmentShapeNew(staticBody, ccp(wb.origin.x,ss.height - wb.origin.y), 
                               ccp((wb.origin.x + wb.size.width),ss.height - wb.origin.y), 0.0f);
-    shape->e = 1.0f; shape->u = 1.0f;
+    shape->e = 1.0f; shape->u = 1.0f; shape->collision_type = 0;
     cpSpaceAddStaticShape(space, shape);
     
     // left
     shape = cpSegmentShapeNew(staticBody, ccp(wb.origin.x, ss.height - (wb.origin.y + wb.size.height)), 
                               ccp(wb.origin.x, ss.height - wb.origin.y), 0.0f);
-    shape->e = 1.0f; shape->u = 1.0f;
+    shape->e = 1.0f; shape->u = 1.0f; shape->collision_type = 0;
     cpSpaceAddStaticShape(space, shape);
     
     // right
     shape = cpSegmentShapeNew(staticBody, ccp(wb.origin.x + wb.size.width,ss.height - (wb.origin.y + wb.size.height)), 
                               ccp(wb.origin.x + wb.size.width,ss.height - wb.origin.y), 0.0f);
-    shape->e = 1.0f; shape->u = 1.0f;
+    shape->e = 1.0f; shape->u = 1.0f; shape->collision_type = 0;
     cpSpaceAddStaticShape(space, shape);
     
 }

@@ -29,7 +29,7 @@
 #define kActorActionArrayCapacityDefault  100
 #define kActorWaypointArrayCapacityDefault  10
 
-#define kActorUpdateIntervalDefault 0.05
+#define kActorUpdateIntervalDefault 0.1
 #define kActorLogicIntervalDefault 0.2
 #define kActorAnimationIntervalDefault 0.05
 

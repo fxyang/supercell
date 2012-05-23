@@ -31,7 +31,7 @@
 #define kFingerNoMovementFactor 40
 #define kFingerTouchTimeFactor 1.5
 
-#define kWeaponPosition ccp(10,10)
+#define kWeaponPosition ccp(100,200)
 
 
 typedef enum {

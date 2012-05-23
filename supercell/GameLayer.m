@@ -126,7 +126,7 @@ enum {
 	_spaceManager.constantDt = 1.0/55.0;
     _spaceManager.damping = 1.0;
     _spaceManager.rehashStaticEveryStep = YES;
-//    _spaceManager.gravity = ccp(300,0);
+//    _spaceManager.gravity = ccp(0,-9.8*5);
     
     self.space = [_spaceManager space];
     _actorsArray = [[NSMutableArray alloc] init];
@@ -164,8 +164,8 @@ enum {
 
     [self addWeaponAt:kWeaponPosition];
     
-    self.position = ccp(-_winSize.width/2, 0);
-    
+//    self.position = ccp(-_winSize.width/2, 0);
+    self.position = ccp(0,0);
     
     CCParticleSystemQuad * dandelionParticle = [CCParticleSystemQuad particleWithFile:@"DandelionParticle.plist"];
     dandelionParticle.position = ccp(_winSize.width/2,_winSize.height/2);
@@ -203,9 +203,21 @@ enum {
 								 selector:@selector(handleCollisionWithButterfly:arbiter:space:)
                                   moments:COLLISION_BEGIN, nil];
     
-	[_spaceManager start]; 	
+	[_spaceManager start]; 
+	
+    cpShape * pin = [_spaceManager addRectAt:ccp(800,150) mass:2 width:5 height:5 rotation:3];
+    pin->u = 1.0f;
+    pin->e = 0.0f;
     
-
+    cpShapeNode * pinNode = [cpShapeNode nodeWithShape:pin];
+    [self addChild:pinNode z:1008];
+    
+    cpShape * board = [_spaceManager addRectAt:ccp(512,100) mass:STATIC_MASS width:2048 height:5 rotation:3];
+    board->u = 1.0f;
+    board->e = 0.0f;
+    
+    cpShapeNode * boardNode = [cpShapeNode nodeWithShape:board];
+    [self addChild:boardNode z:1008];
     
 	return self;
 }
@@ -259,17 +271,18 @@ enum {
 -(void)addWeaponAt:(CGPoint) pt{
     
     
-//    cpShape *weaponShape = [_spaceManager addCircleAt:pt mass:INFINITY radius:10];
-//    weaponShape->e = 0.1f;
-//    weaponShape->u = 1.0f;
-//    weaponShape->collision_type = GARDEN_COLLISION_TYPE;
-//    weaponShape->group = 1;
+    cpShape * weaponShape = [_spaceManager addRectAt:ccp(100,200) mass:2 width:10 height:10 rotation:3]; //[_spaceManager addCircleAt:pt mass:2 radius:10];
+    weaponShape->e = 0.0f;
+    weaponShape->u = 1.0f;
+    weaponShape->collision_type = kHeroCollisionType;
+    weaponShape->group = 1;
     _weapon = [riActor spriteWithFile:@"Enemy1.png"];
     _weapon.position = pt;
-//    _weapon.shape = weaponShape;
-//    _weapon.autoFreeShapeAndBody = YES;
-//    _weapon.spaceManager = _spaceManager;
-    [gameHUD addChild:_weapon z:kHeroZ tag:kHeroTag];
+    _weapon.shape = weaponShape;
+    _weapon.autoFreeShapeAndBody = NO;
+    _weapon.ignoreRotation = YES;
+    _weapon.spaceManager = _spaceManager;
+    [self addChild:_weapon z:kHeroZ tag:kHeroTag];
 
 
 }
@@ -594,9 +607,10 @@ enum {
     float touchDistance = ccpLength(touchMove);
     if (touchTime < 0.001) touchTime = 0.001;
     
+//    CGPoint weaponPos = ccpSub(_weapon.position, self.position);
+
     
-//    if(touchDistance < kFingerNoMovementFactor || touchTime > kFingerTouchTimeFactor){
-    if(_touchBeginPos.x < 100 && _touchBeginPos.y < 100){
+    if(abs(_touchBeginPos.x - _weapon.position.x) < 50 && abs(_touchBeginPos.y  - _weapon.position.y) < 50){
 
         
 //        float touchPower = 500 + touchTime * 500;
@@ -605,69 +619,88 @@ enum {
         NSLog(@"touch speed : %f",touchSpeed);
 
         
-        touchPower = touchPower < 1000 ? touchPower : 1000;
-        if(touchPower < 750)
-            [gameHUD updateMoney:-1];
-        else 
-            [gameHUD updateMoney:-2];
+        touchPower = touchPower < 1500 ? touchPower : 1500;
         
-        riActor * bullet = [riActor spriteWithFile:@"Enemy1.png"];
-        bullet.gameLayer = self;
-        bullet.scale = 0.3;
-        bullet.power = 1;
-        bullet.life = 3;
-        
-        CGPoint weaponPos = ccpSub(_weapon.position, self.position);
-        
-        cpShape * bulletShape = [_spaceManager addCircleAt:weaponPos mass:1 radius:6];
-        bulletShape->collision_type = kBulletCollisionType;
-        bulletShape->group = 1;
-        bullet.shape = bulletShape;
-        
-        CGPoint direction = cpvsub(_touchEndPos, weaponPos );
+        CGPoint direction = cpvsub(_touchEndPos, _weapon.position );
         if(!cpveql(direction, cpvzero))
             direction = ccpNormalize(direction);
         
-        [bullet applyImpulse:cpvmult(direction,touchPower)];
+        [_weapon applyImpulse:cpvmult(direction,touchPower)];
         
-        CCParticleSystemQuad * bulletParticle = [CCParticleSystemQuad particleWithFile:@"BulletParticle.plist"];
-        bulletParticle.position = weaponPos;
-        bulletParticle.autoRemoveOnFinish = YES;
-        
-        bullet.curParticle = bulletParticle;
-        
-        [self addChild:bullet z:kBulletZ tag:kBulletTag];
-        [_bulletsArray addObject:bullet];
-        
-        [self addChild:bulletParticle z:kBulletParticleZ];
-        
-        
-        [bullet runAction:[CCSequence actions:[CCEaseOut actionWithAction:[CCScaleTo actionWithDuration:bullet.life scale:0.5] rate:2] ,[CCCallFuncND actionWithTarget:self selector:@selector(bulletStop:) data:bullet],nil]];
-        
-        [gameHUD updateMoney:bullet.score - 1];
+
         
     }
     else{
         
-        for(riActor * b in _bulletsArray){
-            if([b touchedInLayer:self withTouchs:touches])
-                break;
-        }
-
-        
-        CCAction * backgroundAction =  [[CCActionManager sharedManager] getActionByTag:kBackgroundActionTag target:self];
-        if(backgroundAction == nil && abs(touchMove.x) > abs(touchMove.y) && abs(touchMove.x) > kFingerMovementFactorX){
-            touchMove.y = 0;
-            CGPoint newPos = ccpAdd(self.position, touchMove);
-                        
-            if(newPos.x < -_winSize.width)
-                newPos.x = -_winSize.width;
-            if(newPos.x > 0)
-                newPos.x = 0;
+        if(touchDistance < kFingerNoMovementFactor || touchTime > kFingerTouchTimeFactor){
             
-            backgroundAction = [CCEaseOut actionWithAction:[CCMoveTo actionWithDuration:touchTime*1 position:newPos] rate:1];
-            backgroundAction.tag = kBackgroundActionTag;
-            [self runAction:backgroundAction];
+            riActor * bullet = [riActor spriteWithFile:@"Enemy1.png"];
+            bullet.gameLayer = self;
+            bullet.scale = 0.3;
+            bullet.power = 1;
+            bullet.life = 3;
+            
+            CCParticleSystemQuad * bulletParticle = [CCParticleSystemQuad particleWithFile:@"BulletParticle.plist"];
+            
+            
+            bulletParticle.position = _weapon.position;
+            bulletParticle.autoRemoveOnFinish = YES;
+            
+            bullet.curParticle = bulletParticle;
+            
+            [self addChild:bullet z:kBulletZ tag:kBulletTag];
+            [_bulletsArray addObject:bullet];
+            
+//            if(touchPower <= 750)
+//                [gameHUD updateMoney:-1];
+//            else 
+//                [gameHUD updateMoney:-2];
+            
+            [self addChild:bulletParticle z:kBulletParticleZ];
+            
+            
+            [bullet runAction:[CCSequence actions:[CCEaseOut actionWithAction:[CCScaleTo actionWithDuration:bullet.life scale:0.5] rate:2] ,[CCCallFuncND actionWithTarget:self selector:@selector(bulletStop:) data:bullet],nil]];
+            
+            [gameHUD updateMoney:bullet.score - 1];
+            
+            cpShape * bulletShape = [_spaceManager addCircleAt:_weapon.position mass:1 radius:6];
+            bulletShape->collision_type = kBulletCollisionType;
+            bulletShape->group = 1;
+            bullet.shape = bulletShape;
+            
+            
+            
+            CGPoint direction = cpvsub(_touchBeginPos, _weapon.position );
+            if(!cpveql(direction, cpvzero)) direction = ccpNormalize(direction);
+            CGPoint bulletImpulse = cpvmult(direction,1000);
+            NSLog(@"bullet impulse : [%f,%f]",bulletImpulse.x,bulletImpulse.y);
+            
+            [bullet applyImpulse:bulletImpulse];
+            
+        }else {
+
+            
+            
+            CCAction * backgroundAction =  [[CCActionManager sharedManager] getActionByTag:kBackgroundActionTag target:self];
+            if(backgroundAction == nil && abs(touchMove.x) > abs(touchMove.y) && abs(touchMove.x) > kFingerMovementFactorX){
+                touchMove.y = 0;
+                CGPoint newPos = ccpAdd(self.position, touchMove);
+                
+                if(newPos.x < -_winSize.width)
+                    newPos.x = -_winSize.width;
+                if(newPos.x > 0)
+                    newPos.x = 0;
+                
+                backgroundAction = [CCEaseOut actionWithAction:[CCMoveTo actionWithDuration:touchTime*1 position:newPos] rate:1];
+                backgroundAction.tag = kBackgroundActionTag;
+                [self runAction:backgroundAction];
+            }
+        
+            for(riActor * b in _bulletsArray){
+                if([b touchedInLayer:self withTouchs:touches])
+                    break;
+            }
+
         }
         
     }

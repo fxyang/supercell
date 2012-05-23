@@ -1060,6 +1060,6 @@
 	<key>Version</key>
 	<string>1.2</string>
 	<key>WorldBoundaries</key>
-	<string>{{-0,-0}, {0,0}}</string>
+	<string>{{-10240,0}, {20480,768}}</string>
 </dict>
 </plist>
