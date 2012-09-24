@@ -104,7 +104,7 @@ typedef enum
 -(riActor *) addActorWithName:(NSString *)name;
 -(void) increaseActorWithName:(NSString *)name count:(int)incremental delay:(float)delay;
 
--(BOOL) removeActor:(riActor*)actor cleanup:(BOOL)clean;
+-(BOOL) removeActor:(riActor*)actor cleanupShape:(BOOL)clean;
 -(BOOL) removeShapeOfActor:(riActor*)actor;
 
 -(BOOL) hasSpaceBoundaries;

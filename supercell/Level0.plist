@@ -8,38 +8,7 @@
 		<string>BALL</string>
 	</array>
 	<key>JOINTS_INFO</key>
-	<array>
-		<dict>
-			<key>AnchorA</key>
-			<string>{4.02362, 0.00590515}</string>
-			<key>AnchorB</key>
-			<string>{3.68179, -2.9884}</string>
-			<key>AnchorLHA</key>
-			<string>{580.024, 145.006}</string>
-			<key>AnchorLHB</key>
-			<string>{371.682, 285.012}</string>
-			<key>CenterOfMass</key>
-			<false/>
-			<key>CollideConnected</key>
-			<true/>
-			<key>Damping</key>
-			<real>0.5</real>
-			<key>RestLength</key>
-			<integer>100</integer>
-			<key>Stiffness</key>
-			<real>0.5</real>
-			<key>Frequency</key>
-			<real>0</real>
-			<key>ObjectA</key>
-			<string>TutorialTexture_4_18</string>
-			<key>ObjectB</key>
-			<string>TutorialTexture_3_3</string>
-			<key>JointType</key>
-			<integer>1</integer>
-			<key>Name</key>
-			<string>TutorialTexture_4_18_TutorialTexture_3_3</string>
-		</dict>
-	</array>
+	<array/>
 	<key>TiledMap</key>
 	<array>
 		<dict>
@@ -107,19 +76,33 @@
 		</dict>
 		<dict>
 			<key>Image</key>
-			<string>Flower_Purple_48_93.png</string>
+			<string>Ball_Red_32_32.png</string>
 			<key>OrderZ</key>
 			<string>9</string>
-			<key>Animation</key>
-			<string>Flower_Purple.plist</string>
-			<key>Frame</key>
-			<string>Flower_Purple_48_93.plist</string>
 		</dict>
 		<dict>
 			<key>Image</key>
-			<string>TutorialTexture.png</string>
+			<string>Ball_Green_32_32.png</string>
 			<key>OrderZ</key>
-			<integer>10</integer>
+			<string>9</string>
+		</dict>
+		<dict>
+			<key>Image</key>
+			<string>Ball_Blue_32_32.png</string>
+			<key>OrderZ</key>
+			<string>9</string>
+		</dict>
+		<dict>
+			<key>Image</key>
+			<string>Ball_Purple_32_32.png</string>
+			<key>OrderZ</key>
+			<string>9</string>
+		</dict>
+		<dict>
+			<key>Image</key>
+			<string>Ball_Yellow_32_32.png</string>
+			<key>OrderZ</key>
+			<string>9</string>
 		</dict>
 	</array>
 	<key>SPRITES_INFO</key>
@@ -128,554 +111,25 @@
 			<key>GeneralProperties</key>
 			<dict>
 				<key>Angle</key>
-				<real>30</real>
-				<key>Color</key>
-				<string>{{1, 1}, {1, 1}}</string>
-				<key>Image</key>
-				<string>TutorialTexture.png</string>
-				<key>Opacity</key>
-				<real>0.6000000238418579</real>
-				<key>Position</key>
-				<string>{224, 648}</string>
-				<key>SHName</key>
-				<string>TutorialTexture_4</string>
-				<key>Scale</key>
-				<string>{2.7, 1.8}</string>
-				<key>Size</key>
-				<string>{65, 33}</string>
-				<key>Tag</key>
-				<integer>0</integer>
-				<key>UV</key>
-				<string>{{68, 70}, {65, 33}}</string>
-				<key>Name</key>
-				<string>TutorialTexture_4_4</string>
-				<key>OrderZ</key>
-				<integer>11</integer>
-			</dict>
-			<key>PhysicProperties</key>
-			<dict>
-				<key>Category</key>
-				<integer>1</integer>
-				<key>Mass</key>
-				<real>0.2000000029802322</real>
-				<key>CollisionType</key>
-				<integer>3</integer>
-				<key>FixedRot</key>
-				<false/>
-				<key>Friction</key>
-				<real>0.2000000029802322</real>
-				<key>Group</key>
-				<integer>0</integer>
-				<key>IsCircle</key>
-				<false/>
-				<key>IsSenzor</key>
-				<false/>
-				<key>Mask</key>
-				<integer>65535</integer>
-				<key>Restitution</key>
-				<real>0.2000000029802322</real>
-				<key>ShapeFixtures</key>
-				<array/>
-				<key>BodyType</key>
-				<integer>0</integer>
-			</dict>
-		</dict>
-		<dict>
-			<key>GeneralProperties</key>
-			<dict>
-				<key>Angle</key>
 				<real>0</real>
 				<key>Color</key>
 				<string>{{1, 1}, {1, 1}}</string>
 				<key>Image</key>
-				<string>TutorialTexture.png</string>
-				<key>Opacity</key>
-				<real>0.6999999284744263</real>
-				<key>Position</key>
-				<string>{256, 544}</string>
-				<key>SHName</key>
-				<string>TutorialTexture_4</string>
-				<key>Scale</key>
-				<string>{1, 1}</string>
-				<key>Size</key>
-				<string>{65, 33}</string>
-				<key>Tag</key>
-				<integer>0</integer>
-				<key>UV</key>
-				<string>{{68, 70}, {65, 33}}</string>
-				<key>Name</key>
-				<string>TutorialTexture_4</string>
-				<key>OrderZ</key>
-				<integer>11</integer>
-			</dict>
-			<key>PhysicProperties</key>
-			<dict>
-				<key>Category</key>
-				<integer>1</integer>
-				<key>Mass</key>
-				<real>0.2000000029802322</real>
-				<key>CollisionType</key>
-				<integer>3</integer>
-				<key>FixedRot</key>
-				<false/>
-				<key>Friction</key>
-				<real>0.2000000029802322</real>
-				<key>Group</key>
-				<integer>0</integer>
-				<key>IsCircle</key>
-				<false/>
-				<key>IsSenzor</key>
-				<false/>
-				<key>Mask</key>
-				<integer>65535</integer>
-				<key>Restitution</key>
-				<real>0.2000000029802322</real>
-				<key>ShapeFixtures</key>
-				<array/>
-				<key>BodyType</key>
-				<integer>2</integer>
-			</dict>
-		</dict>
-		<dict>
-			<key>GeneralProperties</key>
-			<dict>
-				<key>Angle</key>
-				<real>0</real>
-				<key>Color</key>
-				<string>{{1, 1}, {1, 1}}</string>
-				<key>Image</key>
-				<string>TutorialTexture.png</string>
+				<string>Ball_Red_32_32.png</string>
 				<key>Opacity</key>
 				<real>1</real>
-				<key>Position</key>
-				<string>{282, 372}</string>
-				<key>SHName</key>
-				<string>TutorialTexture_4</string>
-				<key>Scale</key>
-				<string>{1, 1}</string>
-				<key>Size</key>
-				<string>{65, 33}</string>
-				<key>Tag</key>
-				<integer>0</integer>
-				<key>UV</key>
-				<string>{{68, 70}, {65, 33}}</string>
-				<key>Name</key>
-				<string>TutorialTexture_4_1</string>
-				<key>OrderZ</key>
-				<integer>11</integer>
-			</dict>
-			<key>PhysicProperties</key>
-			<dict>
-				<key>Category</key>
-				<integer>1</integer>
-				<key>Mass</key>
-				<real>0.2000000029802322</real>
-				<key>CollisionType</key>
-				<integer>3</integer>
-				<key>FixedRot</key>
-				<false/>
-				<key>Friction</key>
-				<real>1.400000214576721</real>
-				<key>Group</key>
-				<integer>0</integer>
-				<key>IsCircle</key>
-				<false/>
-				<key>IsSenzor</key>
-				<false/>
-				<key>Mask</key>
-				<integer>65535</integer>
-				<key>Restitution</key>
-				<real>0.2000000029802322</real>
-				<key>ShapeFixtures</key>
-				<array/>
-				<key>BodyType</key>
-				<integer>0</integer>
-			</dict>
-		</dict>
-		<dict>
-			<key>GeneralProperties</key>
-			<dict>
-				<key>Angle</key>
-				<real>0</real>
-				<key>Color</key>
-				<string>{{1, 1}, {1, 1}}</string>
-				<key>Image</key>
-				<string>TutorialTexture.png</string>
-				<key>Opacity</key>
-				<real>1</real>
-				<key>Position</key>
-				<string>{264, 572}</string>
-				<key>SHName</key>
-				<string>TutorialTexture_4</string>
-				<key>Scale</key>
-				<string>{1, 1}</string>
-				<key>Size</key>
-				<string>{65, 33}</string>
-				<key>Tag</key>
-				<integer>0</integer>
-				<key>UV</key>
-				<string>{{68, 70}, {65, 33}}</string>
-				<key>Name</key>
-				<string>TutorialTexture_4_15</string>
-				<key>OrderZ</key>
-				<integer>11</integer>
-			</dict>
-			<key>PhysicProperties</key>
-			<dict>
-				<key>Category</key>
-				<integer>1</integer>
-				<key>Mass</key>
-				<real>0.2000000029802322</real>
-				<key>CollisionType</key>
-				<integer>3</integer>
-				<key>FixedRot</key>
-				<false/>
-				<key>Friction</key>
-				<real>1.400000214576721</real>
-				<key>Group</key>
-				<integer>0</integer>
-				<key>IsCircle</key>
-				<false/>
-				<key>IsSenzor</key>
-				<false/>
-				<key>Mask</key>
-				<integer>65535</integer>
-				<key>Restitution</key>
-				<real>0.2000000029802322</real>
-				<key>ShapeFixtures</key>
-				<array/>
-				<key>BodyType</key>
-				<integer>0</integer>
-			</dict>
-		</dict>
-		<dict>
-			<key>GeneralProperties</key>
-			<dict>
-				<key>Angle</key>
-				<real>0</real>
-				<key>Color</key>
-				<string>{{1, 1}, {1, 1}}</string>
-				<key>Image</key>
-				<string>TutorialTexture.png</string>
-				<key>Opacity</key>
-				<real>1</real>
-				<key>Position</key>
-				<string>{428, 572}</string>
-				<key>SHName</key>
-				<string>TutorialTexture_4</string>
-				<key>Scale</key>
-				<string>{1, 1}</string>
-				<key>Size</key>
-				<string>{65, 33}</string>
-				<key>Tag</key>
-				<integer>0</integer>
-				<key>UV</key>
-				<string>{{68, 70}, {65, 33}}</string>
-				<key>Name</key>
-				<string>TutorialTexture_4_16</string>
-				<key>OrderZ</key>
-				<integer>11</integer>
-			</dict>
-			<key>PhysicProperties</key>
-			<dict>
-				<key>Category</key>
-				<integer>1</integer>
-				<key>Mass</key>
-				<real>0.2000000029802322</real>
-				<key>CollisionType</key>
-				<integer>3</integer>
-				<key>FixedRot</key>
-				<false/>
-				<key>Friction</key>
-				<real>1.400000214576721</real>
-				<key>Group</key>
-				<integer>0</integer>
-				<key>IsCircle</key>
-				<false/>
-				<key>IsSenzor</key>
-				<false/>
-				<key>Mask</key>
-				<integer>65535</integer>
-				<key>Restitution</key>
-				<real>0.2000000029802322</real>
-				<key>ShapeFixtures</key>
-				<array/>
-				<key>BodyType</key>
-				<integer>0</integer>
-			</dict>
-		</dict>
-		<dict>
-			<key>GeneralProperties</key>
-			<dict>
-				<key>Angle</key>
-				<real>0</real>
-				<key>Color</key>
-				<string>{{1, 1}, {1, 1}}</string>
-				<key>Image</key>
-				<string>TutorialTexture.png</string>
-				<key>Opacity</key>
-				<real>1</real>
-				<key>Position</key>
-				<string>{492, 372}</string>
-				<key>SHName</key>
-				<string>TutorialTexture_4</string>
-				<key>Scale</key>
-				<string>{1, 1}</string>
-				<key>Size</key>
-				<string>{65, 33}</string>
-				<key>Tag</key>
-				<integer>0</integer>
-				<key>UV</key>
-				<string>{{68, 70}, {65, 33}}</string>
-				<key>Name</key>
-				<string>TutorialTexture_4_17</string>
-				<key>OrderZ</key>
-				<integer>11</integer>
-			</dict>
-			<key>PhysicProperties</key>
-			<dict>
-				<key>Category</key>
-				<integer>1</integer>
-				<key>Mass</key>
-				<real>0.2000000029802322</real>
-				<key>CollisionType</key>
-				<integer>3</integer>
-				<key>FixedRot</key>
-				<false/>
-				<key>Friction</key>
-				<real>1.400000214576721</real>
-				<key>Group</key>
-				<integer>0</integer>
-				<key>IsCircle</key>
-				<false/>
-				<key>IsSenzor</key>
-				<false/>
-				<key>Mask</key>
-				<integer>65535</integer>
-				<key>Restitution</key>
-				<real>0.2000000029802322</real>
-				<key>ShapeFixtures</key>
-				<array/>
-				<key>BodyType</key>
-				<integer>0</integer>
-			</dict>
-		</dict>
-		<dict>
-			<key>GeneralProperties</key>
-			<dict>
-				<key>Angle</key>
-				<real>0</real>
-				<key>Color</key>
-				<string>{{1, 1}, {1, 1}}</string>
-				<key>Image</key>
-				<string>TutorialTexture.png</string>
-				<key>Opacity</key>
-				<real>1</real>
-				<key>Position</key>
-				<string>{204, 599}</string>
-				<key>SHName</key>
-				<string>TutorialTexture_2</string>
-				<key>Scale</key>
-				<string>{1, 1}</string>
-				<key>Size</key>
-				<string>{64, 64}</string>
-				<key>Tag</key>
-				<integer>0</integer>
-				<key>UV</key>
-				<string>{{2, 136}, {64, 64}}</string>
-				<key>Name</key>
-				<string>TutorialTexture_2</string>
-				<key>OrderZ</key>
-				<integer>11</integer>
-			</dict>
-			<key>PhysicProperties</key>
-			<dict>
-				<key>Category</key>
-				<integer>1</integer>
-				<key>Mass</key>
-				<real>0.2000000029802322</real>
-				<key>CollisionType</key>
-				<integer>3</integer>
-				<key>FixedRot</key>
-				<false/>
-				<key>Friction</key>
-				<real>0.2000000029802322</real>
-				<key>Group</key>
-				<integer>0</integer>
-				<key>IsCircle</key>
-				<false/>
-				<key>IsSenzor</key>
-				<false/>
-				<key>Mask</key>
-				<integer>65535</integer>
-				<key>Restitution</key>
-				<real>0.2000000029802322</real>
-				<key>ShapeFixtures</key>
-				<array/>
-				<key>BodyType</key>
-				<integer>0</integer>
-			</dict>
-		</dict>
-		<dict>
-			<key>GeneralProperties</key>
-			<dict>
-				<key>Angle</key>
-				<real>0</real>
-				<key>Color</key>
-				<string>{{1, 1}, {1, 1}}</string>
-				<key>Image</key>
-				<string>TutorialTexture.png</string>
-				<key>Opacity</key>
-				<real>1</real>
-				<key>Position</key>
-				<string>{576, 679}</string>
-				<key>SHName</key>
-				<string>TutorialTexture_4</string>
-				<key>Scale</key>
-				<string>{1, 1}</string>
-				<key>Size</key>
-				<string>{65, 33}</string>
-				<key>Tag</key>
-				<integer>0</integer>
-				<key>UV</key>
-				<string>{{68, 70}, {65, 33}}</string>
-				<key>Name</key>
-				<string>TutorialTexture_4_18</string>
-				<key>OrderZ</key>
-				<integer>11</integer>
-			</dict>
-			<key>PhysicProperties</key>
-			<dict>
-				<key>Category</key>
-				<integer>1</integer>
-				<key>Mass</key>
-				<real>0.2000000029802322</real>
-				<key>CollisionType</key>
-				<integer>3</integer>
-				<key>FixedRot</key>
-				<false/>
-				<key>Friction</key>
-				<real>0.2000000029802322</real>
-				<key>Group</key>
-				<integer>0</integer>
-				<key>IsCircle</key>
-				<false/>
-				<key>IsSenzor</key>
-				<false/>
-				<key>Mask</key>
-				<integer>65535</integer>
-				<key>Restitution</key>
-				<real>0.2000000029802322</real>
-				<key>ShapeFixtures</key>
-				<array/>
-				<key>BodyType</key>
-				<integer>0</integer>
-			</dict>
-		</dict>
-		<dict>
-			<key>GeneralProperties</key>
-			<dict>
-				<key>Angle</key>
-				<integer>0</integer>
-				<key>Color</key>
-				<string>{{1, 1}, {1, 1}}</string>
-				<key>Image</key>
-				<string>Flower_Purple_48_93.png</string>
-				<key>Frame</key>
-				<string>flower_9_1.png</string>
-				<key>Animation</key>
-				<string>Flower_Purple_48_93_grow</string>
-				<key>AnimationTimes</key>
-				<integer>1</integer>
-				<key>Opacity</key>
-				<integer>1</integer>
-				<key>Position</key>
-				<string>{492, 485}</string>
-				<key>SHName</key>
-				<string>Flower_Purple_48_93</string>
-				<key>Scale</key>
-				<string>{2.4, 2.3}</string>
-				<key>Size</key>
-				<string>{29, 24}</string>
-				<key>Tag</key>
-				<integer>0</integer>
-				<key>UV</key>
-				<string>{{68, 173}, {29, 24}}</string>
-				<key>Name</key>
-				<string>Flower_Purple_48_93</string>
-				<key>OrderZ</key>
-				<integer>11</integer>
-			</dict>
-			<key>PhysicProperties</key>
-			<dict>
-				<key>Category</key>
-				<integer>1</integer>
-				<key>Mass</key>
-				<real>0.2000000029802322</real>
-				<key>CollisionType</key>
-				<integer>3</integer>
-				<key>FixedRot</key>
-				<false/>
-				<key>Friction</key>
-				<real>0.2000000029802322</real>
-				<key>Group</key>
-				<integer>0</integer>
-				<key>IsCircle</key>
-				<false/>
-				<key>IsSenzor</key>
-				<false/>
-				<key>Mask</key>
-				<integer>65535</integer>
-				<key>Restitution</key>
-				<real>0.2000000029802322</real>
-				<key>ShapeFixtures</key>
-				<array>
-					<array>
-						<string>{8.32895, -10.6155}</string>
-						<string>{14.787, -3.53253}</string>
-						<string>{-0.420631, 11.6751}</string>
-						<string>{-14.17, -3.53253}</string>
-						<string>{-4.37878, -10.8238}</string>
-					</array>
-				</array>
-				<key>BodyType</key>
-				<integer>0</integer>
-			</dict>
-			<key>ActorProperties</key>
-			<dict/>
-			<key>CountType</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>GeneralProperties</key>
-			<dict>
-				<key>Angle</key>
-				<real>0</real>
-				<key>Color</key>
-				<string>{{1, 1}, {1, 1}}</string>
-				<key>Image</key>
-				<string>butterfly_blue_48_48_fly.png</string>
-				<key>Frame</key>
-				<string>butterfly_blue_48_48_fly_1.png</string>
-				<key>Opacity</key>
-				<real>1</real>
-				<key>Positions</key>
-				<array>
-					<string>{128,544}</string>
-					<string>{628,344}</string>
-				</array>
 				<key>SHName</key>
 				<string>TutorialTexture_5</string>
 				<key>Scale</key>
 				<string>{1, 1}</string>
 				<key>Size</key>
-				<string>{48,48}</string>
+				<string>{32,32}</string>
 				<key>Tag</key>
 				<integer>0</integer>
 				<key>UV</key>
-				<string>{{68, 105}, {64, 32}}</string>
+				<string>{{0, 0}, {32, 32}}</string>
 				<key>Name</key>
-				<string>butterfly_blue_48_48</string>
+				<string>Ball_Red_32_32</string>
 				<key>OrderZ</key>
 				<integer>11</integer>
 			</dict>
@@ -739,6 +193,110 @@
 				<key>Waypoints</key>
 				<array>
 					<string>Enemy1</string>
+				</array>
+				<key>ActorType</key>
+				<string>Butterfly</string>
+			</dict>
+			<key>CountType</key>
+			<integer>1</integer>
+			<key>Health</key>
+			<integer>1</integer>
+			<key>Score</key>
+			<integer>1</integer>
+			<key>BirthTime</key>
+			<integer>0</integer>
+			<key>BirthIntervalRange</key>
+			<string>{2,10}</string>
+			<key>RelatedActors</key>
+			<array/>
+			<key>Count</key>
+			<integer>20</integer>
+		</dict>
+		<dict>
+			<key>GeneralProperties</key>
+			<dict>
+				<key>Angle</key>
+				<real>0</real>
+				<key>Color</key>
+				<string>{{1, 1}, {1, 1}}</string>
+				<key>Image</key>
+				<string>Ball_Blue_32_32.png</string>
+				<key>Opacity</key>
+				<real>1</real>
+				<key>SHName</key>
+				<string>TutorialTexture_5</string>
+				<key>Scale</key>
+				<string>{1, 1}</string>
+				<key>Size</key>
+				<string>{32,32}</string>
+				<key>Tag</key>
+				<integer>0</integer>
+				<key>UV</key>
+				<string>{{0, 0}, {32, 32}}</string>
+				<key>Name</key>
+				<string>Ball_Blue_32_32.png</string>
+				<key>OrderZ</key>
+				<integer>11</integer>
+			</dict>
+			<key>PhysicProperties</key>
+			<dict>
+				<key>Category</key>
+				<integer>1</integer>
+				<key>CollisionType</key>
+				<integer>4</integer>
+				<key>Mass</key>
+				<real>0.2000000029802322</real>
+				<key>FixedRot</key>
+				<false/>
+				<key>Friction</key>
+				<real>0.2000000029802322</real>
+				<key>Group</key>
+				<integer>0</integer>
+				<key>IsCircle</key>
+				<true/>
+				<key>IsSenzor</key>
+				<false/>
+				<key>Mask</key>
+				<integer>65535</integer>
+				<key>Restitution</key>
+				<real>0.2000000029802322</real>
+				<key>ShapeFixtures_</key>
+				<array>
+					<array>
+						<string>{-33.9615, -6.9105}</string>
+						<string>{-18.9622, -11.7019}</string>
+						<string>{-6.0462, -2.32737}</string>
+						<string>{0.828468, 3.71399}</string>
+						<string>{-4.37962, 13.2969}</string>
+						<string>{-26.2536, 10.5887}</string>
+					</array>
+					<array>
+						<string>{28.9521, -6.49385}</string>
+						<string>{29.7854, -0.452469}</string>
+						<string>{13.7445, 12.4636}</string>
+						<string>{15.8277, -0.660797}</string>
+					</array>
+					<array>
+						<string>{0.828468, 3.71399}</string>
+						<string>{15.8277, -0.660797}</string>
+						<string>{13.7445, 12.4636}</string>
+						<string>{-4.37962, 13.2969}</string>
+					</array>
+					<array>
+						<string>{16.0361, -10.2437}</string>
+						<string>{28.9521, -6.49385}</string>
+						<string>{15.8277, -0.660797}</string>
+					</array>
+				</array>
+				<key>BodyType</key>
+				<integer>1</integer>
+			</dict>
+			<key>ActorProperties</key>
+			<dict>
+				<key>Speed</key>
+				<string>{50,80}</string>
+				<key>Waypoints</key>
+				<array>
 					<string>Enemy2</string>
 				</array>
 				<key>ActorType</key>
@@ -755,9 +313,7 @@
 			<key>BirthIntervalRange</key>
 			<string>{2,10}</string>
 			<key>RelatedActors</key>
-			<array>
-				<string>Flower_Purple_48_93</string>
-			</array>
+			<array/>
 			<key>Count</key>
 			<integer>20</integer>
 		</dict>
@@ -769,26 +325,231 @@
 				<key>Color</key>
 				<string>{{1, 1}, {1, 1}}</string>
 				<key>Image</key>
-				<string>butterfly_black_48_48_fly.png</string>
-				<key>Frame</key>
-				<string>butterfly_black_48_48_fly_1.png</string>
+				<string>Ball_Green_32_32.png</string>
 				<key>Opacity</key>
-				<real>0.8</real>
-				<key>Positions</key>
-				<array>
-					<string>{128,544}</string>
-					<string>{628,344}</string>
-				</array>
+				<real>1</real>
 				<key>SHName</key>
 				<string>TutorialTexture_5</string>
 				<key>Scale</key>
-				<string>{0.8, 0.8}</string>
+				<string>{1, 1}</string>
 				<key>Size</key>
-				<string>{48, 48}</string>
+				<string>{32,32}</string>
 				<key>Tag</key>
 				<integer>0</integer>
+				<key>UV</key>
+				<string>{{0, 0}, {32, 32}}</string>
 				<key>Name</key>
-				<string>butterfly_black_48_48</string>
+				<string>Ball_Green_32_32</string>
+				<key>OrderZ</key>
+				<integer>11</integer>
+			</dict>
+			<key>PhysicProperties</key>
+			<dict>
+				<key>Category</key>
+				<integer>1</integer>
+				<key>CollisionType</key>
+				<integer>4</integer>
+				<key>Mass</key>
+				<real>0.2000000029802322</real>
+				<key>FixedRot</key>
+				<false/>
+				<key>Friction</key>
+				<real>0.2000000029802322</real>
+				<key>Group</key>
+				<integer>0</integer>
+				<key>IsCircle</key>
+				<true/>
+				<key>IsSenzor</key>
+				<false/>
+				<key>Mask</key>
+				<integer>65535</integer>
+				<key>Restitution</key>
+				<real>0.2000000029802322</real>
+				<key>ShapeFixtures_</key>
+				<array>
+					<array>
+						<string>{-33.9615, -6.9105}</string>
+						<string>{-18.9622, -11.7019}</string>
+						<string>{-6.0462, -2.32737}</string>
+						<string>{0.828468, 3.71399}</string>
+						<string>{-4.37962, 13.2969}</string>
+						<string>{-26.2536, 10.5887}</string>
+					</array>
+					<array>
+						<string>{28.9521, -6.49385}</string>
+						<string>{29.7854, -0.452469}</string>
+						<string>{13.7445, 12.4636}</string>
+						<string>{15.8277, -0.660797}</string>
+					</array>
+					<array>
+						<string>{0.828468, 3.71399}</string>
+						<string>{15.8277, -0.660797}</string>
+						<string>{13.7445, 12.4636}</string>
+						<string>{-4.37962, 13.2969}</string>
+					</array>
+					<array>
+						<string>{16.0361, -10.2437}</string>
+						<string>{28.9521, -6.49385}</string>
+						<string>{15.8277, -0.660797}</string>
+					</array>
+				</array>
+				<key>BodyType</key>
+				<integer>1</integer>
+			</dict>
+			<key>ActorProperties</key>
+			<dict>
+				<key>Speed</key>
+				<string>{1,2}</string>
+				<key>Waypoints</key>
+				<array>
+					<string>Enemy3</string>
+				</array>
+				<key>ActorType</key>
+				<string>Butterfly</string>
+			</dict>
+			<key>CountType</key>
+			<integer>1</integer>
+			<key>Health</key>
+			<integer>1</integer>
+			<key>Score</key>
+			<integer>1</integer>
+			<key>BirthTime</key>
+			<integer>0</integer>
+			<key>BirthIntervalRange</key>
+			<string>{50,100}</string>
+			<key>RelatedActors</key>
+			<array/>
+			<key>Count</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>GeneralProperties</key>
+			<dict>
+				<key>Angle</key>
+				<real>0</real>
+				<key>Color</key>
+				<string>{{1, 1}, {1, 1}}</string>
+				<key>Image</key>
+				<string>Ball_Purple_32_32.png</string>
+				<key>Opacity</key>
+				<real>1</real>
+				<key>SHName</key>
+				<string>TutorialTexture_5</string>
+				<key>Scale</key>
+				<string>{1, 1}</string>
+				<key>Size</key>
+				<string>{32,32}</string>
+				<key>Tag</key>
+				<integer>0</integer>
+				<key>UV</key>
+				<string>{{0, 0}, {32, 32}}</string>
+				<key>Name</key>
+				<string>Ball_Purple_32_32</string>
+				<key>OrderZ</key>
+				<integer>11</integer>
+			</dict>
+			<key>PhysicProperties</key>
+			<dict>
+				<key>Category</key>
+				<integer>1</integer>
+				<key>CollisionType</key>
+				<integer>4</integer>
+				<key>Mass</key>
+				<real>0.2000000029802322</real>
+				<key>FixedRot</key>
+				<false/>
+				<key>Friction</key>
+				<real>0.2000000029802322</real>
+				<key>Group</key>
+				<integer>0</integer>
+				<key>IsCircle</key>
+				<true/>
+				<key>IsSenzor</key>
+				<false/>
+				<key>Mask</key>
+				<integer>65535</integer>
+				<key>Restitution</key>
+				<real>0.2000000029802322</real>
+				<key>ShapeFixtures_</key>
+				<array>
+					<array>
+						<string>{-33.9615, -6.9105}</string>
+						<string>{-18.9622, -11.7019}</string>
+						<string>{-6.0462, -2.32737}</string>
+						<string>{0.828468, 3.71399}</string>
+						<string>{-4.37962, 13.2969}</string>
+						<string>{-26.2536, 10.5887}</string>
+					</array>
+					<array>
+						<string>{28.9521, -6.49385}</string>
+						<string>{29.7854, -0.452469}</string>
+						<string>{13.7445, 12.4636}</string>
+						<string>{15.8277, -0.660797}</string>
+					</array>
+					<array>
+						<string>{0.828468, 3.71399}</string>
+						<string>{15.8277, -0.660797}</string>
+						<string>{13.7445, 12.4636}</string>
+						<string>{-4.37962, 13.2969}</string>
+					</array>
+					<array>
+						<string>{16.0361, -10.2437}</string>
+						<string>{28.9521, -6.49385}</string>
+						<string>{15.8277, -0.660797}</string>
+					</array>
+				</array>
+				<key>BodyType</key>
+				<integer>1</integer>
+			</dict>
+			<key>ActorProperties</key>
+			<dict>
+				<key>Speed</key>
+				<string>{50,80}</string>
+				<key>Waypoints</key>
+				<array>
+					<string>Enemy4</string>
+				</array>
+				<key>ActorType</key>
+				<string>Butterfly</string>
+			</dict>
+			<key>CountType</key>
+			<integer>1</integer>
+			<key>Health</key>
+			<integer>1</integer>
+			<key>Score</key>
+			<integer>1</integer>
+			<key>BirthTime</key>
+			<integer>0</integer>
+			<key>BirthIntervalRange</key>
+			<string>{5,20}</string>
+			<key>RelatedActors</key>
+			<array/>
+			<key>Count</key>
+			<integer>20</integer>
+		</dict>
+		<dict>
+			<key>GeneralProperties</key>
+			<dict>
+				<key>Angle</key>
+				<real>0</real>
+				<key>Color</key>
+				<string>{{1, 1}, {1, 1}}</string>
+				<key>Image</key>
+				<string>Ball_Yellow_32_32.png</string>
+				<key>Opacity</key>
+				<integer>1</integer>
+				<key>SHName</key>
+				<string>TutorialTexture_5</string>
+				<key>Scale</key>
+				<string>{1, 1}</string>
+				<key>Size</key>
+				<string>{32, 32}</string>
+				<key>Tag</key>
+				<integer>0</integer>
+				<key>UV</key>
+				<string>{{0, 0}, {32, 32}}</string>
+				<key>Name</key>
+				<string>Ball_Yellow_32_32</string>
 				<key>OrderZ</key>
 				<integer>11</integer>
 			</dict>
@@ -851,8 +612,7 @@
 				<string>{80,120}</string>
 				<key>Waypoints</key>
 				<array>
-					<string>Enemy1</string>
-					<string>Enemy2</string>
+					<string>Enemy5</string>
 				</array>
 				<key>ActorType</key>
 				<string>Butterfly</string>
@@ -868,9 +628,7 @@
 			<key>BirthIntervalRange</key>
 			<string>{5,20}</string>
 			<key>RelatedActors</key>
-			<array>
-				<string>Flower_Purple_48_93</string>
-			</array>
+			<array/>
 			<key>Count</key>
 			<integer>10</integer>
 		</dict>
@@ -970,8 +728,7 @@
 				<integer>3</integer>
 				<key>Waypoints</key>
 				<array>
-					<string>Enemy1</string>
-					<string>Enemy2</string>
+					<string>Enemy3</string>
 				</array>
 				<key>ActorType</key>
 				<string>Butterfly</string>
@@ -988,62 +745,6 @@
 			</array>
 			<key>Count</key>
 			<integer>5</integer>
-		</dict>
-		<dict>
-			<key>GeneralProperties</key>
-			<dict>
-				<key>Angle</key>
-				<real>0</real>
-				<key>Color</key>
-				<string>{{1, 1}, {1, 1}}</string>
-				<key>Image</key>
-				<string>TutorialTexture.png</string>
-				<key>Opacity</key>
-				<real>1</real>
-				<key>Position</key>
-				<string>{371, 285}</string>
-				<key>SHName</key>
-				<string>TutorialTexture_3</string>
-				<key>Scale</key>
-				<string>{1, 1}</string>
-				<key>Size</key>
-				<string>{49, 48}</string>
-				<key>Tag</key>
-				<integer>10000</integer>
-				<key>UV</key>
-				<string>{{2, 202}, {49, 48}}</string>
-				<key>Name</key>
-				<string>TutorialTexture_3_3</string>
-				<key>OrderZ</key>
-				<integer>11</integer>
-			</dict>
-			<key>PhysicProperties</key>
-			<dict>
-				<key>Category</key>
-				<integer>1</integer>
-				<key>Mass</key>
-				<real>0.4000000059604645</real>
-				<key>CollisionType</key>
-				<integer>3</integer>
-				<key>FixedRot</key>
-				<false/>
-				<key>Friction</key>
-				<real>0.6000000029802321</real>
-				<key>Group</key>
-				<integer>0</integer>
-				<key>IsCircle</key>
-				<true/>
-				<key>IsSenzor</key>
-				<false/>
-				<key>Mask</key>
-				<integer>65535</integer>
-				<key>Restitution</key>
-				<real>0.2000000029802322</real>
-				<key>ShapeFixtures</key>
-				<array/>
-				<key>BodyType</key>
-				<integer>2</integer>
-			</dict>
 		</dict>
 	</array>
 	<key>ScenePreference</key>

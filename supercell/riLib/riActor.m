@@ -182,6 +182,9 @@
 }
 
 -(void)perform{
+    
+    //Synch. the position
+    _lastPos = self.position;
 
     [self runActionFollow:_curWaypoint];
     if(_curAnimate != nil){
@@ -210,11 +213,14 @@
     if(_bodyType == kBodyKinematic){
         CGPoint pos = self.position;
         CGPoint faceVector = ccpSub(pos, _lastPos);
-        CGFloat faceAngle = ccpToAngle(faceVector);
-        CGFloat cocosAngle = 90 + CC_RADIANS_TO_DEGREES(-1 * faceAngle);
-        float rotateSpeed = 0.1 / M_PI; // 0.1 second to roate 180 degrees
-        float rotateDuration = fabs(faceAngle * rotateSpeed);    
-        [self runAction:[CCSequence actions:[CCRotateTo actionWithDuration:rotateDuration angle:cocosAngle],nil]];
+        
+        if (!cpveql(faceVector, cpvzero)) {
+            CGFloat faceAngle = ccpToAngle(faceVector);
+            CGFloat cocosAngle = 90 + CC_RADIANS_TO_DEGREES(-1 * faceAngle);
+            float rotateSpeed = 0.1 / M_PI; // 0.1 second to roate 180 degrees
+            float rotateDuration = fabs(faceAngle * rotateSpeed);    
+            [self runAction:[CCSequence actions:[CCRotateTo actionWithDuration:rotateDuration angle:cocosAngle],nil]];
+        }
         _lastPos = pos;
     }
 /* End of rotation */
@@ -234,10 +240,6 @@
     
     _speedVar = s;
 
-}
-
--(BOOL)isMature{
-    return YES;
 }
 
 -(BOOL)touchedInLayer:(CCLayer *)layer withTouchs:(NSSet *)touches{

@@ -39,6 +39,14 @@
 		5B76DD8F14D4A68D00322378 /* TileMap.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 5B76DD8214D4A68D00322378 /* TileMap.tmx */; };
 		5B76DD9014D4A68D00322378 /* tmw_desert_spacing.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B76DD8314D4A68D00322378 /* tmw_desert_spacing.png */; };
 		5B76DD9914D4A87400322378 /* Projectile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B76DD9814D4A87300322378 /* Projectile.m */; };
+		5B7AD3C0160D09F600950696 /* Rope_Circle_1024_1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B7AD3BF160D09F600950696 /* Rope_Circle_1024_1024.png */; };
+		5B7AD3C3160E40A000950696 /* Circle_1024_1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B7AD3C2160E40A000950696 /* Circle_1024_1024.png */; };
+		5B7AD3C5160EB91100950696 /* tile.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B7AD3C4160EB91000950696 /* tile.png */; };
+		5B7AD3CA160F912F00950696 /* Ball_Blue_32_32.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B7AD3C6160F912E00950696 /* Ball_Blue_32_32.png */; };
+		5B7AD3CB160F912F00950696 /* Ball_Green_32_32.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B7AD3C7160F912E00950696 /* Ball_Green_32_32.png */; };
+		5B7AD3CC160F912F00950696 /* Ball_Purple_32_32.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B7AD3C8160F912E00950696 /* Ball_Purple_32_32.png */; };
+		5B7AD3CD160F912F00950696 /* Ball_Red_32_32.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B7AD3C9160F912F00950696 /* Ball_Red_32_32.png */; };
+		5B7AD3CF160FA03E00950696 /* Ball_Yellow_32_32.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B7AD3CE160FA03E00950696 /* Ball_Yellow_32_32.png */; };
 		5B8087E3151FF18E004452F5 /* butterfly_blue_48_48_ani.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B8087E2151FF18E004452F5 /* butterfly_blue_48_48_ani.plist */; };
 		5B8087E5151FFE9D004452F5 /* butterfly_black_48_48_ani.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B8087E4151FFE9D004452F5 /* butterfly_black_48_48_ani.plist */; };
 		5B8087E81520011D004452F5 /* butterfly_black_48_48_fly.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B8087E61520011D004452F5 /* butterfly_black_48_48_fly.png */; };
@@ -308,6 +316,14 @@
 		5B76DD8314D4A68D00322378 /* tmw_desert_spacing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tmw_desert_spacing.png; path = Resources/tmw_desert_spacing.png; sourceTree = "<group>"; };
 		5B76DD9714D4A87200322378 /* Projectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Projectile.h; sourceTree = "<group>"; };
 		5B76DD9814D4A87300322378 /* Projectile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Projectile.m; sourceTree = "<group>"; };
+		5B7AD3BF160D09F600950696 /* Rope_Circle_1024_1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Rope_Circle_1024_1024.png; path = Resources/Rope_Circle_1024_1024.png; sourceTree = "<group>"; };
+		5B7AD3C2160E40A000950696 /* Circle_1024_1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Circle_1024_1024.png; path = Resources/Circle_1024_1024.png; sourceTree = "<group>"; };
+		5B7AD3C4160EB91000950696 /* tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tile.png; path = Resources/tile.png; sourceTree = "<group>"; };
+		5B7AD3C6160F912E00950696 /* Ball_Blue_32_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Ball_Blue_32_32.png; path = Resources/Ball_Blue_32_32.png; sourceTree = "<group>"; };
+		5B7AD3C7160F912E00950696 /* Ball_Green_32_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Ball_Green_32_32.png; path = Resources/Ball_Green_32_32.png; sourceTree = "<group>"; };
+		5B7AD3C8160F912E00950696 /* Ball_Purple_32_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Ball_Purple_32_32.png; path = Resources/Ball_Purple_32_32.png; sourceTree = "<group>"; };
+		5B7AD3C9160F912F00950696 /* Ball_Red_32_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Ball_Red_32_32.png; path = Resources/Ball_Red_32_32.png; sourceTree = "<group>"; };
+		5B7AD3CE160FA03E00950696 /* Ball_Yellow_32_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Ball_Yellow_32_32.png; path = Resources/Ball_Yellow_32_32.png; sourceTree = "<group>"; };
 		5B8087E2151FF18E004452F5 /* butterfly_blue_48_48_ani.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = butterfly_blue_48_48_ani.plist; path = Resources/butterfly_blue_48_48_ani.plist; sourceTree = "<group>"; };
 		5B8087E4151FFE9D004452F5 /* butterfly_black_48_48_ani.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = butterfly_black_48_48_ani.plist; path = Resources/butterfly_black_48_48_ani.plist; sourceTree = "<group>"; };
 		5B8087E61520011D004452F5 /* butterfly_black_48_48_fly.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = butterfly_black_48_48_fly.png; path = Resources/butterfly_black_48_48_fly.png; sourceTree = "<group>"; };
@@ -1056,6 +1072,14 @@
 		5BF2814B14C77DFB007C1169 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				5B7AD3CE160FA03E00950696 /* Ball_Yellow_32_32.png */,
+				5B7AD3C6160F912E00950696 /* Ball_Blue_32_32.png */,
+				5B7AD3C7160F912E00950696 /* Ball_Green_32_32.png */,
+				5B7AD3C8160F912E00950696 /* Ball_Purple_32_32.png */,
+				5B7AD3C9160F912F00950696 /* Ball_Red_32_32.png */,
+				5B7AD3C4160EB91000950696 /* tile.png */,
+				5B7AD3C2160E40A000950696 /* Circle_1024_1024.png */,
+				5B7AD3BF160D09F600950696 /* Rope_Circle_1024_1024.png */,
 				5B8087EA15200D2E004452F5 /* butterfly_white_48_48_fly.plist */,
 				5B8087EB15200D2E004452F5 /* butterfly_white_48_48_fly.png */,
 				5B8087E61520011D004452F5 /* butterfly_black_48_48_fly.png */,
@@ -1557,6 +1581,14 @@
 				5B8087EC15200D2E004452F5 /* butterfly_white_48_48_fly.plist in Resources */,
 				5B8087ED15200D2E004452F5 /* butterfly_white_48_48_fly.png in Resources */,
 				5B8087EF15200D56004452F5 /* butterfly_white_48_48_ani.plist in Resources */,
+				5B7AD3C0160D09F600950696 /* Rope_Circle_1024_1024.png in Resources */,
+				5B7AD3C3160E40A000950696 /* Circle_1024_1024.png in Resources */,
+				5B7AD3C5160EB91100950696 /* tile.png in Resources */,
+				5B7AD3CA160F912F00950696 /* Ball_Blue_32_32.png in Resources */,
+				5B7AD3CB160F912F00950696 /* Ball_Green_32_32.png in Resources */,
+				5B7AD3CC160F912F00950696 /* Ball_Purple_32_32.png in Resources */,
+				5B7AD3CD160F912F00950696 /* Ball_Red_32_32.png in Resources */,
+				5B7AD3CF160FA03E00950696 /* Ball_Yellow_32_32.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

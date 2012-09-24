@@ -9,47 +9,36 @@
   </tile>
  </tileset>
  <objectgroup name="Waypoints" width="64" height="24">
-  <object name="Enemy1" x="1600" y="128">
+  <object name="Enemy1" x="256" y="160">
    <properties>
-    <property name="Action" value="CCBezierTo"/>
     <property name="Animation" value="fly"/>
-    <property name="ControlPointA" value="Enemy1_ControlPointA"/>
-    <property name="ControlPointB" value="Enemy1_ControlPointB"/>
-    <property name="NextWaypoint" value="Enemy3"/>
-    <property name="Speed" value="1"/>
    </properties>
   </object>
-  <object name="Enemy2" x="288" y="96">
+  <object name="Enemy2" x="512" y="128">
    <properties>
-    <property name="Action" value="CCJumpTo"/>
     <property name="Animation" value="fly"/>
-    <property name="Height" value="-50"/>
-    <property name="Jumps" value="4"/>
-    <property name="NextWaypoint" value="Enemy1"/>
-    <property name="Speed" value="1"/>
    </properties>
   </object>
-  <object name="Enemy3" x="288" y="480">
+  <object name="Enemy4" x="480" y="416">
+   <properties>
+    <property name="Animation" value="fly"/>
+   </properties>
+  </object>
+  <object name="Enemy5" x="288" y="384"/>
+  <object name="Enemy6" x="608" y="288">
    <properties>
     <property name="Action" value="CCMoveTo"/>
-    <property name="Animation" value="fly"/>
-    <property name="NextWaypoint" value="Enemy4"/>
-    <property name="Speed" value="1"/>
+    <property name="NextWaypoint" value="Enemy3"/>
+    <property name="Speed" value="100"/>
    </properties>
   </object>
-  <object name="Enemy4" x="1600" y="480">
+  <object name="Enemy3" x="128" y="288">
    <properties>
-    <property name="Action" value="CCJumpTo"/>
-    <property name="Animation" value="fly"/>
-    <property name="Height" value="100"/>
-    <property name="Jumps" value="4"/>
-    <property name="NextWaypoint" value=""/>
-    <property name="Speed" value="1"/>
+    <property name="Action" value="CCMoveTo"/>
+    <property name="NextWaypoint" value="Enemy6"/>
+    <property name="Speed" value="50"/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="ControlPoints" width="64" height="24">
-  <object name="Enemy1_ControlPointA" x="640" y="64"/>
-  <object name="Enemy1_ControlPointB" x="1504" y="608"/>
- </objectgroup>
+ <objectgroup name="ControlPoints" width="64" height="24"/>
 </map>

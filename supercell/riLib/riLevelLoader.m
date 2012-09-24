@@ -263,7 +263,7 @@
         for(NSString* relActor in relActors){
             relatedActorYes = NO;
             for(riActor* eachActor in _gameLayer.actorsArray){
-                if([relActor isEqualToString:eachActor.name] && [eachActor isMature]){
+                if([relActor isEqualToString:eachActor.name]){
                     relatedActorYes = YES;
                     break;
                 }
@@ -317,7 +317,7 @@
         for(NSString* relActor in relActors){
             relatedActorYes = NO;
             for(riActor* eachActor in _gameLayer.actorsArray){
-                if([relActor isEqualToString:eachActor.name] && [eachActor isMature]){
+                if([relActor isEqualToString:eachActor.name]){
                     relatedActorYes = YES;
                     break;
                 }
@@ -502,7 +502,7 @@
 	return nil;    
 }
 
--(BOOL) removeActor:(riActor*)actor cleanup:(BOOL)clean{
+-(BOOL) removeActor:(riActor*)actor cleanupShape:(BOOL)clean{
     NSAssert(addSpritesToLayerWasUsed!=YES, @"You cannot remove a body with method removeActor if you used the method addSpritesToLayer to load your level. Use method removeCCSprite or removeCCSpriteWithName."); 
 	
 	if(actor != nil)
@@ -1008,10 +1008,11 @@
 
     NSString* animationName = [spriteProp objectForKey:@"Animation"];
     if(animationName != nil && ![animationName isEqualToString:@""]){
-        CCAnimation * curAnimation = [[CCAnimationCache sharedAnimationCache] animationByName:animationName];
+        NSString * aname = [NSString stringWithFormat:@"%@_%@",actor.name,animationName];
+        CCAnimation * curAnimation = [[CCAnimationCache sharedAnimationCache] animationByName:aname];
         if (curAnimation != nil) {
             int times = [[spriteProp objectForKey:@"AnimationTimes"] intValue];
-            if(times < 0)
+            if(times <= 0)
                 actor.curAnimate = [CCRepeatForever actionWithAction:[CCAnimate actionWithAnimation:curAnimation]];
             else{
                 actor.curAnimate = [CCRepeat actionWithAction:[CCAnimate actionWithAnimation:curAnimation restoreOriginalFrame:NO] times:times];

@@ -129,7 +129,6 @@ typedef enum {
 -(void)update:(ccTime)dt;
 
 -(void)speedUp:(float)s;
--(BOOL)isMature;
 -(BOOL)touchedInLayer:(CCLayer *)layer withTouchs:(NSSet *)touches;
 
 @end

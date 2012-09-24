@@ -30,8 +30,8 @@
 #define kFingerMovementFactorY 80
 #define kFingerNoMovementFactor 40
 #define kFingerTouchTimeFactor 1.5
+#define kBulletAccuracyFactor 16
 
-#define kWeaponPosition ccp(100,200)
 
 
 typedef enum {
@@ -93,13 +93,14 @@ typedef enum {
     double _touchBeginTime;
     double _touchEndTime;
         
-    riActor * _weapon;
-
     CCParallaxNode * _parallaxNode;
     
     NSMutableArray * _actorsArray;
     NSMutableArray * _bulletsArray;
 
+    NSMutableSet * _deadActorsSet;
+    NSMutableSet * _deadBulletsSet;
+    
     Player * _player;
 
 }
@@ -118,9 +119,7 @@ typedef enum {
 @property (nonatomic, readonly) NSMutableArray * actorsArray;
 @property (nonatomic, readonly) Player * player;
 
-
-- (void)addWeaponAt:(CGPoint)pt;
-
+-(void)addBackgroundParticle;
 -(void)addTower: (CGPoint)pos: (int)towerTag tileMap: (CCTMXTiledMap*)tiledMap;
 - (BOOL) canBuildOnTilePosition:(CGPoint) pos tiledMap:(CCTMXTiledMap *) tiledMap;
 
