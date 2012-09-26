@@ -184,7 +184,7 @@
 					</array>
 				</array>
 				<key>BodyType</key>
-				<integer>1</integer>
+				<integer>3</integer>
 			</dict>
 			<key>ActorProperties</key>
 			<dict>
@@ -195,7 +195,7 @@
 					<string>Enemy1</string>
 				</array>
 				<key>ActorType</key>
-				<string>Butterfly</string>
+				<string>Bullet</string>
 			</dict>
 			<key>CountType</key>
 			<integer>1</integer>
@@ -210,7 +210,7 @@
 			<key>RelatedActors</key>
 			<array/>
 			<key>Count</key>
-			<integer>20</integer>
+			<integer>5</integer>
 		</dict>
 		<dict>
 			<key>GeneralProperties</key>

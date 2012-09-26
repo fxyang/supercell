@@ -627,6 +627,7 @@
         //Add no physics actor to actorsInStageNoPhysics
         NSString* name = [spriteProp objectForKey:@"Name"];
         int bodyType = [[physicProp objectForKey:@"BodyType"] intValue];
+        
         if(bodyType != kBodyNoPhysic){
             NSMutableArray* shapes = [self shapesWithDictionary:physicProp spriteProperties:spriteProp data:actor];
             [shapesInStage setObject:shapes forKey:name];
@@ -1047,9 +1048,9 @@
         health = health == 0 ? kActorHealthDefault : health;
         actor.health = health;
         
-        float demage = [[actorProp objectForKey:@"Demage"] floatValue];
-        demage = demage == 0 ? kActorDemageDefault : demage;
-        actor.demage = demage;
+        float damage = [[actorProp objectForKey:@"Damage"] floatValue];
+        damage = damage == 0 ? kActorDamageDefault : damage;
+        actor.damage = damage;
         
         float power = [[actorProp objectForKey:@"Power"] floatValue];
         power = power == 0 ? kActorPowerDefault : power;
@@ -1163,7 +1164,7 @@
 
 -(BOOL) removeSpriteWithName:(NSString*)name
 {
-	NSAssert(addObjectsToWordWasUsed!=YES, @"You cannot remove a sprite with method removeCCSpriteWithName if you used the method addObjectToWorld to load your level. Use method removeBody."); 
+//	NSAssert(addObjectsToWordWasUsed!=YES, @"You cannot remove a sprite with method removeCCSpriteWithName if you used the method addObjectToWorld to load your level. Use method removeBody."); 
 	
 	CCSprite* ccsprite = nil;
 	if(!addObjectsToWordWasUsed)

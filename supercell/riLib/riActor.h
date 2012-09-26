@@ -21,7 +21,7 @@
 #define kActorSpeedVarDefault 1.0
 
 #define kActorHealthDefault  1
-#define kActorDemageDefault 0
+#define kActorDamageDefault 0
 #define kActorPowerDefault  1
 #define kActorScoreDefault  1
 
@@ -52,7 +52,7 @@ typedef enum {
 	float _speedVar;
 
     float _health;
-    float _demage;
+    float _damage;
 
     float _power;	
     int _score;	
@@ -93,7 +93,7 @@ typedef enum {
 @property (nonatomic, assign) int speed;
 
 @property (nonatomic, assign) float health;
-@property (nonatomic, assign) float demage;
+@property (nonatomic, assign) float damage;
 
 @property (nonatomic, assign) float power;
 @property (nonatomic, assign) int score;

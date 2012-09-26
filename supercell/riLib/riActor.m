@@ -20,7 +20,7 @@
 @synthesize speed = _speed;
 
 @synthesize health = _health;
-@synthesize demage = _demage;
+@synthesize damage = _damage;
 
 @synthesize power = _power;
 @synthesize score = _score;
@@ -59,7 +59,7 @@
         _speedVar = kActorSpeedVarDefault;
 
         _health = kActorHealthDefault;
-        _demage = kActorDemageDefault;
+        _damage = kActorDamageDefault;
 
         _power = kActorPowerDefault;
         _score = kActorScoreDefault;
@@ -124,7 +124,7 @@
         self.age = copyFrom.age;
 
         self.health = copyFrom.health;
-        self.demage = copyFrom.demage;
+        self.damage = copyFrom.damage;
 
         self.power = copyFrom.power;
         self.score = copyFrom.score;
@@ -204,10 +204,10 @@
 -(void)update:(ccTime)dt{
 
     _age = _age + dt;
-    if(_demage >0)
-        _demage = _demage - dt;
-    if(_demage <0)
-        _demage = 0;
+    if(_damage >0)
+        _damage = _damage - dt;
+    if(_damage <0)
+        _damage = 0;
     
 /* Rotate to the direction of movement... */
     if(_bodyType == kBodyKinematic){
