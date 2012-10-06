@@ -9,30 +9,30 @@
   </tile>
  </tileset>
  <objectgroup name="Waypoints" width="64" height="24">
-  <object name="Enemy1" x="320" y="672">
+  <object name="Enemy1" x="512" y="384">
    <properties>
     <property name="Animation" value="fly"/>
    </properties>
   </object>
-  <object name="Enemy2" x="384" y="96">
+  <object name="Enemy2" x="576" y="64">
    <properties>
     <property name="Animation" value="fly"/>
    </properties>
   </object>
-  <object name="Enemy4" x="512" y="320">
+  <object name="Enemy4" x="352" y="64">
    <properties>
     <property name="Animation" value="fly"/>
    </properties>
   </object>
-  <object name="Enemy5" x="224" y="320"/>
-  <object name="Enemy6" x="576" y="192">
+  <object name="Enemy5" x="1184" y="576"/>
+  <object name="Enemy6" x="256" y="288">
    <properties>
     <property name="Action" value="CCMoveTo"/>
     <property name="NextWaypoint" value="Enemy3"/>
     <property name="Speed" value="100"/>
    </properties>
   </object>
-  <object name="Enemy3" x="160" y="192">
+  <object name="Enemy3" x="128" y="64">
    <properties>
     <property name="Action" value="CCMoveTo"/>
     <property name="NextWaypoint" value="Enemy6"/>

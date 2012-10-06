@@ -24,29 +24,32 @@ void bulletCallback(cpSpace *space, void *obj, void *data)
     GameLayer *game = data;
     riActor * bullet = (riActor *)obj;
     
-    
-    [bullet stopAction:bullet.curMovement];
-
-    CCParticleSystemQuad * bulletExplosionParticle = [CCParticleSystemQuad particleWithFile:@"BulletExplosionParticle.plist"];
-    bulletExplosionParticle.position = bullet.position;
-    bulletExplosionParticle.autoRemoveOnFinish = YES;
-    [game addChild:bulletExplosionParticle z:kBulletParticleZ];
-    
-    CCActionInterval * bulletFinishing = [CCSpawn actions:
-                                        [CCScaleTo actionWithDuration:1.45 scale:0.1],
-                                        [CCFadeOut actionWithDuration:1.45],
-                                        nil];
-    
-    
-    
-    [bullet runAction:[CCSequence actions:bulletFinishing,[CCCallFuncND actionWithTarget:game selector:@selector(bulletStop:) data:bullet], nil]];
-    
-    
-    if([bullet countType] == kCountLimitFinity)
-        [[game levelLoader] increaseActorWithName:bullet.name count:1 delay:2.0];
-    
-    [[game levelLoader] removeShapeOfActor:bullet];
-    
+    if(bullet != nil){
+        
+        [bullet stopAction:bullet.curMovement];
+        
+        CCParticleSystemQuad * bulletExplosionParticle = [CCParticleSystemQuad particleWithFile:@"BulletExplosionParticle.plist"];
+        bulletExplosionParticle.position = bullet.position;
+        bulletExplosionParticle.autoRemoveOnFinish = YES;
+        [game addChild:bulletExplosionParticle z:kBulletParticleZ];
+        
+        CCActionInterval * bulletFinishing = [CCSpawn actions:
+                                              [CCScaleTo actionWithDuration:5 scale:0.1],
+                                              [CCFadeOut actionWithDuration:5],
+                                              nil];
+        
+        
+        [bullet runAction:[CCSequence actions:bulletFinishing,[CCCallFuncO actionWithTarget:game selector:@selector(bulletStop:) object:bullet], nil]];
+        
+        
+        if([bullet countType] == kCountLimitFinity)
+            [[game levelLoader] increaseActorWithName:bullet.name count:1 delay:2.0];
+        
+        [[game spaceManager] removeAndFreeShape:bullet.shape];
+        /*The memory address of bullet.shape will be reused. so set it nil will avoid making messy.*/
+        bullet.shape = nil;
+        
+    }
 }
 
 void targetCallback(cpSpace *space, void *obj, void *data)
@@ -54,7 +57,7 @@ void targetCallback(cpSpace *space, void *obj, void *data)
     GameLayer *game = data;
     riActor * actor = (riActor *)obj;
     
-    if(actor.health <= actor.damage){
+    if(actor != nil && actor.health <= actor.damage){
         [actor stopAction:actor.curMovement];
         
         int n = actor.score;
@@ -79,26 +82,23 @@ void targetCallback(cpSpace *space, void *obj, void *data)
                              [CCCallFuncND actionWithTarget:game selector:@selector(coinStop:) data:coin],
                              nil]];
         }
-        
-//        CCActionInterval * butterflyDead = [CCSpawn actions:
-//                                            [CCRepeat actionWithAction:[CCAnimate actionWithAnimation:[[CCAnimationCache sharedAnimationCache] animationByName:[NSString stringWithFormat:@"%@_dead",[actor name]]]] times:20],
-//                                            [CCFadeOut actionWithDuration:0.7],
-//                                            nil];
 
         CCActionInterval * targetDying = [CCSpawn actions:
-                                            [CCScaleTo actionWithDuration:1.45 scale:0.1],
-                                            [CCFadeOut actionWithDuration:1.45],
+                                            [CCScaleTo actionWithDuration:5 scale:0.1],
+                                            [CCFadeOut actionWithDuration:5],
                                             nil];
 
         
-        
-        [actor runAction:[CCSequence actions:targetDying,[CCCallFuncND actionWithTarget:game selector:@selector(targetDone:) data:actor], nil]];
+        [actor runAction:[CCSequence actions:targetDying,[CCCallFuncO actionWithTarget:game selector:@selector(targetDone:) object:actor], nil]];
         
         
         if([actor countType] == kCountLimitFinity)
             [[game levelLoader] increaseActorWithName:actor.name count:1 delay:2.0];
-        
+                
         [[game levelLoader] removeShapeOfActor:actor];
+        /*The memory address of actor.shape will be reused. so set it nil will avoid making messy.*/
+        actor.shape = nil;
+        
     }
 
 }
@@ -124,6 +124,8 @@ void targetCallback(cpSpace *space, void *obj, void *data)
 @synthesize currentLevel = _currentLevel;
 
 @synthesize actorsArray = _actorsArray;
+@synthesize bulletsArray = _bulletsArray;
+
 @synthesize player = _player;
 
 enum {
@@ -152,23 +154,25 @@ enum {
     
     self.space = [_spaceManager space];
     
+    cpShape * bottom = [_spaceManager addSegmentAt:ccp(kWinWidth/2,0) fromLocalAnchor:ccp(-kWinWidth*2, 0) toLocalAnchor:ccp(kWinWidth*2, 1) mass:INFINITY radius:10];
+    cpShapeTextureNode * ground = [cpShapeTextureNode nodeWithShape:bottom file:@"rope.png"]; 
+    [self addChild:ground z:0 tag:0];
+    
     _actorsArray = [[NSMutableArray alloc] init];
     _bulletsArray = [[NSMutableArray alloc] init];
     _deadActorsSet = [[NSMutableSet alloc] init];
     _deadBulletsSet = [[NSMutableSet alloc] init];
     
+    _trajectoryDict = [[NSMutableDictionary alloc] init];
     _player = [[Player alloc] init];
+    _trajectory = nil;
     
-    //Load TiledMAP
+    //Load TiledMAP/BatchNode/....
     _levelLoader = [[riLevelLoader alloc] initWithContentOfFile:@"Level0"];
     _levelLoader.spaceManager = _spaceManager;
     _levelLoader.space = _space;
     _levelLoader.gameLayer = self;
-    
-    if([_levelLoader hasSpaceBoundaries])
-        [_levelLoader createSpaceBoundaries:_space];
-    
-    [_levelLoader addEverythingToSpace:_space gameLayer:self];
+    [_levelLoader addEverythingToSpaceAndGameLayer];
     
     _tiledMaps = [DataModel sharedDataModel].tiledMaps;
     _background = [[[_tiledMaps objectAtIndex:0] objectForKey:@"TiledMap"] layerNamed:@"Background"];
@@ -210,6 +214,7 @@ enum {
 								   target:self 
 								 selector:@selector(handleCollisionWithTarget:arbiter:space:)
                                   moments:COLLISION_BEGIN, nil];
+
     
 	[_spaceManager start]; 
     
@@ -258,6 +263,9 @@ enum {
     
     [_deadBulletsSet release];
     _deadBulletsSet = nil;
+    
+    [_trajectoryDict release];
+    _trajectoryDict = nil;
     
     [_player release];
     _player = nil;
@@ -428,20 +436,27 @@ enum {
 
 -(void) bulletStop:(riActor*)bullet{
     if(bullet != nil){
-        
-//        if ([bullet shape] != nil) 
-//            [[self spaceManager] removeAndFreeShape:[bullet shape]];
         [_bulletsArray removeObject:bullet];
-//        [self removeChild:bullet cleanup:YES]; 
-        [_levelLoader removeActor:bullet cleanupShape:NO];
-
+        [_actorsArray removeObject:bullet];
+        [_levelLoader removeSpriteOfActor:bullet];
+        if (bullet.shape != nil) {
+            NSLog(@"---------------------");
+        }
+    }else {
+        NSLog(@"NIL BULLET...............");
     }
 }
 
 -(void) targetDone:(riActor*)actor{
     if(actor != nil){
         [[GameHUD sharedHUD] updateMoney:actor.score];
-        [_levelLoader removeActor:actor cleanupShape:NO];
+        [_actorsArray removeObject:actor];
+        [_levelLoader removeSpriteOfActor:actor];
+        if (actor.shape != nil) {
+            NSLog(@"++++++++++++++++++++");
+        }
+    }else {
+        NSLog(@"NIL ACTOR...............");
     }
 }
 
@@ -454,117 +469,163 @@ enum {
 #pragma mark Touch Functions
 - (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {	
-	CGPoint pt = [self convertTouchToNodeSpace:[touches anyObject]];
-    _touchBeginPos = pt;
-    _touchBeginTime = [[NSDate date] timeIntervalSince1970];
-
     
-    if(_actorsArray != nil && [_actorsArray count] > 0){
-        for(riActor * a in _actorsArray){
-            if ([a touchedInLayer:self withTouchs:touches]) {
-                if ([[a actorType] isEqualToString:@"Bullet"]) {
-                    NSLog(@"Bullet Clicked...");
-                    [_bulletsArray addObject:a];
-
+    for(UITouch* t in touches) {
+//        CGPoint pt = [self convertTouchToNodeSpace:t];
+//        _touchBeginPos = pt;
+//        _touchBeginTime = [[NSDate date] timeIntervalSince1970];
+        
+        if(_actorsArray != nil && [_actorsArray count] > 0){
+            for(riActor * a in _actorsArray){
+                if ([a touchedInLayer:self withTouchs:touches]) {
+                    if ([[a actorType] isEqualToString:@"Bullet"]) {
+                        a.actorType = @"Bullet_Firing";
+                        a.currentTouch = t;
+                        [_bulletsArray addObject:a];
+                        break;
+                    }
+                    
                 }
-                
             }
         }
     }
     
+
+    
     
 	//Reset Scene
-    if ([touches count] > 1)
-    {
-        CCScene *scene = [CCScene node];
-        [scene addChild:[GameLayer node]];
-        [[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:.4 scene:scene  withColor:ccBLUE]];
-    }
+//    if ([touches count] > 1)
+//    {
+//        CCScene *scene = [CCScene node];
+//        [scene addChild:[GameLayer node]];
+//        [[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:.4 scene:scene  withColor:ccBLUE]];
+//    }
 }
 
 - (void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {	
+//    UITouch * touch = [touches anyObject];
     
-    UITouch * touch = [touches anyObject];
-    
-    CGPoint pt = [self convertTouchToNodeSpace:touch];
-    _touchEndPos = pt;
-    _touchEndTime = [[NSDate date] timeIntervalSince1970];
-    
-    if(_bulletsArray != nil && [_bulletsArray count] > 0){
+    for(UITouch* t in touches) {
+        CGPoint pt = [self convertTouchToNodeSpace:t];
+        //    _touchEndPos = pt;
+        //    _touchEndTime = [[NSDate date] timeIntervalSince1970];
         
-        for(riActor * b in _bulletsArray){
+        if(_bulletsArray != nil && [_bulletsArray count] > 0){
             
-            if ([[b actorType] isEqualToString:@"Bullet"]) {
-                b.position = _touchEndPos;
-            }         
+            for(riActor * b in _bulletsArray){
+                
+                if (b.currentTouch == t && [[b actorType] isEqualToString:@"Bullet_Firing"]) {
+                    CGPoint direction = cpvsub(kBulletAnchorPosition, pt);
+                    float length = ccpLength(direction);
+                    CGPoint pos = pt;
+                    if (length > kBulletLength) {
+                        direction = ccpMult(direction, kBulletLength/length);
+                        length = kBulletLength;
+                        pos = ccpSub(kBulletAnchorPosition, direction);
+                    }
+                    
+                    float rot = -CC_RADIANS_TO_DEGREES(cpvtoangle(direction));
+                    float scale = length/kBulletLength;
+                    
+                    b.position = pos;;
+                    CCSprite * trajectory = [_trajectoryDict objectForKey:b.signiture];
+                    if(trajectory == nil){
+                        trajectory = [CCSprite spriteWithFile:@"trajectory.png"];
+                        trajectory.anchorPoint = ccp(0,0.5);
+                        trajectory.position = pos;;
+                        trajectory.rotation = rot; 
+                        trajectory.scaleX = scale;
+                        [_trajectoryDict setObject:trajectory forKey:b.signiture];
+                        [self addChild:trajectory];
+                    }else {
+                        trajectory.position = pos;
+                        trajectory.rotation = rot;
+                        trajectory.scaleX = scale;
+                        
+                    }
+                }         
+            }
+            
         }
-        
     }
-
-    
 }
 
 - (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {	
-    CGPoint pt = [self convertTouchToNodeSpace:[touches anyObject]];
-    
-    _touchEndPos = pt;
-    _touchEndTime = [[NSDate date] timeIntervalSince1970];
 
-    float touchTime = _touchEndTime - _touchBeginTime;
-    CGPoint touchMove = ccpSub(_touchEndPos, _touchBeginPos);
-    float touchDistance = ccpLength(touchMove);
-    if (touchTime < 0.001) touchTime = 0.001;
+//    CGPoint pt = [self convertTouchToNodeSpace:[touches anyObject]];
     
+//    _touchEndPos = pt;
+//    _touchEndTime = [[NSDate date] timeIntervalSince1970];
+
+//    float touchTime = _touchEndTime - _touchBeginTime;
+//    if (touchTime < 0.001) touchTime = 0.001;
     
-//    CGPoint bulletPos = ccp(kBulletAccuracyFactor*(int)(pt.x/kBulletAccuracyFactor + 0.5),kBulletAccuracyFactor*(int)(pt.y/kBulletAccuracyFactor + 0.5));
-    
-    if(touchDistance < kFingerNoMovementFactor){
-        
-//        riActor * bullet = [riActor spriteWithFile:@"Circle_1024_1024.png"];
-//        bullet.gameLayer = self;
-//        bullet.scale = 0.01;
-//        bullet.power = 1;
-//        bullet.life = 30;
-//        bullet.position = bulletPos;
+//    if(touchDistance < kFingerNoMovementFactor){
+//                
+////        [gameHUD updateMoney:bullet.score - 1];
 //        
-//        [bullet runAction:[CCSequence actions:[CCEaseOut actionWithAction:[CCScaleTo actionWithDuration:bullet.life scale:0.5] rate:2] ,[CCCallFuncND actionWithTarget:self selector:@selector(bulletStop:) data:bullet],nil]];
-        
-//        [gameHUD updateMoney:bullet.score - 1];
-        
-        CCParticleSystemQuad * bulletParticle = [CCParticleSystemQuad particleWithFile:@"BulletParticle.plist"];
-        bulletParticle.position = _touchEndPos;
-        bulletParticle.autoRemoveOnFinish = YES;
-        [self addChild:bulletParticle z:kBulletParticleZ];
-
-    }else{
+//        CCParticleSystemQuad * bulletParticle = [CCParticleSystemQuad particleWithFile:@"BulletParticle.plist"];
+//        bulletParticle.position = _touchEndPos;
+//        bulletParticle.autoRemoveOnFinish = YES;
+//        [self addChild:bulletParticle z:kBulletParticleZ];
+//
+//    }else{
+//    }
+    for(UITouch* t in touches) {
         for(riActor * b in _bulletsArray){
-            if([[b actorType] isEqualToString:@"Bullet"]){
-                cpShape * bulletShape = [_spaceManager addCircleAt:_touchEndPos mass:1 radius:6];
+            if(b.currentTouch == t && [[b actorType] isEqualToString:@"Bullet_Firing"]){
+                b.actorType = @"Bullet_Fired";
+                cpShape * bulletShape = [_spaceManager addCircleAt:b.position mass:1 radius:16];
                 bulletShape->collision_type = kBulletCollisionType;
                 bulletShape->group = 1;
+                
+                /*We have to set body and shape BOTH.Because this will point body and shape's data to Bullet,
+                which is very important for collision callback to use the bullet object.*/
+                b.body = bulletShape->body;
                 b.shape = bulletShape;
-                [b applyImpulse:cpvmult(cpvsub(ccp(320,96), b.position),10)];
-                b.actorType = @"Bullet_Fired";
+
+                CGPoint direction = cpvsub(kBulletAnchorPosition, b.position);
+                float length = ccpLength(direction);
+                if (length > kBulletLength) {
+                    direction = ccpMult(direction, kBulletLength/length);
+                }                
+                
+                [b applyImpulse:cpvmult(direction,5)];
+                
+                CCSprite * trajectory = [_trajectoryDict objectForKey:b.signiture];
+                if(trajectory != nil && [[self children] containsObject:trajectory]){
+                    [_trajectoryDict removeObjectForKey:b.signiture];
+                    [self removeChild:trajectory cleanup:YES];
+                    trajectory = nil;
+                }
+                //                [self runAction:[CCScaleTo actionWithDuration:2 scale:0.5]];
+                //                [self runAction:[CCFollow actionWithTarget:b]];
             }
         }
-        
     }
-	
+
 }
 
 - (void) handleCollisionWithTarget:(CollisionMoment)moment arbiter:(cpArbiter*)arb space:(cpSpace*)space
 {	
-    CP_ARBITER_GET_SHAPES(arb,a,b);
-    cpSpaceAddPostStepCallback(_space, targetCallback, a->data, self);
-    cpSpaceAddPostStepCallback(_space, bulletCallback, b->data, self);
-
+    CP_ARBITER_GET_BODIES(arb,a,b);
+    
     riActor * actor = (riActor *)a->data;
     riActor * bullet = (riActor *)b->data;
     
-    actor.damage = actor.damage + bullet.power;
-//    bullet.score ++;
+    NSLog(@"%@ hit %@",bullet.actorType,actor.actorType);
+
+    if (actor != nil && bullet !=nil && ![bullet.actorType isEqualToString:@"Bullet_Stop"]) {
+        bullet.actorType = @"Bullet_Stop";
+        cpSpaceAddPostStepCallback(_space, targetCallback, a->data, self);
+        cpSpaceAddPostStepCallback(_space, bulletCallback, b->data, self);
+        actor.damage = actor.damage + bullet.power;
+        //    bullet.score ++;
+
+    }
+
 
     
 }

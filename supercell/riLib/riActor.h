@@ -42,6 +42,8 @@ typedef enum {
 
 @interface riActor : cpCCSprite <NSCopying> {
     
+    NSString * _signiture;
+    
     NSString * _actorType;
     NSString * _name;
     int _countType;
@@ -79,10 +81,14 @@ typedef enum {
     float _lastRot;
     BodyType _bodyType;
     
+    UITouch * _currentTouch;
+    
     GameHUD * _gameHUD;
     GameLayer * _gameLayer;
 
 }
+
+@property (nonatomic, retain) NSString * signiture;
 
 @property (nonatomic, retain) NSString * actorType;
 @property (nonatomic, retain) NSString * name;
@@ -112,6 +118,8 @@ typedef enum {
 @property (nonatomic, assign) riTiledMapWaypoint * curWaypoint;
 @property (nonatomic, retain) NSArray * waypoints;
 @property (nonatomic, retain) NSArray * positions;
+
+@property (nonatomic, assign) UITouch * currentTouch;
 
 @property (nonatomic, assign) BodyType  bodyType;
 @property (nonatomic, assign) GameLayer * gameLayer;

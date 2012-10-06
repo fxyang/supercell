@@ -24,6 +24,8 @@
 
 #define kWinWidth ([[CCDirector sharedDirector] winSize].width)
 #define kWinHeight ([[CCDirector sharedDirector] winSize].height)
+#define kBulletAnchorPosition ccp(512,384)
+#define kBulletLength 128
 
 #define kFingerMovementFactor 40
 #define kFingerMovementFactorX 40
@@ -85,6 +87,8 @@ typedef enum {
     CCSpriteBatchNode *ropeSegmentSpriteBatchNode ;
     
     riVerletRope * verletRope;
+    
+    CCSprite * _trajectory;
     NSMutableArray *_touchPos;
     
     CGPoint _touchBeginPos;
@@ -100,6 +104,8 @@ typedef enum {
 
     NSMutableSet * _deadActorsSet;
     NSMutableSet * _deadBulletsSet;
+    
+    NSMutableDictionary * _trajectoryDict;
     
     Player * _player;
 
@@ -117,6 +123,9 @@ typedef enum {
 @property (nonatomic, assign) int currentLevel;
 
 @property (nonatomic, readonly) NSMutableArray * actorsArray;
+@property (nonatomic, readonly) NSMutableArray * bulletsArray;
+
+
 @property (nonatomic, readonly) Player * player;
 
 -(void)addBackgroundParticle;
@@ -126,6 +135,7 @@ typedef enum {
 - (void) back: (id) sender;
 
 -(void) bulletStop:(riActor*)bullet;
+-(void) targetDone:(riActor*)target;
 
 
 @end

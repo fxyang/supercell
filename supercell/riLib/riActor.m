@@ -7,9 +7,12 @@
 //
 
 #import "riActor.h"
+#import "GameLayer.h"
 #import "riTiledMapWaypoint.h"
 
 @implementation riActor
+
+@synthesize signiture = _signiture;
 
 @synthesize actorType = _actorType;
 @synthesize name = _name;
@@ -43,11 +46,13 @@
 
 @synthesize bodyType = _bodyType;
 
+@synthesize currentTouch = _currentTouch;
 @synthesize gameLayer = _gameLayer;
 
 - (riActor *)init{
     if ((self = [super init])) {
         
+        _signiture = nil;
         _actorType = nil;
         _name = nil;
         _countType = 0;
@@ -84,6 +89,7 @@
         _lastRot = 0;
         
         _bodyType = kBodyStatic;
+        _currentTouch = nil;
         
         [self schedule:@selector(update:) interval:_updateInterval];
         [self schedule:@selector(actorLogic:) interval:_logicInterval];
@@ -95,6 +101,7 @@
 
 -(void)dealloc{
     
+    self.signiture = nil;
     self.actorType = nil;
     self.name = nil;
     
@@ -116,33 +123,13 @@
 
 - (riActor *) initWithActor:(riActor *) copyFrom {
     if ((self = [[super init] autorelease])) {
+        
+        self.signiture = copyFrom.signiture;
         self.actorType = copyFrom.actorType;
         self.name = copyFrom.name;
         self.countType = copyFrom.countType;
-
-        self.life = copyFrom.life;
-        self.age = copyFrom.age;
-
-        self.health = copyFrom.health;
-        self.damage = copyFrom.damage;
-
-        self.power = copyFrom.power;
-        self.score = copyFrom.score;
-        
-        self.speedVar = copyFrom.speedVar;
         
         self.gameLayer = copyFrom.gameLayer;
-        self.spaceManager = copyFrom.spaceManager;
-        
-        
-        self.curAnimate = copyFrom.curAnimate;
-        self.runningCurAnimate = copyFrom.runningCurAnimate;
-        self.curMovement = copyFrom.curMovement;
-        self.curParticle = copyFrom.curParticle;
-        self.curParticleToFollow = copyFrom.curParticleToFollow;
-
-        
-        self.curWaypoint = copyFrom.curWaypoint;
         
         self.bodyType = copyFrom.bodyType;
 
@@ -182,6 +169,10 @@
 }
 
 -(void)perform{
+    
+    //Add Actor To Managing Array
+    
+    [[self.gameLayer actorsArray] addObject:self];
     
     //Synch. the position
     _lastPos = self.position;
@@ -249,7 +240,7 @@
         if(layer != nil){
             CGPoint pt = [layer convertTouchToNodeSpace:touch];            
             if(CGRectContainsPoint(box, pt)){
-                NSLog(@"Touched.............");
+                NSLog(@"%@ [%@] is touched....",self.name,self.signiture);
                 return YES;
             }
         }

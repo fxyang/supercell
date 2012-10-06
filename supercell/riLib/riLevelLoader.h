@@ -61,14 +61,14 @@ typedef enum
 
     NSMutableArray* actorsInStage;
 	NSMutableDictionary* shapesInStage;	//key - uniqueSpriteName	value - CCSprite* or NSValue with b2Body*
-	NSMutableDictionary* actorsInStageNoPhysics;   //key - uniqueSpriteName    value - CCSprite*
+	NSMutableArray* actorsInStageNoPhysics;   //key - uniqueSpriteName    value - CCSprite*
 	NSMutableDictionary* jointsInStage;   //key - uniqueJointName     value - NSValue withPointer of b2Joint*
 	NSMutableDictionary* batchNodes;		//key - textureName			value - NSDictionary
 
     
 	CGRect wb;
-	BOOL addSpritesToLayerWasUsed;
-	BOOL addObjectsToWordWasUsed;
+//	BOOL addSpritesToLayerWasUsed;
+//	BOOL addObjectsToWordWasUsed;
     BOOL levelLoaded;
 	
     SpaceManagerCocos2d * _spaceManager;
@@ -82,13 +82,12 @@ typedef enum
 
 
 -(id) initWithContentOfFile:(NSString*)levelFile;
-
 -(id) initWithContentOfFile:(NSString*)levelFile 
 			 levelSubfolder:(NSString*)levelFolder 
 			imagesSubfolder:(NSString*)imgFolder;
-
-
 +(id) riLevelLoaderWithContentOfFile:(NSString*)levelFile;
+-(BOOL) hasSpaceBoundaries;
+-(void) createSpaceBoundaries:(cpSpace*)world;
 
 //curently only level files can be in subfolders - just pass @"" in imageSubfolder
 +(id) riLevelLoaderWithContentOfFile:(NSString*)levelFile 
@@ -96,33 +95,29 @@ typedef enum
 						 imagesSubfolder:(NSString*)imgFolder;
 
 -(void) step;
-
--(void) addEverythingToSpace:(cpSpace*)world gameLayer:(GameLayer*)cocosLayer;
-
--(void) addSpritesToLayer:(GameLayer*)cocosLayer;
+-(void) addEverythingToSpaceAndGameLayer;
+-(void) addSpritesToGameLayer;
 
 -(riActor *) addActorWithName:(NSString *)name;
+
+-(BOOL) removeSpriteOfActor:(riActor*)actor;
+-(BOOL) removeShapeOfActor:(riActor*)actor;
+-(BOOL) removeBodyWithActorSigniture:(NSString*)as;
+-(BOOL) removeJointWithName:(NSString*)name;
+
+-(BOOL) removeJoint:(cpConstraint*) joint;
 -(void) increaseActorWithName:(NSString *)name count:(int)incremental delay:(float)delay;
 
--(BOOL) removeActor:(riActor*)actor cleanupShape:(BOOL)clean;
--(BOOL) removeShapeOfActor:(riActor*)actor;
 
--(BOOL) hasSpaceBoundaries;
-
--(void) createSpaceBoundaries:(cpSpace*)world;
-
+-(NSArray*) actorsWithName:(NSString*)name; 
+-(cpConstraint*) jointWithName:(NSString*)name;
 -(unsigned int) numberOfBatchNodesUsed;
 
--(riActor*) spriteWithName:(NSString*)name; 
+//-(riActor*) spriteWithName:(NSString*)name; 
 
--(cpBody*) bodyWithName:(NSString*)name;
+//-(cpBody*) bodyWithName:(NSString*)name;
 
--(riActor*) actorWithDictionary:(NSDictionary *) dictionar;
 
--(riActor*) actorWithName:(NSString*)name;
-
--(riActor*) actorWithName:(NSString*)name 
-                        gameLayer:(GameLayer*)cocosLayer; 
 
 //discution
 //this will return a NSMutableArray that holds NSValues - withPointers of cpShape
@@ -133,9 +128,9 @@ typedef enum
                                    world:(cpSpace*)world 
                             gameLayer:(GameLayer*)cocosLayer;
 
--(NSMutableArray*) spritesWithTag:(LevelHelper_TAG)tag;
+//-(NSMutableArray*) spritesWithTag:(LevelHelper_TAG)tag;
 
--(NSMutableArray*) bodiesWithTag:(LevelHelper_TAG)tag;
+//-(NSMutableArray*) bodiesWithTag:(LevelHelper_TAG)tag;
 
 -(NSMutableArray*) newSpritesWithTag:(LevelHelper_TAG)tag
                         gameLayer:(GameLayer*)cocosLayer;
@@ -144,21 +139,16 @@ typedef enum
 							  world:(cpSpace*)world 
 					   gameLayer:(GameLayer*)cocosLayer;
 
--(BOOL) removeSpriteWithName:(NSString*)name;
+//-(BOOL) removeSpriteWithName:(NSString*)name;
 
--(BOOL) removeSprite:(riActor*)ccsprite;
 
 -(BOOL) removeAllSprites;
 
--(BOOL) removeBodyWithName:(NSString*)name;
 
 -(BOOL) removeAllBodies;
 
--(cpConstraint*) jointWithName:(NSString*)name;
 
--(BOOL) removeJointWithName:(NSString*)name;
 
--(BOOL) removeJoint:(cpConstraint*) joint;
 
 -(BOOL) removeAllJoints;
 
