@@ -34,8 +34,8 @@ void bulletCallback(cpSpace *space, void *obj, void *data)
         [game addChild:bulletExplosionParticle z:kBulletParticleZ];
         
         CCActionInterval * bulletFinishing = [CCSpawn actions:
-                                              [CCScaleTo actionWithDuration:5 scale:0.1],
-                                              [CCFadeOut actionWithDuration:5],
+                                              [CCScaleTo actionWithDuration:1.5 scale:0.1],
+                                              [CCFadeOut actionWithDuration:1.5],
                                               nil];
         
         
@@ -43,10 +43,13 @@ void bulletCallback(cpSpace *space, void *obj, void *data)
         
         
         if([bullet countType] == kCountLimitFinity)
-            [[game levelLoader] increaseActorWithName:bullet.name count:1 delay:2.0];
+            [[game levelLoader] increaseActorCountWithName:bullet.name count:1 delay:2.0];
         
+        //Bullet shape is managed by GameLayer. So use spaceManager to remove it.
         [[game spaceManager] removeAndFreeShape:bullet.shape];
-        /*The memory address of bullet.shape will be reused. so set it nil will avoid making messy.*/
+        
+        /*The memory address of bullet.shape will be reused. so set it point to nil will avoid making messy
+         before it is removed by game.*/
         bullet.shape = nil;
         
     }
@@ -84,8 +87,8 @@ void targetCallback(cpSpace *space, void *obj, void *data)
         }
 
         CCActionInterval * targetDying = [CCSpawn actions:
-                                            [CCScaleTo actionWithDuration:5 scale:0.1],
-                                            [CCFadeOut actionWithDuration:5],
+                                            [CCScaleTo actionWithDuration:1.5 scale:0.1],
+                                            [CCFadeOut actionWithDuration:1.5],
                                             nil];
 
         
@@ -93,10 +96,13 @@ void targetCallback(cpSpace *space, void *obj, void *data)
         
         
         if([actor countType] == kCountLimitFinity)
-            [[game levelLoader] increaseActorWithName:actor.name count:1 delay:2.0];
-                
+            [[game levelLoader] increaseActorCountWithName:actor.name count:1 delay:2.0];
+         
+        //Actor's shape is added by LevelLoader.So use LevelLoader to remove it.
         [[game levelLoader] removeShapeOfActor:actor];
-        /*The memory address of actor.shape will be reused. so set it nil will avoid making messy.*/
+        
+        /*The memory address of actor.shape will be reused. so set it nil will avoid making messy 
+         before it is removed by game.*/
         actor.shape = nil;
         
     }
@@ -439,9 +445,6 @@ enum {
         [_bulletsArray removeObject:bullet];
         [_actorsArray removeObject:bullet];
         [_levelLoader removeSpriteOfActor:bullet];
-        if (bullet.shape != nil) {
-            NSLog(@"---------------------");
-        }
     }else {
         NSLog(@"NIL BULLET...............");
     }
@@ -452,9 +455,6 @@ enum {
         [[GameHUD sharedHUD] updateMoney:actor.score];
         [_actorsArray removeObject:actor];
         [_levelLoader removeSpriteOfActor:actor];
-        if (actor.shape != nil) {
-            NSLog(@"++++++++++++++++++++");
-        }
     }else {
         NSLog(@"NIL ACTOR...............");
     }
@@ -610,12 +610,11 @@ enum {
 
 - (void) handleCollisionWithTarget:(CollisionMoment)moment arbiter:(cpArbiter*)arb space:(cpSpace*)space
 {	
+    //Because some bodies have multi_shapes.We need the body to handle collision.
     CP_ARBITER_GET_BODIES(arb,a,b);
     
     riActor * actor = (riActor *)a->data;
     riActor * bullet = (riActor *)b->data;
-    
-    NSLog(@"%@ hit %@",bullet.actorType,actor.actorType);
 
     if (actor != nil && bullet !=nil && ![bullet.actorType isEqualToString:@"Bullet_Stop"]) {
         bullet.actorType = @"Bullet_Stop";

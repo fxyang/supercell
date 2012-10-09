@@ -13,14 +13,6 @@
 @class riActor;
 @class GameLayer;
 
-typedef enum  
-{
-	DEFAULT_TAG 	= 0,
-	BALL 			= 1,
-	NUMBER_OF_TAGS 	= 2
-} LevelHelper_TAG;
-
-
 typedef enum { 
     kCountSingle = 0,
     kCountLimitFinity = 1,
@@ -53,27 +45,22 @@ typedef enum
 @end
 
 @interface riLevelLoader : NSObject<riLevelLoaderCustomCCSprite> {
-	
-//    CCTMXTiledMap * _tiledMap;
-    
-	NSMutableArray* actorDictsArray;	//array of NSDictionary with keys GeneralProperties (NSDictionary) and PhysicProperties (NSDictionary)
-	NSMutableArray* jointDictsArray;	//array of NSDictionary
+	    
+	NSMutableArray* actorDictsArray;
+	NSMutableArray* jointDictsArray;
 
     NSMutableArray* actorsInStage;
-	NSMutableDictionary* shapesInStage;	//key - uniqueSpriteName	value - CCSprite* or NSValue with b2Body*
-	NSMutableArray* actorsInStageNoPhysics;   //key - uniqueSpriteName    value - CCSprite*
-	NSMutableDictionary* jointsInStage;   //key - uniqueJointName     value - NSValue withPointer of b2Joint*
-	NSMutableDictionary* batchNodes;		//key - textureName			value - NSDictionary
-
+	NSMutableDictionary* shapesInStage;	
+	NSMutableArray* actorsInStageNoPhysics;   
+	NSMutableDictionary* jointsInStage;   
+	NSMutableDictionary* batchNodes;
     
 	CGRect wb;
-//	BOOL addSpritesToLayerWasUsed;
-//	BOOL addObjectsToWordWasUsed;
     BOOL levelLoaded;
 	
+    cpSpace* _space; 	
+    GameLayer* _gameLayer; 
     SpaceManagerCocos2d * _spaceManager;
-    cpSpace* _space; //hold pointer to properly release bodies and joints
-	GameLayer* _gameLayer; //hold pointer to properly release the sprites
 }
 
 @property (nonatomic, assign) cpSpace * space;
@@ -106,50 +93,14 @@ typedef enum
 -(BOOL) removeJointWithName:(NSString*)name;
 
 -(BOOL) removeJoint:(cpConstraint*) joint;
--(void) increaseActorWithName:(NSString *)name count:(int)incremental delay:(float)delay;
-
+-(void) increaseActorCountWithName:(NSString *)name count:(int)incremental delay:(float)delay;
 
 -(NSArray*) actorsWithName:(NSString*)name; 
 -(cpConstraint*) jointWithName:(NSString*)name;
 -(unsigned int) numberOfBatchNodesUsed;
 
-//-(riActor*) spriteWithName:(NSString*)name; 
-
-//-(cpBody*) bodyWithName:(NSString*)name;
-
-
-
-//discution
-//this will return a NSMutableArray that holds NSValues - withPointers of cpShape
-//in cpShape->data there is cpBody, in cpBody->data there is CCSprite
-//this was done in order to be able to release a body from the cpSpace
-
--(NSMutableArray*) newBodyWithName:(NSString*)name 
-                                   world:(cpSpace*)world 
-                            gameLayer:(GameLayer*)cocosLayer;
-
-//-(NSMutableArray*) spritesWithTag:(LevelHelper_TAG)tag;
-
-//-(NSMutableArray*) bodiesWithTag:(LevelHelper_TAG)tag;
-
--(NSMutableArray*) newSpritesWithTag:(LevelHelper_TAG)tag
-                        gameLayer:(GameLayer*)cocosLayer;
-
--(NSMutableArray*) newBodiesWithTag:(LevelHelper_TAG)tag 
-							  world:(cpSpace*)world 
-					   gameLayer:(GameLayer*)cocosLayer;
-
-//-(BOOL) removeSpriteWithName:(NSString*)name;
-
-
 -(BOOL) removeAllSprites;
-
-
 -(BOOL) removeAllBodies;
-
-
-
-
 -(BOOL) removeAllJoints;
 
 @end

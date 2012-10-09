@@ -191,6 +191,7 @@ static unsigned int signiture = 0;
 
 
 -(riActor *) addActorWithDictionary:(NSDictionary *) dictionary {
+    NSAssert(_gameLayer != nil && _space != nil && _spaceManager != nil , @"Set Space SpaceManager and GameLayer for LevelLoader Before running addActorWithDictionary."); 
     
     riActor * actor = [self newActorWithDictionary:dictionary];
     actor.gameLayer = _gameLayer;
@@ -221,6 +222,8 @@ static unsigned int signiture = 0;
 }
 
 -(cpConstraint *) addJointWithDictionary:(NSDictionary *) dictionary {
+    NSAssert(_gameLayer != nil && _space != nil , @"Set Space and GameLayer for LevelLoader Before running addJointWithDictionary."); 
+
     NSValue* joint = [self newJointWithDictionary:dictionary];
     if(nil != joint){
         cpConstraint * constraint = (cpConstraint *)[joint pointerValue];
@@ -817,6 +820,8 @@ static unsigned int signiture = 0;
 #pragma mark Step/Add/Remove of Actors/Shapes/Bodies
 
 -(void) step{
+    NSAssert(_gameLayer != nil && _space != nil , @"Set Space and GameLayer for LevelLoader Before running step."); 
+
 	for(NSMutableDictionary* dictionary in actorDictsArray){
         int countType = [[dictionary objectForKey:@"CountType"] intValue];
         
@@ -986,6 +991,7 @@ static unsigned int signiture = 0;
 }
 
 -(BOOL) removeBodyWithActorSigniture:(NSString *)signiture{
+    NSAssert( _space != nil , @"Set Space for LevelLoader Before running removeBodyWithActorSigniture."); 
 	NSMutableArray* shapes = [shapesInStage objectForKey:signiture];
 	if(0 != shapes){
         cpBody* body = 0;
@@ -1015,6 +1021,7 @@ static unsigned int signiture = 0;
 }
 
 -(BOOL) removeJoint:(cpConstraint*) joint{
+    NSAssert( _space != nil , @"Set Space for LevelLoader Before running removeJoint."); 
 	if(0 == joint) return NO;
 	NSArray * keys = [jointsInStage allKeysForObject:[NSValue valueWithPointer:joint]];
 	if(0 == _space) return NO;
@@ -1023,7 +1030,9 @@ static unsigned int signiture = 0;
 	return YES;
 }
 
--(void) increaseActorWithName:(NSString *)name count:(int)incremental delay:(float)delay{
+-(void) increaseActorCountWithName:(NSString *)name count:(int)incremental delay:(float)delay{
+    NSAssert(_gameLayer != nil, @"Set GameLayer for LevelLoader Before running increaseActorCountWithName:count:delay."); 
+
     for(NSDictionary* dictionary in actorDictsArray){
 		NSDictionary* spriteProp = [dictionary objectForKey:@"GeneralProperties"];
 		
@@ -1270,39 +1279,34 @@ static unsigned int signiture = 0;
 //}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-
-
-
-
--(NSMutableArray*) newBodyWithName:(NSString*)name 
-                                   world:(cpSpace*)world_
-                            gameLayer:(GameLayer*)gameLayer_
-{
-	for(NSDictionary* dictionary in actorDictsArray)
-	{
-		NSDictionary* spriteProp = [dictionary objectForKey:@"GeneralProperties"];
-		
-		if([[spriteProp objectForKey:@"Name"] isEqualToString:name])
-		{
-			riActor * ccsprite = [self newSpriteWithDictionary:spriteProp];	
-			
-			if(nil == ccsprite)
-				return 0;
-			
-			[_gameLayer addChild:ccsprite];
-			
-			NSDictionary* physicProp = [dictionary objectForKey:@"PhysicProperties"];
-			
-			return [self newShapesWithDictionary:physicProp
-							 spriteProperties:spriteProp
-										 data:ccsprite];
-		}
-	}
-	
-	return 0;
-}
+//
+//-(NSMutableArray*) newBodyWithName:(NSString*)name 
+//                                   world:(cpSpace*)world_
+//                            gameLayer:(GameLayer*)gameLayer_
+//{
+//	for(NSDictionary* dictionary in actorDictsArray)
+//	{
+//		NSDictionary* spriteProp = [dictionary objectForKey:@"GeneralProperties"];
+//		
+//		if([[spriteProp objectForKey:@"Name"] isEqualToString:name])
+//		{
+//			riActor * ccsprite = [self newSpriteWithDictionary:spriteProp];	
+//			
+//			if(nil == ccsprite)
+//				return 0;
+//			
+//			[_gameLayer addChild:ccsprite];
+//			
+//			NSDictionary* physicProp = [dictionary objectForKey:@"PhysicProperties"];
+//			
+//			return [self newShapesWithDictionary:physicProp
+//							 spriteProperties:spriteProp
+//										 data:ccsprite];
+//		}
+//	}
+//	
+//	return 0;
+//}
 
 //-(NSMutableArray*)spritesWithTag:(LevelHelper_TAG)tag
 //{
@@ -1342,62 +1346,6 @@ static unsigned int signiture = 0;
 //	
 //	return array;
 //}
-
--(NSMutableArray*)newSpritesWithTag:(LevelHelper_TAG)tag
-                       gameLayer:(GameLayer*)gameLayer_
-{
-	NSMutableArray* array = [[[NSMutableArray alloc] init] autorelease];
-	
-	for(NSDictionary* dictionary in actorDictsArray)
-	{
-		NSDictionary* spriteProp = [dictionary objectForKey:@"GeneralProperties"];
-		
-		if((LevelHelper_TAG)[[spriteProp objectForKey:@"Tag"] intValue] == tag)
-		{
-			CCSprite* ccsprite = [self newSpriteWithDictionary:spriteProp];
-			
-			if(nil != ccsprite)
-			{
-				[array addObject:ccsprite];
-				[gameLayer_ addChild:ccsprite];
-			}
-		}
-	}
-	
-	return array;
-}
-
--(NSMutableArray*) newBodiesWithTag:(LevelHelper_TAG)tag 
-							  world:(cpSpace*)world_
-					   gameLayer:(GameLayer*)gameLayer_
-{
-	NSMutableArray* array = [[[NSMutableArray alloc] init] autorelease];
-	
-	for(NSDictionary* dictionary in actorDictsArray)
-	{
-		NSDictionary* spriteProp = [dictionary objectForKey:@"GeneralProperties"];
-		
-		if((LevelHelper_TAG)[[spriteProp objectForKey:@"Tag"] intValue] == tag)
-		{
-			riActor* ccsprite = [self newSpriteWithDictionary:spriteProp];
-			
-			if(nil != ccsprite)
-			{
-				NSDictionary* physicProp = [dictionary objectForKey:@"PhysicProperties"];
-				
-				NSValue* v = [NSValue valueWithPointer:[self newShapesWithDictionary:physicProp
-																 spriteProperties:spriteProp
-																			 data:ccsprite]];
-				[array addObject:v];
-				
-				[gameLayer_ addChild:ccsprite];
-			}
-		}
-	}
-	return array;
-}
-
-
 
 
 @end
