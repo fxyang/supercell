@@ -9,9 +9,6 @@
 
 #import "SpaceManagerCocos2d.h"
 #import "BaseLayer.h"
-
-#import "Projectile.h"
-#import "Tower.h"
 #import "riTiledMapWaypoint.h"
 
 @class DataModel;
@@ -20,20 +17,11 @@
 @class riActor;
 @class riLevelLoader;
 @class riVerletRope;
-@class Player;
 
 #define kWinWidth ([[CCDirector sharedDirector] winSize].width)
 #define kWinHeight ([[CCDirector sharedDirector] winSize].height)
 #define kBulletAnchorPosition ccp(512,384)
 #define kBulletLength 128
-
-#define kFingerMovementFactor 40
-#define kFingerMovementFactorX 40
-#define kFingerMovementFactorY 80
-#define kFingerNoMovementFactor 40
-#define kFingerTouchTimeFactor 1.5
-#define kBulletAccuracyFactor 16
-
 
 
 typedef enum {
@@ -75,9 +63,6 @@ typedef enum {
     cpSpace *_space;
     
     CGSize _winSize;
-
-    CCSpriteBatchNode *actorSpriteBatchNode ;
-    
     
     NSMutableArray *_tiledMaps;
     CCTMXLayer *_background;	
@@ -85,17 +70,10 @@ typedef enum {
     
 
     CCSpriteBatchNode *ropeSegmentSpriteBatchNode ;
-    
     riVerletRope * verletRope;
     
     CCSprite * _trajectory;
     NSMutableArray *_touchPos;
-    
-    CGPoint _touchBeginPos;
-    CGPoint _touchEndPos;
-    
-    double _touchBeginTime;
-    double _touchEndTime;
         
     CCParallaxNode * _parallaxNode;
     
@@ -106,8 +84,6 @@ typedef enum {
     NSMutableSet * _deadBulletsSet;
     
     NSMutableDictionary * _trajectoryDict;
-    
-    Player * _player;
 
 }
 
@@ -125,12 +101,7 @@ typedef enum {
 @property (nonatomic, readonly) NSMutableArray * actorsArray;
 @property (nonatomic, readonly) NSMutableArray * bulletsArray;
 
-
-@property (nonatomic, readonly) Player * player;
-
 -(void)addBackgroundParticle;
--(void)addTower: (CGPoint)pos: (int)towerTag tileMap: (CCTMXTiledMap*)tiledMap;
-- (BOOL) canBuildOnTilePosition:(CGPoint) pos tiledMap:(CCTMXTiledMap *) tiledMap;
 
 - (void) back: (id) sender;
 

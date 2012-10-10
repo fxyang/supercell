@@ -204,14 +204,8 @@ static GameHUD *_sharedHUD = nil;
 		CGPoint newPos = ccpAdd(selSprite.position, translation);
         selSprite.position = newPos;
 		selSpriteRange.position = newPos;
-		
-		DataModel *m = [DataModel sharedDataModel];
-		CGPoint touchLocationInGameLayer = [m._gameLayer convertTouchToNodeSpace:touch];
 		        
-        CCTMXTiledMap * tiledMap = [[m.tiledMaps objectAtIndex:0] objectForKey:@"TiledMap"];
-        
-        
-		BOOL isBuildable = [(GameLayer *)m._gameLayer canBuildOnTilePosition: touchLocationInGameLayer tiledMap:tiledMap];
+		BOOL isBuildable = YES;
 		if (isBuildable) {
 			selSprite.opacity = 200;
 		} else {

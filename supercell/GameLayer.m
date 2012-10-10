@@ -17,7 +17,6 @@
 #import "riLevelLoader.h"
 
 #import "riJoystick.h"
-#import "Player.h"
 
 void bulletCallback(cpSpace *space, void *obj, void *data)
 {
@@ -111,7 +110,7 @@ void targetCallback(cpSpace *space, void *obj, void *data)
 
 
 @interface GameLayer (PrivateMethods)
-- (void) handleCollisionWithhandleCollisionWithButterfly:(CollisionMoment)moment arbiter:(cpArbiter*)arb space:(cpSpace*)space;
+- (void) handleCollisionWithTarget:(CollisionMoment)moment arbiter:(cpArbiter*)arb space:(cpSpace*)space;
 @end
 
 
@@ -132,7 +131,6 @@ void targetCallback(cpSpace *space, void *obj, void *data)
 @synthesize actorsArray = _actorsArray;
 @synthesize bulletsArray = _bulletsArray;
 
-@synthesize player = _player;
 
 enum {
     kTagSpriteSheet = 1,
@@ -170,7 +168,6 @@ enum {
     _deadBulletsSet = [[NSMutableSet alloc] init];
     
     _trajectoryDict = [[NSMutableDictionary alloc] init];
-    _player = [[Player alloc] init];
     _trajectory = nil;
     
     //Load TiledMAP/BatchNode/....
@@ -241,10 +238,6 @@ enum {
     [ropeSegmentSpriteBatchNode release];
     ropeSegmentSpriteBatchNode = nil;
 
-    
-    [actorSpriteBatchNode release];
-    actorSpriteBatchNode = nil;
-    
     [_spaceManager release];
     _spaceManager = nil;
     
@@ -272,10 +265,7 @@ enum {
     
     [_trajectoryDict release];
     _trajectoryDict = nil;
-    
-    [_player release];
-    _player = nil;
-    
+
 	[super dealloc];
 }
 
@@ -286,93 +276,6 @@ enum {
     dandelionParticle.autoRemoveOnFinish = YES;
     [self addChild:dandelionParticle z:kDandelionParticleZ];
 }
-
-- (CGPoint) tileCoordForPosition:(CGPoint) position tiledMap:(CCTMXTiledMap *) tiledMap
-{
-	int x = position.x / tiledMap.tileSize.width;
-	int y = ((tiledMap.mapSize.height * tiledMap.tileSize.height) - position.y) / tiledMap.tileSize.height;
-	
-	return ccp(x,y);
-}
-
-- (BOOL) canBuildOnTilePosition:(CGPoint) pos tiledMap:(CCTMXTiledMap *) tiledMap
-{
-	CGPoint towerLoc = [self tileCoordForPosition: pos tiledMap:tiledMap];
-	
-	int tileGid = [self.background tileGIDAt:towerLoc];
-	NSDictionary *props = [tiledMap propertiesForGID:tileGid];
-	NSString *type = [props valueForKey:@"buildable"];
-	
-	if([type isEqualToString: @"1"]) {
-		return YES;
-	}
-	
-	return NO;
-}
-
--(void)addTower: (CGPoint)pos: (int)towerTag tileMap: (CCTMXTiledMap*)tiledMap{
-	
-	Tower *target = nil;
-    
-	CGPoint towerLoc = [self tileCoordForPosition: pos tiledMap:tiledMap];
-	
-	int tileGid = [self.background tileGIDAt:towerLoc];
-	NSDictionary *props = [tiledMap propertiesForGID:tileGid];
-	NSString *type = [props valueForKey:@"buildable"];
-	
-	
-	NSLog(@"Buildable: %@", type);
-	if([type isEqualToString: @"1"]) {
-        
-        
-        switch (towerTag) {
-            case 1:
-                if (gameHUD.money >= 25) {
-                    target = [MachineGunTower tower];
-                    [gameHUD updateMoney:-25];
-                }
-                else
-                    return;
-                break;
-            case 2:
-                if (gameHUD.money >= 35) {
-                    target = [FreezeTower tower];
-                    [gameHUD updateMoney:-35];
-                }
-                else
-                    return;
-                break;
-            case 3:
-                if (gameHUD.money >= 25) {
-                    target = [MachineGunTower tower];
-                    [gameHUD updateMoney:-25];
-                }
-                else
-                    return;
-                break;
-            case 4:
-                if (gameHUD.money >= 25) {
-                    target = [MachineGunTower tower];
-                    [gameHUD updateMoney:-25];
-                }  
-                else
-                    return;
-                break;
-            default:
-                break;
-        }
-        
-		target.position = ccp((towerLoc.x * 32) + 16, tiledMap.contentSize.height - (towerLoc.y * 32) - 16);
-		[self addChild:target z:1];
-		
-		target.tag = 1;        
-		
-	} else {
-		NSLog(@"Tile Not Buildable");
-	}
-	
-}
-
 
 -(void)gameLogic:(ccTime)dt {
 
@@ -387,8 +290,6 @@ enum {
 
 
 - (CGPoint)boundLayerPos:(CGPoint)newPos tiledMap:(CCTMXTiledMap*)tiledMap {
-
-    
     CGSize winSize = [CCDirector sharedDirector].winSize;
     CGPoint retval = newPos;
     retval.x = MIN(retval.x, 0);
@@ -401,13 +302,11 @@ enum {
 - (void)handlePanFrom:(UIPanGestureRecognizer *)recognizer {
     CCTMXTiledMap * tiledMap = [[_tiledMaps objectAtIndex:0] objectForKey:@"TiledMap"];
     if (recognizer.state == UIGestureRecognizerStateBegan) {    
-        
         CGPoint touchLocation = [recognizer locationInView:recognizer.view];
         touchLocation = [[CCDirector sharedDirector] convertToGL:touchLocation];
         touchLocation = [self convertToNodeSpace:touchLocation];                
         
     } else if (recognizer.state == UIGestureRecognizerStateChanged) {    
-        
         CGPoint translation = [recognizer translationInView:recognizer.view];
         translation = ccp(translation.x, -translation.y);
         CGPoint newPos = ccpAdd(self.position, translation);
@@ -415,7 +314,6 @@ enum {
         [recognizer setTranslation:CGPointZero inView:recognizer.view];    
         
     } else if (recognizer.state == UIGestureRecognizerStateEnded) {
-        
 		float scrollDuration = 0.2;
 		CGPoint velocity = [recognizer velocityInView:recognizer.view];
 		CGPoint newPos = ccpAdd(self.position, ccpMult(ccp(velocity.x, velocity.y * -1), scrollDuration));
@@ -428,12 +326,10 @@ enum {
     }        
 }
 
--(void)draw
-{
+-(void)draw{
 	[super draw];
     if(verletRope != nil)
         [verletRope updateSprites];
-    
 }
 
 -(void) back: (id) sender{
@@ -464,17 +360,9 @@ enum {
     [self removeChild:coin cleanup:YES];
 }
 
-
-
 #pragma mark Touch Functions
-- (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{	
-    
+- (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{	
     for(UITouch* t in touches) {
-//        CGPoint pt = [self convertTouchToNodeSpace:t];
-//        _touchBeginPos = pt;
-//        _touchBeginTime = [[NSDate date] timeIntervalSince1970];
-        
         if(_actorsArray != nil && [_actorsArray count] > 0){
             for(riActor * a in _actorsArray){
                 if ([a touchedInLayer:self withTouchs:touches]) {
@@ -484,37 +372,17 @@ enum {
                         [_bulletsArray addObject:a];
                         break;
                     }
-                    
                 }
             }
         }
     }
-    
-
-    
-    
-	//Reset Scene
-//    if ([touches count] > 1)
-//    {
-//        CCScene *scene = [CCScene node];
-//        [scene addChild:[GameLayer node]];
-//        [[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:.4 scene:scene  withColor:ccBLUE]];
-//    }
 }
 
-- (void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-{	
-//    UITouch * touch = [touches anyObject];
-    
+- (void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{	    
     for(UITouch* t in touches) {
-        CGPoint pt = [self convertTouchToNodeSpace:t];
-        //    _touchEndPos = pt;
-        //    _touchEndTime = [[NSDate date] timeIntervalSince1970];
-        
+        CGPoint pt = [self convertTouchToNodeSpace:t];        
         if(_bulletsArray != nil && [_bulletsArray count] > 0){
-            
             for(riActor * b in _bulletsArray){
-                
                 if (b.currentTouch == t && [[b actorType] isEqualToString:@"Bullet_Firing"]) {
                     CGPoint direction = cpvsub(kBulletAnchorPosition, pt);
                     float length = ccpLength(direction);
@@ -542,20 +410,16 @@ enum {
                         trajectory.position = pos;
                         trajectory.rotation = rot;
                         trajectory.scaleX = scale;
-                        
                     }
                 }         
             }
-            
         }
     }
 }
 
-- (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{	
+- (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{	
 
 //    CGPoint pt = [self convertTouchToNodeSpace:[touches anyObject]];
-    
 //    _touchEndPos = pt;
 //    _touchEndTime = [[NSDate date] timeIntervalSince1970];
 
@@ -600,12 +464,11 @@ enum {
                     [self removeChild:trajectory cleanup:YES];
                     trajectory = nil;
                 }
-                //                [self runAction:[CCScaleTo actionWithDuration:2 scale:0.5]];
-                //                [self runAction:[CCFollow actionWithTarget:b]];
+                //[self runAction:[CCScaleTo actionWithDuration:2 scale:0.5]];
+                //[self runAction:[CCFollow actionWithTarget:b]];
             }
         }
     }
-
 }
 
 - (void) handleCollisionWithTarget:(CollisionMoment)moment arbiter:(cpArbiter*)arb space:(cpSpace*)space

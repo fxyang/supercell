@@ -38,7 +38,6 @@
 		5B76DD8E14D4A68D00322378 /* Range.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B76DD8114D4A68D00322378 /* Range.png */; };
 		5B76DD8F14D4A68D00322378 /* TileMap.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 5B76DD8214D4A68D00322378 /* TileMap.tmx */; };
 		5B76DD9014D4A68D00322378 /* tmw_desert_spacing.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B76DD8314D4A68D00322378 /* tmw_desert_spacing.png */; };
-		5B76DD9914D4A87400322378 /* Projectile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B76DD9814D4A87300322378 /* Projectile.m */; };
 		5B7AD3C0160D09F600950696 /* Rope_Circle_1024_1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B7AD3BF160D09F600950696 /* Rope_Circle_1024_1024.png */; };
 		5B7AD3C3160E40A000950696 /* Circle_1024_1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B7AD3C2160E40A000950696 /* Circle_1024_1024.png */; };
 		5B7AD3C5160EB91100950696 /* tile.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B7AD3C4160EB91000950696 /* tile.png */; };
@@ -111,12 +110,10 @@
 		5BD54E341501780400DA732E /* wall-texture.png in Resources */ = {isa = PBXBuildFile; fileRef = 5BD54E331501780300DA732E /* wall-texture.png */; };
 		5BD54E371502B3EC00DA732E /* butterfly_blue_48_48_fly.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BD54E351502B3EB00DA732E /* butterfly_blue_48_48_fly.plist */; };
 		5BD54E381502B3EC00DA732E /* butterfly_blue_48_48_fly.png in Resources */ = {isa = PBXBuildFile; fileRef = 5BD54E361502B3EB00DA732E /* butterfly_blue_48_48_fly.png */; };
-		5BD54E4015059BCF00DA732E /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD54E3F15059BC900DA732E /* Player.m */; };
 		5BD54E431506FC5500DA732E /* Flower_Purple_48_93.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BD54E411506FC5200DA732E /* Flower_Purple_48_93.plist */; };
 		5BD54E441506FC5500DA732E /* Flower_Purple_48_93.png in Resources */ = {isa = PBXBuildFile; fileRef = 5BD54E421506FC5300DA732E /* Flower_Purple_48_93.png */; };
 		5BD54E461506FCDC00DA732E /* Flower_Purple.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BD54E451506FCDB00DA732E /* Flower_Purple.plist */; };
 		5BD54E4815099D1800DA732E /* net_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 5BD54E4715099D1500DA732E /* net_green.png */; };
-		5BE5379C14D4CCED002408C3 /* Tower.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BE5379914D4CCED002408C3 /* Tower.m */; };
 		5BE537E614D605E5002408C3 /* cpCCNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BE537A814D605E5002408C3 /* cpCCNode.m */; };
 		5BE537E714D605E5002408C3 /* cpCCNodeImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BE537AA14D605E5002408C3 /* cpCCNodeImpl.m */; };
 		5BE537E814D605E5002408C3 /* cpCCSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BE537AC14D605E5002408C3 /* cpCCSprite.m */; };
@@ -315,8 +312,6 @@
 		5B76DD8114D4A68D00322378 /* Range.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Range.png; path = Resources/Range.png; sourceTree = "<group>"; };
 		5B76DD8214D4A68D00322378 /* TileMap.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = TileMap.tmx; path = Resources/TileMap.tmx; sourceTree = "<group>"; };
 		5B76DD8314D4A68D00322378 /* tmw_desert_spacing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tmw_desert_spacing.png; path = Resources/tmw_desert_spacing.png; sourceTree = "<group>"; };
-		5B76DD9714D4A87200322378 /* Projectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Projectile.h; sourceTree = "<group>"; };
-		5B76DD9814D4A87300322378 /* Projectile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Projectile.m; sourceTree = "<group>"; };
 		5B7AD3BF160D09F600950696 /* Rope_Circle_1024_1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Rope_Circle_1024_1024.png; path = Resources/Rope_Circle_1024_1024.png; sourceTree = "<group>"; };
 		5B7AD3C2160E40A000950696 /* Circle_1024_1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Circle_1024_1024.png; path = Resources/Circle_1024_1024.png; sourceTree = "<group>"; };
 		5B7AD3C4160EB91000950696 /* tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tile.png; path = Resources/tile.png; sourceTree = "<group>"; };
@@ -422,14 +417,10 @@
 		5BD54E331501780300DA732E /* wall-texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "wall-texture.png"; path = "Resources/wall-texture.png"; sourceTree = "<group>"; };
 		5BD54E351502B3EB00DA732E /* butterfly_blue_48_48_fly.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = butterfly_blue_48_48_fly.plist; path = Resources/butterfly_blue_48_48_fly.plist; sourceTree = "<group>"; };
 		5BD54E361502B3EB00DA732E /* butterfly_blue_48_48_fly.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = butterfly_blue_48_48_fly.png; path = Resources/butterfly_blue_48_48_fly.png; sourceTree = "<group>"; };
-		5BD54E3E15059BC700DA732E /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
-		5BD54E3F15059BC900DA732E /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
 		5BD54E411506FC5200DA732E /* Flower_Purple_48_93.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Flower_Purple_48_93.plist; path = Resources/Flower_Purple_48_93.plist; sourceTree = "<group>"; };
 		5BD54E421506FC5300DA732E /* Flower_Purple_48_93.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Flower_Purple_48_93.png; path = Resources/Flower_Purple_48_93.png; sourceTree = "<group>"; };
 		5BD54E451506FCDB00DA732E /* Flower_Purple.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Flower_Purple.plist; path = Resources/Flower_Purple.plist; sourceTree = "<group>"; };
 		5BD54E4715099D1500DA732E /* net_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = net_green.png; path = Resources/net_green.png; sourceTree = "<group>"; };
-		5BE5379814D4CCED002408C3 /* Tower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tower.h; sourceTree = "<group>"; };
-		5BE5379914D4CCED002408C3 /* Tower.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tower.m; sourceTree = "<group>"; };
 		5BE537A714D605E5002408C3 /* cpCCNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cpCCNode.h; sourceTree = "<group>"; };
 		5BE537A814D605E5002408C3 /* cpCCNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = cpCCNode.m; sourceTree = "<group>"; };
 		5BE537A914D605E5002408C3 /* cpCCNodeImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cpCCNodeImpl.h; sourceTree = "<group>"; };
@@ -1042,8 +1033,6 @@
 				5BE569AB14CE7BB0000321CC /* GameLayer.m */,
 				5B76DD5A14D49C9100322378 /* GameHUD.h */,
 				5B76DD5B14D49C9200322378 /* GameHUD.m */,
-				5BD54E3E15059BC700DA732E /* Player.h */,
-				5BD54E3F15059BC900DA732E /* Player.m */,
 				5B76DD5714D47AF500322378 /* DataModel.h */,
 				5B76DD5814D47AF500322378 /* DataModel.m */,
 				5BF2829C14C77DFD007C1169 /* AppDelegate.h */,
@@ -1055,14 +1044,10 @@
 				5B98527D14CDED5B00C2DC5D /* SceneManager.m */,
 				5B98527F14CDEDDB00C2DC5D /* MenuLayer.h */,
 				5B98528014CDEDDB00C2DC5D /* MenuLayer.m */,
-				5B76DD9714D4A87200322378 /* Projectile.h */,
-				5B76DD9814D4A87300322378 /* Projectile.m */,
 				5B76DD4414CE7DDA00322378 /* CreditsLayer.h */,
 				5B76DD4514CE7DDA00322378 /* CreditsLayer.m */,
 				5B76DD4714CE8BDC00322378 /* BaseLayer.h */,
 				5B76DD4814CE8BDC00322378 /* BaseLayer.m */,
-				5BE5379814D4CCED002408C3 /* Tower.h */,
-				5BE5379914D4CCED002408C3 /* Tower.m */,
 				5BF2814B14C77DFB007C1169 /* Resources */,
 				5BF2815F14C77DFB007C1169 /* libs */,
 				5BF2829814C77DFD007C1169 /* Supporting Files */,
@@ -1736,8 +1721,6 @@
 				5B76DD4914CE8BDC00322378 /* BaseLayer.m in Sources */,
 				5B76DD5914D47AF600322378 /* DataModel.m in Sources */,
 				5B76DD5C14D49C9200322378 /* GameHUD.m in Sources */,
-				5B76DD9914D4A87400322378 /* Projectile.m in Sources */,
-				5BE5379C14D4CCED002408C3 /* Tower.m in Sources */,
 				5BE537E614D605E5002408C3 /* cpCCNode.m in Sources */,
 				5BE537E714D605E5002408C3 /* cpCCNodeImpl.m in Sources */,
 				5BE537E814D605E5002408C3 /* cpCCSprite.m in Sources */,
@@ -1778,7 +1761,6 @@
 				5B62B16114F44CAF00E8A112 /* riTiledMapWaypoint.m in Sources */,
 				5BD54E1E14FC8C7900DA732E /* riJoystick.m in Sources */,
 				5BD54E32150159F000DA732E /* riRollingTiledMap.m in Sources */,
-				5BD54E4015059BCF00DA732E /* Player.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
